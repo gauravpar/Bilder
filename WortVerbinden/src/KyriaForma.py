@@ -6,6 +6,7 @@ from Glyph import GlyphElement
 from PyQt4.QtSql import *
 from PyQt4.Qt import QListWidgetItem
 
+#SELECT *  FROM `Chars` WHERE BINARY `Text` = 'ὠ'
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -30,7 +31,7 @@ class Ui_MainWindow(object):
     
     
         
-        
+
     def UpdateTable(self):
         #print 'Updating List widget'
         #clear table and create as many columns as the distinct characters
@@ -371,7 +372,7 @@ class Ui_MainWindow(object):
         
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Word Synthesis", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebliderzusammenverbindung", None))
         self.label_3.setText(_translate("MainWindow", "Select Language", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.groupBox_2.setTitle(_translate("MainWindow", "Glyphs", None))
