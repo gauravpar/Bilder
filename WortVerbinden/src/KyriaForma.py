@@ -322,8 +322,14 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.pushButton,QtCore.SIGNAL('clicked()'),self.Go)
         QtCore.QObject.connect(self.textQuery,QtCore.SIGNAL('textChanged()'),self.UpdateTable)
         self.charWidget.itemClicked.connect(self.ShowDBGlyph)
+        self.charWidget.itemDoubleClicked.connect(self.AppendChar)
         self.comboSprache.currentIndexChanged.connect(self.LangChoice)
 
+    def AppendChar(self,polychar):
+        #appends chars to text
+        #very useful for polytonic greek characters
+        self.textQuery.insertPlainText(polychar.text())
+        
     def LangChoice(self,index):
         self.Sprache=self.comboSprache.currentText()
         print 'Language set to ' + self.Sprache
@@ -372,7 +378,7 @@ class Ui_MainWindow(object):
         
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebliderzusammenverbindung", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
         self.label_3.setText(_translate("MainWindow", "Select Language", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.groupBox_2.setTitle(_translate("MainWindow", "Glyphs", None))

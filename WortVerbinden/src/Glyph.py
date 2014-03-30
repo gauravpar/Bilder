@@ -17,4 +17,8 @@ class GlyphElement:
         '''
         self.Glyph=char;
         self.GraphemeImg=img_char
+        #self.X
+        #self.Y
+        #self.Top
+        #self.Low
         
