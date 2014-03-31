@@ -65,6 +65,7 @@ class Ui_MainWindow(object):
         for c in self.ComboList:
             print c.currentText()
         
+    #GUI SUTFF DO NOT CHANGE
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(796, 676)
@@ -194,11 +195,14 @@ class Ui_MainWindow(object):
         self.groupBox_2.setGeometry(QtCore.QRect(10, 180, 221, 481))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.labGlyhPreview = QtGui.QLabel(self.groupBox_2)
-        self.labGlyhPreview.setGeometry(QtCore.QRect(60, 380, 91, 101))
+        self.labGlyhPreview.setGeometry(QtCore.QRect(70, 350, 91, 91))
         self.labGlyhPreview.setObjectName(_fromUtf8("labGlyhPreview"))
         self.glyphWidget = QtGui.QListWidget(self.groupBox_2)
-        self.glyphWidget.setGeometry(QtCore.QRect(10, 30, 201, 341))
+        self.glyphWidget.setGeometry(QtCore.QRect(10, 30, 201, 301))
         self.glyphWidget.setObjectName(_fromUtf8("glyphWidget"))
+        self.pushReplace = QtGui.QPushButton(self.groupBox_2)
+        self.pushReplace.setGeometry(QtCore.QRect(60, 450, 99, 23))
+        self.pushReplace.setObjectName(_fromUtf8("pushReplace"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
         self.tabWidget.setGeometry(QtCore.QRect(250, 180, 541, 491))
         palette = QtGui.QPalette()
@@ -269,32 +273,27 @@ class Ui_MainWindow(object):
         self.charWidget = QtGui.QListWidget(self.tab)
         self.charWidget.setGeometry(QtCore.QRect(20, 20, 131, 431))
         self.charWidget.setObjectName(_fromUtf8("charWidget"))
-        self.tabWidget.addTab(self.tab, _fromUtf8(""))
-        self.tab_3 = QtGui.QWidget()
-        self.tab_3.setObjectName(_fromUtf8("tab_3"))
-        self.graphicsView = QtGui.QGraphicsView(self.tab_3)
-        self.graphicsView.setGeometry(QtCore.QRect(20, 110, 501, 192))
-        self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
-        self.label_2 = QtGui.QLabel(self.tab_3)
-        self.label_2.setGeometry(QtCore.QRect(30, 30, 71, 41))
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.comboBox = QtGui.QComboBox(self.tab_3)
-        self.comboBox.setGeometry(QtCore.QRect(110, 40, 251, 23))
-        self.comboBox.setObjectName(_fromUtf8("comboBox"))
-        self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
-        self.pushButton = QtGui.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(668, 162, 111, 31))
-        self.comboSprache = QtGui.QComboBox(self.tab)
-        self.comboSprache.setGeometry(QtCore.QRect(310, 50, 161, 23))
-        self.comboSprache.setObjectName(_fromUtf8("comboSprache"))
-        self.comboSprache.addItem('Greek')
-        self.comboSprache.addItem('English')
-        self.laDBGlyph = QtGui.QLabel(self.tab)
-        self.laDBGlyph.setGeometry(QtCore.QRect(280, 120, 91, 91))
-        self.laDBGlyph.setObjectName(_fromUtf8("laDBGlyph"))
         self.label_3 = QtGui.QLabel(self.tab)
         self.label_3.setGeometry(QtCore.QRect(190, 40, 111, 41))
         self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.comboSprache = QtGui.QComboBox(self.tab)
+        self.comboSprache.setGeometry(QtCore.QRect(310, 50, 161, 23))
+        self.comboSprache.setObjectName(_fromUtf8("comboSprache"))
+        self.groupBox_4 = QtGui.QGroupBox(self.tab)
+        self.groupBox_4.setGeometry(QtCore.QRect(170, 130, 341, 301))
+        self.groupBox_4.setObjectName(_fromUtf8("groupBox_4"))
+        self.laDBGlyph = QtGui.QLabel(self.groupBox_4)
+        self.laDBGlyph.setGeometry(QtCore.QRect(110, 120, 101, 111))
+        self.laDBGlyph.setObjectName(_fromUtf8("laDBGlyph"))
+        self.comboGlyphs = QtGui.QComboBox(self.groupBox_4)
+        self.comboGlyphs.setGeometry(QtCore.QRect(150, 50, 141, 23))
+        self.comboGlyphs.setObjectName(_fromUtf8("comboGlyphs"))
+        self.label_4 = QtGui.QLabel(self.groupBox_4)
+        self.label_4.setGeometry(QtCore.QRect(30, 40, 111, 41))
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.tabWidget.addTab(self.tab, _fromUtf8(""))
+        self.pushButton = QtGui.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(668, 162, 111, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -302,6 +301,7 @@ class Ui_MainWindow(object):
         self.pushButton.setFont(font)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         MainWindow.setCentralWidget(self.centralwidget)
+
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
@@ -319,12 +319,16 @@ class Ui_MainWindow(object):
             self.verticalLayout.addWidget(combo)
         self.GetGlyphsFromDB()
         #slots
+        QtCore.QObject.connect(self.pushReplace,QtCore.SIGNAL('clicked()'),self.ReplaceGlyph)
         QtCore.QObject.connect(self.pushButton,QtCore.SIGNAL('clicked()'),self.Go)
         QtCore.QObject.connect(self.textQuery,QtCore.SIGNAL('textChanged()'),self.UpdateTable)
         self.charWidget.itemClicked.connect(self.ShowDBGlyph)
         self.charWidget.itemDoubleClicked.connect(self.AppendChar)
         self.comboSprache.currentIndexChanged.connect(self.LangChoice)
 
+    def ReplaceGlyph(self):
+        filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open File', '', ".xls(*.xls)"))  
+    
     def AppendChar(self,polychar):
         #appends chars to text
         #very useful for polytonic greek characters
@@ -359,6 +363,8 @@ class Ui_MainWindow(object):
             self.vasi.open()
             query=QSqlQuery(self.vasi)
             query.exec_("Select C.Text From Chars C,Glyphs G Where C.LangID=1 AND C.CharID=G.CharID")
+            #query.exec_("Select C.Text From Chars C")
+            
             while query.next():
                 print query.value(0).toString()
                 charListItem=QtGui.QListWidgetItem()
@@ -376,22 +382,26 @@ class Ui_MainWindow(object):
             
         
         
+    #GUI SUTFF DO NOT CHANGE
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
-        self.label_3.setText(_translate("MainWindow", "Select Language", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderzusammenverbindung", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.groupBox_2.setTitle(_translate("MainWindow", "Glyphs", None))
         self.labGlyhPreview.setText(_translate("MainWindow", "TextLabel", None))
+        self.pushReplace.setText(_translate("MainWindow", "Replace", None))
         self.labFinal.setText(_translate("MainWindow", "TextLabel", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabResults), _translate("MainWindow", "Results", None))
         self.label.setText(_translate("MainWindow", "Temp Folder", None))
         self.groupBox_3.setTitle(_translate("MainWindow", "Order of Normalization", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Settings", None))
+        self.label_3.setText(_translate("MainWindow", "Select Language", None))
+        self.groupBox_4.setTitle(_translate("MainWindow", "Glyph Properties", None))
+        self.laDBGlyph.setText(_translate("MainWindow", "TextLabel", None))
+        self.label_4.setText(_translate("MainWindow", "Select Glyph", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Greek chars DB", None))
-        self.label_2.setText(_translate("MainWindow", "Font", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Washington", None))
         self.pushButton.setText(_translate("MainWindow", "GO", None))
+
 
 def main():
     app = QtGui.QApplication(sys.argv)

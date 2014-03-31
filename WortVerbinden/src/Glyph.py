@@ -21,4 +21,5 @@ class GlyphElement:
         #self.Y
         #self.Top
         #self.Low
+        #self.Line
         
