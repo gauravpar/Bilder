@@ -1,23 +1,17 @@
-'''
-Created on Mar 30, 2014
-
-@author: phoenix
-'''
-#a working word synthesis naive approach for samos
-
 # -*- coding: UTF-8 -*- 
-#Build the word image orasi using a very naive approach
+#Build the word image  using a very naive approach
 #we assume in this script that all characters  's gylphs are of roughly equal dimensions
 #memory consuming....
 import numpy as np
 import cv2
 #Space between words?????
 BlackThreshold=6
-Shift=12
+Shift=12 #we can shift the baseline a few rows down
 query=raw_input("")
 BaseDir='/home/phoenix/Verbinden/'
 tmp='/tmp/'
 GlyphBook=[]
+#those will be stored in a mysql database
 GlyphBook.append(['Ο', BaseDir+'O.png'])
 GlyphBook.append([' ', BaseDir+'space.png'])
 GlyphBook.append(['α', BaseDir+'a.png'])
@@ -50,8 +44,8 @@ glyphs=[]
 
 QueryX=0
 QueryY=0
-XLines=[]
-YDims=[]
+XLines=[] #baseline for each glypl
+YDims=[] #glyph dimensions
 XDims=[]
 
 
@@ -128,6 +122,7 @@ for q in query:
        XLines.append(line)
        print 'Fixed Baseline for char ',q, 'is', line
        
+       #output the naive baseline for r
        rbild= np.ones((x,y,3), np.uint8)
        rbild=tmp
        for i in range(0, y):
@@ -190,7 +185,7 @@ for j in range(0, QueryY):
     
     
 cv2.imshow('Word Query', ImgQuery)
-cv2.imwrite("/tmp/good.png", ImgQuery)
+cv2.imwrite("/tmp/" + query.encode('utf-8') +".png", ImgQuery)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()   
