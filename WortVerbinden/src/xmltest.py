@@ -6,8 +6,8 @@ In the xml you will store the char  the path to its glyph ,if it is a special ch
 The xml works as a backup in case everything is lost
 @author: phoenix
 '''
-import xml.etree.cElementTree as et
-chars=['ἂ','ρ']
+ 
+chars=['a','b']
 Lang=["GR","GR"]
 path=["/tmp/a.png","/tmp/r.png"]
 spec=["No","Yes"]
@@ -17,11 +17,17 @@ Base=["28","24"]
 X=["35","40"]
 Y=["45","49"]
 
+
 root=et.Element("root")
 
 for c in chars:
-    glyph=et.SubElement(root,c.encode('utf-8'))
+    glyph=et.SubElement(root,"Glyph")
+    glyph.set("name", "α")
+    glyph.text = "some value1"
+    
 tree = et.ElementTree(root)
+   
+tree.write("filename.xml", xml_declaration=True, encoding='utf-8')    
 tree.write("/tmp/filename.xml")
-
+print 'ok'
 
