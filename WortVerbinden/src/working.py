@@ -118,7 +118,7 @@ for q in query:
             else:
                 continue
             break
-       line=int(0.88*abs((top-low))) # the lower the value the higher the position of char  
+       line=int(0.83*abs((top-low))) # the lower the value the higher the position of char  
        XLines.append(line)
        print 'Fixed Baseline for char ',q, 'is', line
        
