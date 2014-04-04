@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*- 
 import sys
+from loaddoc import LoadDocWin
+
 from PyQt4 import QtCore, QtGui
 from Glyph import GlyphElement
 from PyQt4.QtSql import *
@@ -66,9 +68,9 @@ class Ui_MainWindow(object):
             print c.currentText()
         
     #GUI SUTFF DO NOT CHANGE
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow):         
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(796, 676)
+        MainWindow.resize(796, 703)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(22, 127, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -191,20 +193,8 @@ class Ui_MainWindow(object):
         self.textQuery.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.textQuery.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.textQuery.setObjectName(_fromUtf8("textQuery"))
-        self.groupBox_2 = QtGui.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(10, 180, 221, 481))
-        self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
-        self.labGlyhPreview = QtGui.QLabel(self.groupBox_2)
-        self.labGlyhPreview.setGeometry(QtCore.QRect(70, 350, 91, 91))
-        self.labGlyhPreview.setObjectName(_fromUtf8("labGlyhPreview"))
-        self.glyphWidget = QtGui.QListWidget(self.groupBox_2)
-        self.glyphWidget.setGeometry(QtCore.QRect(10, 30, 201, 301))
-        self.glyphWidget.setObjectName(_fromUtf8("glyphWidget"))
-        self.pushReplace = QtGui.QPushButton(self.groupBox_2)
-        self.pushReplace.setGeometry(QtCore.QRect(60, 450, 99, 23))
-        self.pushReplace.setObjectName(_fromUtf8("pushReplace"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(250, 180, 541, 491))
+        self.tabWidget.setGeometry(QtCore.QRect(250, 190, 541, 511))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(58, 23, 174))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -247,8 +237,41 @@ class Ui_MainWindow(object):
         self.tabResults = QtGui.QWidget()
         self.tabResults.setObjectName(_fromUtf8("tabResults"))
         self.labFinal = QtGui.QLabel(self.tabResults)
-        self.labFinal.setGeometry(QtCore.QRect(10, 10, 501, 151))
+        self.labFinal.setGeometry(QtCore.QRect(10, 10, 501, 161))
         self.labFinal.setObjectName(_fromUtf8("labFinal"))
+        self.groupBox_5 = QtGui.QGroupBox(self.tabResults)
+        self.groupBox_5.setGeometry(QtCore.QRect(10, 190, 521, 181))
+        self.groupBox_5.setObjectName(_fromUtf8("groupBox_5"))
+        self.sliderRed = QtGui.QSlider(self.groupBox_5)
+        self.sliderRed.setGeometry(QtCore.QRect(70, 40, 411, 21))
+        self.sliderRed.setMinimum(1)
+        self.sliderRed.setMaximum(256)
+        self.sliderRed.setOrientation(QtCore.Qt.Horizontal)
+        self.sliderRed.setInvertedAppearance(False)
+        self.sliderRed.setObjectName(_fromUtf8("sliderRed"))
+        self.label_2 = QtGui.QLabel(self.groupBox_5)
+        self.label_2.setGeometry(QtCore.QRect(20, 30, 57, 41))
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.label_5 = QtGui.QLabel(self.groupBox_5)
+        self.label_5.setGeometry(QtCore.QRect(20, 70, 57, 41))
+        self.label_5.setObjectName(_fromUtf8("label_5"))
+        self.sliderBlue = QtGui.QSlider(self.groupBox_5)
+        self.sliderBlue.setGeometry(QtCore.QRect(70, 80, 411, 21))
+        self.sliderBlue.setMinimum(1)
+        self.sliderBlue.setMaximum(256)
+        self.sliderBlue.setOrientation(QtCore.Qt.Horizontal)
+        self.sliderBlue.setInvertedAppearance(False)
+        self.sliderBlue.setObjectName(_fromUtf8("sliderBlue"))
+        self.label_6 = QtGui.QLabel(self.groupBox_5)
+        self.label_6.setGeometry(QtCore.QRect(20, 110, 57, 41))
+        self.label_6.setObjectName(_fromUtf8("label_6"))
+        self.sliderGreen = QtGui.QSlider(self.groupBox_5)
+        self.sliderGreen.setGeometry(QtCore.QRect(70, 120, 411, 21))
+        self.sliderGreen.setMinimum(1)
+        self.sliderGreen.setMaximum(256)
+        self.sliderGreen.setOrientation(QtCore.Qt.Horizontal)
+        self.sliderGreen.setInvertedAppearance(False)
+        self.sliderGreen.setObjectName(_fromUtf8("sliderGreen"))
         self.tabWidget.addTab(self.tabResults, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
@@ -264,9 +287,9 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget = QtGui.QWidget(self.groupBox_3)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 20, 171, 371))
         self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setMargin(0)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.normLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
+        self.normLayout.setMargin(0)
+        self.normLayout.setObjectName(_fromUtf8("normLayout"))
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
@@ -291,15 +314,47 @@ class Ui_MainWindow(object):
         self.label_4 = QtGui.QLabel(self.groupBox_4)
         self.label_4.setGeometry(QtCore.QRect(30, 40, 111, 41))
         self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.pushUseDBGlyph = QtGui.QPushButton(self.groupBox_4)
+        self.pushUseDBGlyph.setGeometry(QtCore.QRect(110, 250, 99, 31))
+        self.pushUseDBGlyph.setObjectName(_fromUtf8("pushUseDBGlyph"))
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
-        self.pushButton = QtGui.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(668, 162, 111, 31))
+        self.pushGo = QtGui.QPushButton(self.centralwidget)
+        self.pushGo.setGeometry(QtCore.QRect(670, 170, 111, 31))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setFamily(_fromUtf8("Times New Roman"))
+        font.setPointSize(14)
         font.setBold(True)
+        font.setItalic(True)
         font.setWeight(75)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.pushGo.setFont(font)
+        self.pushGo.setObjectName(_fromUtf8("pushGo"))
+        self.tabWidget_2 = QtGui.QTabWidget(self.centralwidget)
+        self.tabWidget_2.setGeometry(QtCore.QRect(10, 190, 231, 511))
+        self.tabWidget_2.setObjectName(_fromUtf8("tabWidget_2"))
+        self.tab_3 = QtGui.QWidget()
+        self.tab_3.setObjectName(_fromUtf8("tab_3"))
+        self.labGlyhPreview = QtGui.QLabel(self.tab_3)
+        self.labGlyhPreview.setGeometry(QtCore.QRect(70, 330, 91, 91))
+        self.labGlyhPreview.setObjectName(_fromUtf8("labGlyhPreview"))
+        self.pushReplace = QtGui.QPushButton(self.tab_3)
+        self.pushReplace.setGeometry(QtCore.QRect(60, 430, 99, 31))
+        self.pushReplace.setObjectName(_fromUtf8("pushReplace"))
+        self.glyphWidget = QtGui.QListWidget(self.tab_3)
+        self.glyphWidget.setGeometry(QtCore.QRect(10, 10, 201, 301))
+        self.glyphWidget.setObjectName(_fromUtf8("glyphWidget"))
+        self.tabWidget_2.addTab(self.tab_3, _fromUtf8(""))
+        self.tab_4 = QtGui.QWidget()
+        self.tab_4.setObjectName(_fromUtf8("tab_4"))
+        self.verticalLayoutWidget_2 = QtGui.QWidget(self.tab_4)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(10, 10, 201, 441))
+        self.verticalLayoutWidget_2.setObjectName(_fromUtf8("verticalLayoutWidget_2"))
+        self.glyphLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.glyphLayout.setMargin(0)
+        self.glyphLayout.setObjectName(_fromUtf8("glyphLayout"))
+        self.tabWidget_2.addTab(self.tab_4, _fromUtf8(""))
+        self.pushLoad = QtGui.QPushButton(self.centralwidget)
+        self.pushLoad.setGeometry(QtCore.QRect(518, 170, 141, 31))
+        self.pushLoad.setObjectName(_fromUtf8("pushLoad"))
         MainWindow.setCentralWidget(self.centralwidget)
 
 
@@ -316,16 +371,27 @@ class Ui_MainWindow(object):
                 combo.addItem(n)
                 combo.setCurrentIndex(i)
             self.ComboList.append(combo)
-            self.verticalLayout.addWidget(combo)
+            self.normLayout.addWidget(combo)
         self.GetGlyphsFromDB()
         #slots
         QtCore.QObject.connect(self.pushReplace,QtCore.SIGNAL('clicked()'),self.ReplaceGlyph)
-        QtCore.QObject.connect(self.pushButton,QtCore.SIGNAL('clicked()'),self.Go)
+        QtCore.QObject.connect(self.pushGo,QtCore.SIGNAL('clicked()'),self.Go)
+        QtCore.QObject.connect(self.pushLoad,QtCore.SIGNAL('clicked()'),self.LoadDoc)
         QtCore.QObject.connect(self.textQuery,QtCore.SIGNAL('textChanged()'),self.UpdateTable)
         self.charWidget.itemClicked.connect(self.ShowDBGlyph)
         self.charWidget.itemDoubleClicked.connect(self.AppendChar)
         self.comboSprache.currentIndexChanged.connect(self.LangChoice)
 
+    def LoadDoc(self):
+        print 'Loading document'
+        #Allows the user to load a document
+        
+        dokloadwin = LoadDocWin()
+        dokloadwin.show()
+
+   
+   
+    
     def ReplaceGlyph(self):
         filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open File', '', ".xls(*.xls)"))  
     
@@ -339,6 +405,7 @@ class Ui_MainWindow(object):
         print 'Language set to ' + self.Sprache
                
     def ShowDBGlyph(self,item):
+        #load the DB glyph of item
         print 'Fetching glyph for ' + item.text()
         pixie=QtGui.QPixmap()
         self.vasi.open()
@@ -385,12 +452,13 @@ class Ui_MainWindow(object):
     #GUI SUTFF DO NOT CHANGE
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderzusammenverbindung", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindung", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
-        self.groupBox_2.setTitle(_translate("MainWindow", "Glyphs", None))
-        self.labGlyhPreview.setText(_translate("MainWindow", "TextLabel", None))
-        self.pushReplace.setText(_translate("MainWindow", "Replace", None))
         self.labFinal.setText(_translate("MainWindow", "TextLabel", None))
+        self.groupBox_5.setTitle(_translate("MainWindow", "Binarization parameters", None))
+        self.label_2.setText(_translate("MainWindow", "Red", None))
+        self.label_5.setText(_translate("MainWindow", "Blue", None))
+        self.label_6.setText(_translate("MainWindow", "Green", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabResults), _translate("MainWindow", "Results", None))
         self.label.setText(_translate("MainWindow", "Temp Folder", None))
         self.groupBox_3.setTitle(_translate("MainWindow", "Order of Normalization", None))
@@ -399,8 +467,14 @@ class Ui_MainWindow(object):
         self.groupBox_4.setTitle(_translate("MainWindow", "Glyph Properties", None))
         self.laDBGlyph.setText(_translate("MainWindow", "TextLabel", None))
         self.label_4.setText(_translate("MainWindow", "Select Glyph", None))
+        self.pushUseDBGlyph.setText(_translate("MainWindow", "Use from db", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Greek chars DB", None))
-        self.pushButton.setText(_translate("MainWindow", "GO", None))
+        self.pushGo.setText(_translate("MainWindow", "GO", None))
+        self.labGlyhPreview.setText(_translate("MainWindow", "TextLabel", None))
+        self.pushReplace.setText(_translate("MainWindow", "Use from disk", None))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "Chars", None))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "All Glyphs", None))
+        self.pushLoad.setText(_translate("MainWindow", "Load Document", None))
 
 
 def main():
