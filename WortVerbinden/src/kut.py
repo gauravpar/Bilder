@@ -18,3 +18,6 @@ x,y,z=doc.shape
 print 'dimensions ',x,y
 
 bild=np.ones((math.fabs(LowX-TopX),math.fabs(TopY-LowY),3), np.uint8)
+bild.fill(255)
+
+
