@@ -13,6 +13,7 @@ Created on Apr 4, 2014
 # WARNING! All changes made in this file will be lost!
 #This is MyPaint
 from PyQt4 import QtCore, QtGui
+from PyQt4.Qt import QGraphicsScene, QImage, QGraphicsPixmapItem
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -28,24 +29,87 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class LoadDocWin(object):
+class LoadDocWin(QtGui.QMainWindow):
+    DocImagePath=""
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(800, 600)
+        MainWindow.resize(961, 664)
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
+        MainWindow.setPalette(palette)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.graphDocView = QtGui.QGraphicsView(self.centralwidget)
-        self.graphDocView.setGeometry(QtCore.QRect(0, 0, 801, 601))
+        self.graphDocView.setGeometry(QtCore.QRect(10, 10, 941, 651))
+        self.graphDocView.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.graphDocView.setFrameShape(QtGui.QFrame.NoFrame)
         self.graphDocView.setObjectName(_fromUtf8("graphDocView"))
         self.labCutPreview = QtGui.QLabel(self.centralwidget)
-        self.labCutPreview.setGeometry(QtCore.QRect(720, 510, 71, 81))
+        self.labCutPreview.setGeometry(QtCore.QRect(840, 500, 101, 101))
+        self.labCutPreview.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.labCutPreview.setFrameShadow(QtGui.QFrame.Sunken)
+        self.labCutPreview.setLineWidth(1)
+        self.labCutPreview.setScaledContents(False)
         self.labCutPreview.setObjectName(_fromUtf8("labCutPreview"))
+        self.pushButton = QtGui.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(840, 610, 99, 41))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(70, 184, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ButtonText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(70, 184, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(150, 147, 145))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
+        self.pushButton.setPalette(palette)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton.setFont(font)
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
         MainWindow.setCentralWidget(self.centralwidget)
 
+
+        print 'Dok path',self.DocImagePath
+        sc=QGraphicsScene()
+        img=QImage(self.DocImagePath)
+        pix=QGraphicsPixmapItem(QtGui.QPixmap.fromImage(img))
+        sc.addItem(pix)
+        self.graphDocView.setScene(sc)
+        
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Select your glyphs", None))
         self.labCutPreview.setText(_translate("MainWindow", "TextLabel", None))
+        self.pushButton.setText(_translate("MainWindow", "Save", None))
 
