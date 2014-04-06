@@ -385,9 +385,15 @@ class Ui_MainWindow(object):
     def LoadDoc(self):
         print 'Loading document'
         #Allows the user to load a document
+        #Finally it works!!!
+        self.CutForm = QtGui.QMainWindow()
+        self.cui = LoadDocWin()
+        self.cui.DocImagePath="/home/phoenix/samos1900/0013.jpg"
+          
+        self.cui.setupUi(self.CutForm)
+      
+        self.CutForm.show()
         
-        dokloadwin = LoadDocWin()
-        dokloadwin.show()
 
    
    
@@ -482,7 +488,6 @@ def main():
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-   
     MainWindow.show()
     sys.exit(app.exec_())
    
