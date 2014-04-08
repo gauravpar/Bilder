@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
             print c.currentText()
         
     #GUI SUTFF DO NOT CHANGE
-    def setupUi(self, MainWindow):         
+    def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(796, 703)
         palette = QtGui.QPalette()
@@ -362,6 +362,12 @@ class Ui_MainWindow(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         # My methods-----------------------------------------
+        
+        
+        self.comboSprache.addItem("EN")
+        self.comboSprache.addItem("GR")
+        
+        
         self.lineTemp.setText('/tmp/')
         #combo box with all possible normalization methods
         
@@ -373,6 +379,9 @@ class Ui_MainWindow(object):
             self.ComboList.append(combo)
             self.normLayout.addWidget(combo)
         self.GetGlyphsFromDB()
+        
+       
+        
         #slots
         QtCore.QObject.connect(self.pushReplace,QtCore.SIGNAL('clicked()'),self.ReplaceGlyph)
         QtCore.QObject.connect(self.pushGo,QtCore.SIGNAL('clicked()'),self.Go)
@@ -397,7 +406,10 @@ class Ui_MainWindow(object):
 
    
    
-    
+    def ShowSpecificGlyph(self):
+        #This is called when the comboGlyph current index is changed
+        #
+        
     def ReplaceGlyph(self):
         filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open File', '', ".xls(*.xls)"))  
     
@@ -409,14 +421,27 @@ class Ui_MainWindow(object):
     def LangChoice(self,index):
         self.Sprache=self.comboSprache.currentText()
         print 'Language set to ' + self.Sprache
+        #update listwidget
+        self.GetGlyphsFromDB()
                
     def ShowDBGlyph(self,item):
-        #load the DB glyph of item
-        print 'Fetching glyph for ' + item.text()
+        #load the DB glyphs of item
+        #English char have many glyphs
+        print 'Fetching glyphs for ' + item.text()
+        self.comboGlyphs.clear()
         pixie=QtGui.QPixmap()
         self.vasi.open()
         query=QSqlQuery()
-        query.prepare("Select Pic From Glyphs Where CharID IN (SELECT CharID FROM `Chars` WHERE `Text` LIKE :char)")
+        query.prepare("Select Count(Pic) From Glyphs Where CharID IN (SELECT CharID FROM  `Chars` WHERE BINARY `Text` LIKE :char)")
+        query.bindValue(":char", item.text())
+        query.exec_()
+        while (query.next()):
+            print 'Glyph count',query.value(0).toString()
+
+            for k in range(1,int(query.value(0).toString())):
+                self.comboGlyphs.addItem("Glyph " +str(k))
+            
+        query.prepare("Select Pic From Glyphs Where CharID IN (SELECT CharID FROM  `Chars` WHERE BINARY `Text` LIKE :char)")
         query.bindValue(":char", item.text())
         query.exec_()
         while (query.next()):
@@ -428,6 +453,7 @@ class Ui_MainWindow(object):
     def GetGlyphsFromDB(self):
         #fetch greek chars from mysql
         try:
+            self.charWidget.clear()
             print 'Reading chars from DB'
             self.vasi.setHostName("localhost")
             self.vasi.setDatabaseName("Kathareyousan")
@@ -435,8 +461,10 @@ class Ui_MainWindow(object):
             self.vasi.setPassword("reichstag")
             self.vasi.open()
             query=QSqlQuery(self.vasi)
-            query.exec_("Select C.Text From Chars C,Glyphs G Where C.LangID=1 AND C.CharID=G.CharID")
-            #query.exec_("Select C.Text From Chars C")
+            #query.prepare("Select Text From Chars  Where LangID IN (SELECT LangID From Language Where Name=:spr)")
+            #query.bindValue(":spr",self.Sprache)
+            query.exec_("Select Text From Chars  Where LangID IN (SELECT LangID From Language Where Name='"+self.Sprache+"')")
+            
             
             while query.next():
                 print query.value(0).toString()
@@ -474,7 +502,7 @@ class Ui_MainWindow(object):
         self.laDBGlyph.setText(_translate("MainWindow", "TextLabel", None))
         self.label_4.setText(_translate("MainWindow", "Select Glyph", None))
         self.pushUseDBGlyph.setText(_translate("MainWindow", "Use from db", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Greek chars DB", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Chars DB", None))
         self.pushGo.setText(_translate("MainWindow", "GO", None))
         self.labGlyhPreview.setText(_translate("MainWindow", "TextLabel", None))
         self.pushReplace.setText(_translate("MainWindow", "Use from disk", None))
