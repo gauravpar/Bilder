@@ -25,6 +25,8 @@ except AttributeError:
 
 class Ui_MainWindow(object):
     GlyphBook=[] # Hier  stehen die Buchstaben und ihre Bilder 
+    BackFolder='/home/phoenix/Desktop/buchbilder/' #The backup folder
+    #We ll use this instead of xml
     Norm_Methods=['Scaling','Thickness','Slant','Skew','Whitespace','Baseline','Word Height']
     ComboList=[]
     Glyph_Chars=[]
@@ -363,12 +365,13 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         # My methods-----------------------------------------
         
+        self.lineTemp.setText('/home/phoenix/Desktop/buchbilder/')
         
         self.comboSprache.addItem("EN")
         self.comboSprache.addItem("GR")
         
         
-        self.lineTemp.setText('/tmp/')
+        self.lineTemp.setText(self.BackFolder)
         #combo box with all possible normalization methods
         
         for i in range(0,self.Norm_Methods.__len__()):
@@ -393,11 +396,13 @@ class Ui_MainWindow(object):
 
     def LoadDoc(self):
         print 'Loading document'
+        #change cursor to scissors
         #Allows the user to load a document
         #Finally it works!!!
         self.CutForm = QtGui.QMainWindow()
         self.cui = LoadDocWin()
-        self.cui.DocImagePath="/home/phoenix/samos1900/0013.jpg"
+        self.cui.DocImagePath= unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open File', '', "*.*"))  
+
           
         self.cui.setupUi(self.CutForm)
       
@@ -407,11 +412,13 @@ class Ui_MainWindow(object):
    
    
     def ShowSpecificGlyph(self):
-        #This is called when the comboGlyph current index is changed
-        #
+        print('#This is called when the comboGlyph current index is changed')
+        
         
     def ReplaceGlyph(self):
-        filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open File', '', ".xls(*.xls)"))  
+        filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open File', '', "*.*"))  
+        
+        
     
     def AppendChar(self,polychar):
         #appends chars to text
