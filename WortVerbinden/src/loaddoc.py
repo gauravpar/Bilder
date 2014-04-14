@@ -14,6 +14,7 @@ Created on Apr 4, 2014
 #This is MyPaint
 from PyQt4 import QtCore, QtGui
 from PyQt4.Qt import QGraphicsScene, QImage, QGraphicsPixmapItem
+from Schkini import Schkini
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -31,9 +32,11 @@ except AttributeError:
 
 class LoadDocWin(QtGui.QMainWindow):
     DocImagePath=""
+    BackFolder=''
     def setupUi(self, MainWindow):
+        
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(961, 664)
+        MainWindow.resize(1179, 664)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -57,19 +60,19 @@ class LoadDocWin(QtGui.QMainWindow):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.graphDocView = QtGui.QGraphicsView(self.centralwidget)
-        self.graphDocView.setGeometry(QtCore.QRect(10, 10, 941, 651))
+        self.graphDocView.setGeometry(QtCore.QRect(10, 10, 1161, 651))
         self.graphDocView.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.graphDocView.setFrameShape(QtGui.QFrame.NoFrame)
         self.graphDocView.setObjectName(_fromUtf8("graphDocView"))
         self.labCutPreview = QtGui.QLabel(self.centralwidget)
-        self.labCutPreview.setGeometry(QtCore.QRect(840, 500, 101, 101))
+        self.labCutPreview.setGeometry(QtCore.QRect(1050, 490, 101, 101))
         self.labCutPreview.setFrameShape(QtGui.QFrame.StyledPanel)
         self.labCutPreview.setFrameShadow(QtGui.QFrame.Sunken)
         self.labCutPreview.setLineWidth(1)
         self.labCutPreview.setScaledContents(False)
         self.labCutPreview.setObjectName(_fromUtf8("labCutPreview"))
         self.pushButton = QtGui.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(840, 610, 99, 41))
+        self.pushButton.setGeometry(QtCore.QRect(1050, 600, 99, 41))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -97,10 +100,12 @@ class LoadDocWin(QtGui.QMainWindow):
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         MainWindow.setCentralWidget(self.centralwidget)
 
-
         print 'Dok path',self.DocImagePath
-        sc=QGraphicsScene()
+        sc=Schkini()
+        sc.TmpFolder=self.BackFolder
         img=QImage(self.DocImagePath)
+        sc.DocImagePath=self.DocImagePath
+        sc.BackFolder=self.BackFolder
         pix=QGraphicsPixmapItem(QtGui.QPixmap.fromImage(img))
         sc.addItem(pix)
         self.graphDocView.setScene(sc)
