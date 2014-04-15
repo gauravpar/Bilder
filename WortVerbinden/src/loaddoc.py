@@ -62,42 +62,9 @@ class LoadDocWin(QtGui.QMainWindow):
         self.graphDocView = QtGui.QGraphicsView(self.centralwidget)
         self.graphDocView.setGeometry(QtCore.QRect(10, 10, 1161, 651))
         self.graphDocView.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.graphDocView.setMouseTracking(True)
         self.graphDocView.setFrameShape(QtGui.QFrame.NoFrame)
         self.graphDocView.setObjectName(_fromUtf8("graphDocView"))
-        self.labCutPreview = QtGui.QLabel(self.centralwidget)
-        self.labCutPreview.setGeometry(QtCore.QRect(1050, 490, 101, 101))
-        self.labCutPreview.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.labCutPreview.setFrameShadow(QtGui.QFrame.Sunken)
-        self.labCutPreview.setLineWidth(1)
-        self.labCutPreview.setScaledContents(False)
-        self.labCutPreview.setObjectName(_fromUtf8("labCutPreview"))
-        self.pushButton = QtGui.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(1050, 600, 99, 41))
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(70, 184, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ButtonText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(70, 184, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(80, 80, 80))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(150, 147, 145))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
-        self.pushButton.setPalette(palette)
-        font = QtGui.QFont()
-        font.setBold(True)
-        font.setWeight(75)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
         MainWindow.setCentralWidget(self.centralwidget)
 
         print 'Dok path',self.DocImagePath
@@ -105,7 +72,7 @@ class LoadDocWin(QtGui.QMainWindow):
         sc.TmpFolder=self.BackFolder
         img=QImage(self.DocImagePath)
         sc.DocImagePath=self.DocImagePath
-        sc.BackFolder=self.BackFolder
+       
         pix=QGraphicsPixmapItem(QtGui.QPixmap.fromImage(img))
         sc.addItem(pix)
         self.graphDocView.setScene(sc)
@@ -115,6 +82,4 @@ class LoadDocWin(QtGui.QMainWindow):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Select your glyphs", None))
-        self.labCutPreview.setText(_translate("MainWindow", "TextLabel", None))
-        self.pushButton.setText(_translate("MainWindow", "Save", None))
 

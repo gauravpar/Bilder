@@ -10,13 +10,12 @@ from PyQt4 import QtGui,QtCore
 class Schkini(QGraphicsScene):
     Times=0;
     TmpFolder=''
-    DocImagePath=''
     LowX=0
     LowY=0
     TopX=0
     TopY=0
     Epiloges=[] # Man findet hier die Grenze den Buchstabebilder
-    BackFolder=''
+
 
 
     def __init__(self):
@@ -62,8 +61,8 @@ class Schkini(QGraphicsScene):
             fname.replace(".", "_")
             fname+="_"+str(self.LowX) + "_"+str(self.LowY)
             fname+="_"+str(self.TopX) + "_"+str(self.TopY)
-            print 'Saved to',fname
-            copy.save(self.BackFolder+fname +".jpg");
+            print 'Saved to',self.TmpFolder+fname
+            copy.save(self.TmpFolder + fname +".jpg");
             
                         
                 

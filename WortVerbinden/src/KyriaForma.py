@@ -7,6 +7,7 @@ from PyQt4 import QtCore, QtGui
 from Glyph import GlyphElement
 from PyQt4.QtSql import *
 from PyQt4.Qt import QListWidgetItem
+from PyQt4.QtGui import QPixmap
 
 #SELECT *  FROM `Chars` WHERE BINARY `Text` = 'ὠ'
 try:
@@ -24,12 +25,15 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
-    GlyphBook=[] # Hier  stehen die Buchstaben und ihre Bilder 
+    GlyphBook=[] # Hier  stehen die Buchstaben und ihre Bilder It is a list of Glyph  instances
+    
+    
     BackFolder='/home/phoenix/Desktop/buchbilder/' #The backup folder
     #We ll use this instead of xml
     Norm_Methods=['Scaling','Thickness','Slant','Skew','Whitespace','Baseline','Word Height']
     ComboList=[]
-    Glyph_Chars=[]
+    
+    Glyph_Chars=[] #Distinct query chars
     Sprache=''
     vasi = QSqlDatabase.addDatabase("QMYSQL");
     
@@ -40,27 +44,34 @@ class Ui_MainWindow(object):
         #print 'Updating List widget'
         #clear table and create as many columns as the distinct characters
         
-        print 'Distinct characters in query'
+        #print 'Distinct characters in query'
         
         temp=QtCore.QString().fromUtf8(self.textQuery.toPlainText())
         self.Glyph_Chars=[]
-        self.GlyphBook=[]
         for char in temp:
             #skip empty space and enter aka escape char
             if "\n" not in char and " " not in char and char not in self.Glyph_Chars: # to glyph car periexei tous diakritous xaraktires
                 
                 self.Glyph_Chars.append(char)
-                gl=GlyphElement(char,'')
-                self.GlyphBook.append(gl)
-                print char
+                     
         #populate listwidget GlypWidget
         self.glyphWidget.clear();
         #Color should be red that mean's no grapheme has been choosed
         for char in self.Glyph_Chars:
             charListItem=QtGui.QListWidgetItem()
             charListItem.setText(char)
-            charListItem.setTextColor(QtCore.Qt.red)
             self.glyphWidget.addItem(charListItem)
+            found=0
+            for gl in self.GlyphBook:
+                if gl.Char in char:
+                    found=1
+                    
+            if found==0:
+                charListItem.setTextColor(QtCore.Qt.red)
+            else:
+                charListItem.setTextColor(QtCore.Qt.blue)
+                
+          
     
         
        
@@ -68,6 +79,9 @@ class Ui_MainWindow(object):
         print 'Order of normalization'
         for c in self.ComboList:
             print c.currentText()
+            
+        MainEngine
+        
         
     #GUI SUTFF DO NOT CHANGE
     def setupUi(self, MainWindow):
@@ -394,15 +408,16 @@ class Ui_MainWindow(object):
         self.charWidget.itemDoubleClicked.connect(self.AppendChar)
         self.comboSprache.currentIndexChanged.connect(self.LangChoice)
 
+
     def LoadDoc(self):
         print 'Loading document'
-        #change cursor to scissors
         #Allows the user to load a document
+        
         #Finally it works!!!
         self.CutForm = QtGui.QMainWindow()
         self.cui = LoadDocWin()
         self.cui.DocImagePath= unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open File', '', "*.*"))  
-
+        self.cui.BackFolder=self.BackFolder
           
         self.cui.setupUi(self.CutForm)
       
@@ -416,10 +431,22 @@ class Ui_MainWindow(object):
         
         
     def ReplaceGlyph(self):
-        filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open File', '', "*.*"))  
-        
-        
-    
+        item=self.glyphWidget.selectedItems()
+        filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Select Glyph for '+item[0].text(), '', "*.*"))  
+        gl=GlyphElement(item[0].text(),filename)
+        self.GlyphBook.append(gl)
+        #update glyphwidget
+        for i in reversed(range(self.glyphLayout.count())): 
+            self.glyphLayout.itemAt(i).widget().setParent(None)   
+        for gl in self.GlyphBook:
+            lab=QtGui.QLabel()
+            pix=QPixmap(gl.GraphemeImg)
+            lab.setPixmap(pix)
+            self.glyphLayout.addWidget(lab)    
+            
+            
+            
+             
     def AppendChar(self,polychar):
         #appends chars to text
         #very useful for polytonic greek characters
@@ -493,7 +520,7 @@ class Ui_MainWindow(object):
     #GUI SUTFF DO NOT CHANGE
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindung", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.labFinal.setText(_translate("MainWindow", "TextLabel", None))
         self.groupBox_5.setTitle(_translate("MainWindow", "Binarization parameters", None))
