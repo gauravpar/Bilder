@@ -8,6 +8,9 @@ from Glyph import GlyphElement
 from PyQt4.QtSql import *
 from PyQt4.Qt import QListWidgetItem
 from PyQt4.QtGui import QPixmap
+from Bildmaschine import BildMaschine
+import cv2
+
 
 #SELECT *  FROM `Chars` WHERE BINARY `Text` = 'ὠ'
 try:
@@ -37,8 +40,11 @@ class Ui_MainWindow(object):
     Sprache=''
     vasi = QSqlDatabase.addDatabase("QMYSQL");
     
-    
+    MainEngine=BildMaschine('','')
         
+    SelectedChar=''
+    Copy='' # this is an image array it will be used a copy 
+    #operations such as dilate and erode will not take place on the original image
 
     def UpdateTable(self):
         #print 'Updating List widget'
@@ -80,7 +86,7 @@ class Ui_MainWindow(object):
         for c in self.ComboList:
             print c.currentText()
             
-        MainEngine
+        
         
         
     #GUI SUTFF DO NOT CHANGE
@@ -255,39 +261,6 @@ class Ui_MainWindow(object):
         self.labFinal = QtGui.QLabel(self.tabResults)
         self.labFinal.setGeometry(QtCore.QRect(10, 10, 501, 161))
         self.labFinal.setObjectName(_fromUtf8("labFinal"))
-        self.groupBox_5 = QtGui.QGroupBox(self.tabResults)
-        self.groupBox_5.setGeometry(QtCore.QRect(10, 190, 521, 181))
-        self.groupBox_5.setObjectName(_fromUtf8("groupBox_5"))
-        self.sliderRed = QtGui.QSlider(self.groupBox_5)
-        self.sliderRed.setGeometry(QtCore.QRect(70, 40, 411, 21))
-        self.sliderRed.setMinimum(1)
-        self.sliderRed.setMaximum(256)
-        self.sliderRed.setOrientation(QtCore.Qt.Horizontal)
-        self.sliderRed.setInvertedAppearance(False)
-        self.sliderRed.setObjectName(_fromUtf8("sliderRed"))
-        self.label_2 = QtGui.QLabel(self.groupBox_5)
-        self.label_2.setGeometry(QtCore.QRect(20, 30, 57, 41))
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.label_5 = QtGui.QLabel(self.groupBox_5)
-        self.label_5.setGeometry(QtCore.QRect(20, 70, 57, 41))
-        self.label_5.setObjectName(_fromUtf8("label_5"))
-        self.sliderBlue = QtGui.QSlider(self.groupBox_5)
-        self.sliderBlue.setGeometry(QtCore.QRect(70, 80, 411, 21))
-        self.sliderBlue.setMinimum(1)
-        self.sliderBlue.setMaximum(256)
-        self.sliderBlue.setOrientation(QtCore.Qt.Horizontal)
-        self.sliderBlue.setInvertedAppearance(False)
-        self.sliderBlue.setObjectName(_fromUtf8("sliderBlue"))
-        self.label_6 = QtGui.QLabel(self.groupBox_5)
-        self.label_6.setGeometry(QtCore.QRect(20, 110, 57, 41))
-        self.label_6.setObjectName(_fromUtf8("label_6"))
-        self.sliderGreen = QtGui.QSlider(self.groupBox_5)
-        self.sliderGreen.setGeometry(QtCore.QRect(70, 120, 411, 21))
-        self.sliderGreen.setMinimum(1)
-        self.sliderGreen.setMaximum(256)
-        self.sliderGreen.setOrientation(QtCore.Qt.Horizontal)
-        self.sliderGreen.setInvertedAppearance(False)
-        self.sliderGreen.setObjectName(_fromUtf8("sliderGreen"))
         self.tabWidget.addTab(self.tabResults, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
@@ -306,6 +279,9 @@ class Ui_MainWindow(object):
         self.normLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
         self.normLayout.setMargin(0)
         self.normLayout.setObjectName(_fromUtf8("normLayout"))
+        self.pushLastSession = QtGui.QPushButton(self.tab_2)
+        self.pushLastSession.setGeometry(QtCore.QRect(300, 82, 131, 31))
+        self.pushLastSession.setObjectName(_fromUtf8("pushLastSession"))
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
@@ -319,10 +295,10 @@ class Ui_MainWindow(object):
         self.comboSprache.setGeometry(QtCore.QRect(310, 50, 161, 23))
         self.comboSprache.setObjectName(_fromUtf8("comboSprache"))
         self.groupBox_4 = QtGui.QGroupBox(self.tab)
-        self.groupBox_4.setGeometry(QtCore.QRect(170, 130, 341, 301))
+        self.groupBox_4.setGeometry(QtCore.QRect(170, 130, 341, 331))
         self.groupBox_4.setObjectName(_fromUtf8("groupBox_4"))
         self.laDBGlyph = QtGui.QLabel(self.groupBox_4)
-        self.laDBGlyph.setGeometry(QtCore.QRect(110, 120, 101, 111))
+        self.laDBGlyph.setGeometry(QtCore.QRect(100, 110, 141, 131))
         self.laDBGlyph.setObjectName(_fromUtf8("laDBGlyph"))
         self.comboGlyphs = QtGui.QComboBox(self.groupBox_4)
         self.comboGlyphs.setGeometry(QtCore.QRect(150, 50, 141, 23))
@@ -331,9 +307,48 @@ class Ui_MainWindow(object):
         self.label_4.setGeometry(QtCore.QRect(30, 40, 111, 41))
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.pushUseDBGlyph = QtGui.QPushButton(self.groupBox_4)
-        self.pushUseDBGlyph.setGeometry(QtCore.QRect(110, 250, 99, 31))
+        self.pushUseDBGlyph.setGeometry(QtCore.QRect(130, 260, 99, 31))
         self.pushUseDBGlyph.setObjectName(_fromUtf8("pushUseDBGlyph"))
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
+        self.tab_5 = QtGui.QWidget()
+        self.tab_5.setObjectName(_fromUtf8("tab_5"))
+        self.labVorher = QtGui.QLabel(self.tab_5)
+        self.labVorher.setGeometry(QtCore.QRect(90, 30, 91, 101))
+        self.labVorher.setObjectName(_fromUtf8("labVorher"))
+        self.tabWidget_3 = QtGui.QTabWidget(self.tab_5)
+        self.tabWidget_3.setGeometry(QtCore.QRect(30, 170, 481, 301))
+        self.tabWidget_3.setObjectName(_fromUtf8("tabWidget_3"))
+        self.tab_6 = QtGui.QWidget()
+        self.tab_6.setObjectName(_fromUtf8("tab_6"))
+        self.label_2 = QtGui.QLabel(self.tab_6)
+        self.label_2.setGeometry(QtCore.QRect(10, 105, 91, 31))
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.comboOperation = QtGui.QComboBox(self.tab_6)
+        self.comboOperation.setGeometry(QtCore.QRect(120, 110, 101, 23))
+        self.comboOperation.setObjectName(_fromUtf8("comboOperation"))
+        self.label_5 = QtGui.QLabel(self.tab_6)
+        self.label_5.setGeometry(QtCore.QRect(10, 60, 91, 41))
+        self.label_5.setObjectName(_fromUtf8("label_5"))
+        self.lineKernel = QtGui.QLineEdit(self.tab_6)
+        self.lineKernel.setGeometry(QtCore.QRect(120, 70, 61, 22))
+        self.lineKernel.setObjectName(_fromUtf8("lineKernel"))
+        self.tabWidget_3.addTab(self.tab_6, _fromUtf8(""))
+        self.tab_7 = QtGui.QWidget()
+        self.tab_7.setObjectName(_fromUtf8("tab_7"))
+        self.horizontalSlider = QtGui.QSlider(self.tab_7)
+        self.horizontalSlider.setGeometry(QtCore.QRect(30, 80, 431, 23))
+        self.horizontalSlider.setMinimum(-90)
+        self.horizontalSlider.setMaximum(90)
+        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
+        self.tabWidget_3.addTab(self.tab_7, _fromUtf8(""))
+        self.pushSave = QtGui.QPushButton(self.tab_5)
+        self.pushSave.setGeometry(QtCore.QRect(390, 122, 99, 31))
+        self.pushSave.setObjectName(_fromUtf8("pushSave"))
+        self.labNaher = QtGui.QLabel(self.tab_5)
+        self.labNaher.setGeometry(QtCore.QRect(210, 30, 91, 101))
+        self.labNaher.setObjectName(_fromUtf8("labNaher"))
+        self.tabWidget.addTab(self.tab_5, _fromUtf8(""))
         self.pushGo = QtGui.QPushButton(self.centralwidget)
         self.pushGo.setGeometry(QtCore.QRect(670, 170, 111, 31))
         font = QtGui.QFont()
@@ -375,9 +390,15 @@ class Ui_MainWindow(object):
 
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget_3.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         # My methods-----------------------------------------
+        
+        self.comboOperation.addItem("Erode")
+        self.comboOperation.addItem("Dilate")
+        
         
         self.lineTemp.setText('/home/phoenix/Desktop/buchbilder/')
         
@@ -405,10 +426,69 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.pushLoad,QtCore.SIGNAL('clicked()'),self.LoadDoc)
         QtCore.QObject.connect(self.textQuery,QtCore.SIGNAL('textChanged()'),self.UpdateTable)
         self.charWidget.itemClicked.connect(self.ShowDBGlyph)
+        self.glyphWidget.itemClicked.connect(self.ShowDiskGlyph)
         self.charWidget.itemDoubleClicked.connect(self.AppendChar)
         self.comboSprache.currentIndexChanged.connect(self.LangChoice)
+        self.comboOperation.currentIndexChanged.connect(self.ErodeDilate)
+    
+    
+    def ErodeDilate(self,index):
+        oper=''
+        picpath=''
+        kern_size=int(self.lineKernel.text())
 
-
+        if 'Erode' in self.comboOperation.currentText():
+            oper='Erod'
+        else:
+            oper='Dil'
+      
+        
+    
+        for gl in self.GlyphBook:
+            if self.SelectedChar in gl.Char:
+                picpath=gl.GraphemeImg
+                print 'Erosion/Dilation for char',self.SelectedChar,'in image',picpath
+                self.SystolDiastol(oper, kern_size, picpath)
+        
+        
+        
+    def SystolDiastol(self,operation,kern_size,pic_path):
+        #Dilate or erosion
+        #read the image as grayscale
+        img=cv2.imread(pic_path,cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        #binarize it
+        img=self.MainEngine.Otsu(img)
+        if operation=='Erod':
+            sysdias=self.MainEngine.Erode(img, kern_size)
+        elif operation=='Dil':
+            sysdias=self.MainEngine.Dilate(img, kern_size)
+            
+        cv2.imwrite(self.BackFolder+"bkp.png",sysdias)
+        #update the label
+        erdilpixie=QPixmap(self.BackFolder+"bkp.png")
+        self.labNaher.setPixmap(erdilpixie)
+        #update the glyphbook!
+        
+        
+        
+        
+        
+    def ShowDiskGlyph(self,item):
+        self.labGlyhPreview.clear()
+        self.labVorher.clear()
+        self.labNaher.clear()
+        for gl in self.GlyphBook:
+            if gl.Char in item.text():
+                self.SelectedChar=item.text()
+                print ('Image path for ',item.text(),'is ',gl.GraphemeImg)
+                pixie=QPixmap(gl.GraphemeImg)
+                self.labGlyhPreview.setPixmap(pixie)
+                self.labVorher.setPixmap(pixie)
+                self.labNaher.setPixmap(pixie)
+                
+                
+                
+        
     def LoadDoc(self):
         print 'Loading document'
         #Allows the user to load a document
@@ -520,29 +600,36 @@ class Ui_MainWindow(object):
     #GUI SUTFF DO NOT CHANGE
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindung", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.labFinal.setText(_translate("MainWindow", "TextLabel", None))
-        self.groupBox_5.setTitle(_translate("MainWindow", "Binarization parameters", None))
-        self.label_2.setText(_translate("MainWindow", "Red", None))
-        self.label_5.setText(_translate("MainWindow", "Blue", None))
-        self.label_6.setText(_translate("MainWindow", "Green", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabResults), _translate("MainWindow", "Results", None))
         self.label.setText(_translate("MainWindow", "Temp Folder", None))
         self.groupBox_3.setTitle(_translate("MainWindow", "Order of Normalization", None))
+        self.pushLastSession.setText(_translate("MainWindow", "Load last session", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Settings", None))
         self.label_3.setText(_translate("MainWindow", "Select Language", None))
-        self.groupBox_4.setTitle(_translate("MainWindow", "Glyph Properties", None))
+        self.groupBox_4.setTitle(_translate("MainWindow", "DB Glyph Properties", None))
         self.laDBGlyph.setText(_translate("MainWindow", "TextLabel", None))
         self.label_4.setText(_translate("MainWindow", "Select Glyph", None))
         self.pushUseDBGlyph.setText(_translate("MainWindow", "Use from db", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Chars DB", None))
+        self.labVorher.setText(_translate("MainWindow", "TextLabel", None))
+        self.label_2.setText(_translate("MainWindow", "Operation", None))
+        self.label_5.setText(_translate("MainWindow", "Kernel Size", None))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_6), _translate("MainWindow", "Erode/Dilate", None))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_7), _translate("MainWindow", "Rotate", None))
+        self.pushSave.setText(_translate("MainWindow", "Save", None))
+        self.labNaher.setText(_translate("MainWindow", "TextLabel", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Glyph", None))
         self.pushGo.setText(_translate("MainWindow", "GO", None))
         self.labGlyhPreview.setText(_translate("MainWindow", "TextLabel", None))
         self.pushReplace.setText(_translate("MainWindow", "Use from disk", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "Chars", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "All Glyphs", None))
         self.pushLoad.setText(_translate("MainWindow", "Load Document", None))
+
+
 
 
 def main():
