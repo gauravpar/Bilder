@@ -33,7 +33,9 @@ class Ui_MainWindow(object):
     
     BackFolder='/home/phoenix/Desktop/buchbilder/' #The backup folder
     #We ll use this instead of xml
-    Norm_Methods=['Scaling','Thickness','Slant','Skew','Whitespace','Baseline','Word Height']
+    
+    
+    Norm_Methods=['Slant','Skew','Whitespace','Baseline','Word Height']
     ComboList=[]
     
     Glyph_Chars=[] #Distinct query chars
@@ -43,9 +45,12 @@ class Ui_MainWindow(object):
     MainEngine=BildMaschine('','')
         
     SelectedChar=''
-    Copy='' # this is an image array it will be used a copy 
-    #operations such as dilate and erode will not take place on the original image
-
+  
+  
+    SessionsFile=BackFolder+"sess"
+    #Char and Naher Arrays are store here
+  
+  
     def UpdateTable(self):
         #print 'Updating List widget'
         #clear table and create as many columns as the distinct characters
@@ -274,7 +279,7 @@ class Ui_MainWindow(object):
         self.groupBox_3.setGeometry(QtCore.QRect(10, 60, 191, 391))
         self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
         self.verticalLayoutWidget = QtGui.QWidget(self.groupBox_3)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 20, 171, 371))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 40, 171, 351))
         self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
         self.normLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
         self.normLayout.setMargin(0)
@@ -316,7 +321,7 @@ class Ui_MainWindow(object):
         self.labVorher.setGeometry(QtCore.QRect(90, 30, 91, 101))
         self.labVorher.setObjectName(_fromUtf8("labVorher"))
         self.tabWidget_3 = QtGui.QTabWidget(self.tab_5)
-        self.tabWidget_3.setGeometry(QtCore.QRect(30, 170, 481, 301))
+        self.tabWidget_3.setGeometry(QtCore.QRect(30, 170, 341, 301))
         self.tabWidget_3.setObjectName(_fromUtf8("tabWidget_3"))
         self.tab_6 = QtGui.QWidget()
         self.tab_6.setObjectName(_fromUtf8("tab_6"))
@@ -336,18 +341,24 @@ class Ui_MainWindow(object):
         self.tab_7 = QtGui.QWidget()
         self.tab_7.setObjectName(_fromUtf8("tab_7"))
         self.horizontalSlider = QtGui.QSlider(self.tab_7)
-        self.horizontalSlider.setGeometry(QtCore.QRect(30, 80, 431, 23))
-        self.horizontalSlider.setMinimum(-90)
-        self.horizontalSlider.setMaximum(90)
+        self.horizontalSlider.setGeometry(QtCore.QRect(30, 80, 281, 23))
+        self.horizontalSlider.setMinimum(-20)
+        self.horizontalSlider.setMaximum(20)
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
         self.tabWidget_3.addTab(self.tab_7, _fromUtf8(""))
-        self.pushSave = QtGui.QPushButton(self.tab_5)
-        self.pushSave.setGeometry(QtCore.QRect(390, 122, 99, 31))
-        self.pushSave.setObjectName(_fromUtf8("pushSave"))
         self.labNaher = QtGui.QLabel(self.tab_5)
         self.labNaher.setGeometry(QtCore.QRect(210, 30, 91, 101))
         self.labNaher.setObjectName(_fromUtf8("labNaher"))
+        self.listUndo = QtGui.QListWidget(self.tab_5)
+        self.listUndo.setGeometry(QtCore.QRect(400, 210, 111, 261))
+        self.listUndo.setObjectName(_fromUtf8("listUndo"))
+        self.label_6 = QtGui.QLabel(self.tab_5)
+        self.label_6.setGeometry(QtCore.QRect(400, 170, 91, 31))
+        self.label_6.setObjectName(_fromUtf8("label_6"))
+        self.labHistory = QtGui.QLabel(self.tab_5)
+        self.labHistory.setGeometry(QtCore.QRect(320, 30, 91, 101))
+        self.labHistory.setObjectName(_fromUtf8("labHistory"))
         self.tabWidget.addTab(self.tab_5, _fromUtf8(""))
         self.pushGo = QtGui.QPushButton(self.centralwidget)
         self.pushGo.setGeometry(QtCore.QRect(670, 170, 111, 31))
@@ -383,17 +394,27 @@ class Ui_MainWindow(object):
         self.glyphLayout.setMargin(0)
         self.glyphLayout.setObjectName(_fromUtf8("glyphLayout"))
         self.tabWidget_2.addTab(self.tab_4, _fromUtf8(""))
+        self.tab_8 = QtGui.QWidget()
+        self.tab_8.setObjectName(_fromUtf8("tab_8"))
+        self.verticalLayoutWidget_3 = QtGui.QWidget(self.tab_8)
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 201, 461))
+        self.verticalLayoutWidget_3.setObjectName(_fromUtf8("verticalLayoutWidget_3"))
+        self.NaherLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget_3)
+        self.NaherLayout.setMargin(0)
+        self.NaherLayout.setObjectName(_fromUtf8("NaherLayout"))
+        self.tabWidget_2.addTab(self.tab_8, _fromUtf8(""))
         self.pushLoad = QtGui.QPushButton(self.centralwidget)
         self.pushLoad.setGeometry(QtCore.QRect(518, 170, 141, 31))
         self.pushLoad.setObjectName(_fromUtf8("pushLoad"))
         MainWindow.setCentralWidget(self.centralwidget)
 
-
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(3)
         self.tabWidget_3.setCurrentIndex(1)
-        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
+        
         # My methods-----------------------------------------
         
         self.comboOperation.addItem("Erode")
@@ -430,11 +451,30 @@ class Ui_MainWindow(object):
         self.charWidget.itemDoubleClicked.connect(self.AppendChar)
         self.comboSprache.currentIndexChanged.connect(self.LangChoice)
         self.comboOperation.currentIndexChanged.connect(self.ErodeDilate)
+        self.horizontalSlider.valueChanged.connect(self.SliderMoved)
+        
     
-    
+    def SliderMoved(self,value):
+        #find the char whose glyph is to be rotated
+        for gl in self.GlyphBook:
+            if self.SelectedChar in gl.Char:
+                print 'Rotate  char',self.SelectedChar,'by',value
+                #update the glyphbook!
+                gl.Naher=self.MainEngine.Rotate(gl.Naher, value)
+                #and the label
+                cv2.imwrite(self.BackFolder+str(self.SelectedChar).encode('utf-8') +"_bkp.png",gl.Naher)
+                rotpixie=QPixmap(self.BackFolder+str(self.SelectedChar).decode('utf-8') +"_bkp.png")
+                self.labNaher.setPixmap(rotpixie)
+                #Update History
+                gl.History.append(gl.Naher)
+                self.FillUndoListWidget(gl.Char)
+
+        self.ShowNaherGlyphs()     
+
+        
     def ErodeDilate(self,index):
+        #maybe add an undo action???
         oper=''
-        picpath=''
         kern_size=int(self.lineKernel.text())
 
         if 'Erode' in self.comboOperation.currentText():
@@ -446,28 +486,36 @@ class Ui_MainWindow(object):
     
         for gl in self.GlyphBook:
             if self.SelectedChar in gl.Char:
-                picpath=gl.GraphemeImg
-                print 'Erosion/Dilation for char',self.SelectedChar,'in image',picpath
-                self.SystolDiastol(oper, kern_size, picpath)
+                
+                print 'Erosion/Dilation for char',self.SelectedChar
+                #update the glyphbook!
+                gl.Naher=self.SystolDiastol(oper, kern_size, gl.Naher,gl.Char)
+                #Update History
+                gl.History.append(gl.Naher)
+                
+                self.FillUndoListWidget(gl.Char)
+           
+        self.ShowNaherGlyphs()     
         
         
         
-    def SystolDiastol(self,operation,kern_size,pic_path):
+    def SystolDiastol(self,operation,kern_size,pic_arr,char):
         #Dilate or erosion
-        #read the image as grayscale
-        img=cv2.imread(pic_path,cv2.CV_LOAD_IMAGE_GRAYSCALE)
         #binarize it
-        img=self.MainEngine.Otsu(img)
+        sysdias=[]
         if operation=='Erod':
-            sysdias=self.MainEngine.Erode(img, kern_size)
+            sysdias=self.MainEngine.Erode(pic_arr, kern_size)
         elif operation=='Dil':
-            sysdias=self.MainEngine.Dilate(img, kern_size)
+            sysdias=self.MainEngine.Dilate(pic_arr, kern_size)
             
-        cv2.imwrite(self.BackFolder+"bkp.png",sysdias)
+        print 'Saving dil/erod to ',self.BackFolder+str(char).encode('utf-8'),'_bkp.png'
+        
+        cv2.imwrite(self.BackFolder+str(char).encode('utf-8') +"_bkp.png",sysdias)
         #update the label
-        erdilpixie=QPixmap(self.BackFolder+"bkp.png")
+        erdilpixie=QPixmap(self.BackFolder+str(char).decode('utf-8') +"_bkp.png")
         self.labNaher.setPixmap(erdilpixie)
-        #update the glyphbook!
+       
+        return sysdias
         
         
         
@@ -484,6 +532,10 @@ class Ui_MainWindow(object):
                 pixie=QPixmap(gl.GraphemeImg)
                 self.labGlyhPreview.setPixmap(pixie)
                 self.labVorher.setPixmap(pixie)
+                
+                cv2.imwrite(self.BackFolder + str(gl.Char).encode('utf-8') +".png", gl.Naher)
+                pixie=QPixmap(self.BackFolder + str(gl.Char).decode('utf-8') +".png")
+
                 self.labNaher.setPixmap(pixie)
                 
                 
@@ -504,8 +556,48 @@ class Ui_MainWindow(object):
         self.CutForm.show()
         
 
-   
-   
+
+
+
+    def FillUndoListWidget(self,char):
+        print 'Showing editing history for',char
+        self.listUndo.clear()
+        for gl in self.GlyphBook:
+            if char in gl.Char:
+                for i in range(0,len(gl.History)):
+                    it=QtGui.QListWidgetItem()
+                    it.setText("Glyph" + str(i))
+                    self.listUndo.addItem(it)
+                    
+    
+    def ShowNaherGlyphs(self):
+        print 'Showing Naher glyphs'
+        
+        #clear naherlayout
+        for i in reversed(range(self.NaherLayout.count())): 
+            self.NaherLayout.itemAt(i).widget().setParent(None)   
+        
+        for gl in self.GlyphBook:
+            lab=QtGui.QLabel()
+            
+            
+            cv2.imwrite(self.BackFolder + str(gl.Char).encode('utf-8') +"naher.png",gl.Naher)
+
+            pix=QPixmap(self.BackFolder + str(gl.Char).decode('utf-8') +"naher.png")
+            
+            lab.setPixmap(pix)
+            
+            self.NaherLayout.addWidget(lab)   
+             
+        
+        
+    def ShowGlyphFromHistory(self,id):
+        print 'Showing history glyph',id
+        
+        
+        
+                    
+                    
     def ShowSpecificGlyph(self):
         print('#This is called when the comboGlyph current index is changed')
         
@@ -513,8 +605,20 @@ class Ui_MainWindow(object):
     def ReplaceGlyph(self):
         item=self.glyphWidget.selectedItems()
         filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Select Glyph for '+item[0].text(), '', "*.*"))  
+       
         gl=GlyphElement(item[0].text(),filename)
+        
+        #load the image into Naher and Vorher
+        gl.Naher=cv2.imread(filename,cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        gl.Vorher=cv2.imread(filename,cv2.CV_LOAD_IMAGE_GRAYSCALE)
+       
+        #binarize it
+        gl.Naher=self.MainEngine.Otsu(gl.Naher)
+        gl.Vorher=self.MainEngine.Otsu(gl.Vorher)
+        
+        
         self.GlyphBook.append(gl)
+        
         #update glyphwidget
         for i in reversed(range(self.glyphLayout.count())): 
             self.glyphLayout.itemAt(i).widget().setParent(None)   
@@ -522,7 +626,8 @@ class Ui_MainWindow(object):
             lab=QtGui.QLabel()
             pix=QPixmap(gl.GraphemeImg)
             lab.setPixmap(pix)
-            self.glyphLayout.addWidget(lab)    
+            self.glyphLayout.addWidget(lab)   
+             
             
             
             
@@ -537,6 +642,8 @@ class Ui_MainWindow(object):
         print 'Language set to ' + self.Sprache
         #update listwidget
         self.GetGlyphsFromDB()
+               
+               
                
     def ShowDBGlyph(self,item):
         #load the DB glyphs of item
@@ -598,7 +705,6 @@ class Ui_MainWindow(object):
         
         
     #GUI SUTFF DO NOT CHANGE
-
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindung", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
@@ -619,14 +725,16 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Kernel Size", None))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_6), _translate("MainWindow", "Erode/Dilate", None))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_7), _translate("MainWindow", "Rotate", None))
-        self.pushSave.setText(_translate("MainWindow", "Save", None))
         self.labNaher.setText(_translate("MainWindow", "TextLabel", None))
+        self.label_6.setText(_translate("MainWindow", "Undo History", None))
+        self.labHistory.setText(_translate("MainWindow", "TextLabel", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Glyph", None))
         self.pushGo.setText(_translate("MainWindow", "GO", None))
         self.labGlyhPreview.setText(_translate("MainWindow", "TextLabel", None))
         self.pushReplace.setText(_translate("MainWindow", "Use from disk", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "Chars", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "All Glyphs", None))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_8), _translate("MainWindow", "Final Glyphs", None))
         self.pushLoad.setText(_translate("MainWindow", "Load Document", None))
 
 
