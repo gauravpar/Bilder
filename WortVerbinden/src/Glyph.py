@@ -5,6 +5,7 @@ Created on Mar 26, 2014
 @author: phoenix
 '''
 import cv2
+import numpy as np
 class GlyphElement:
     '''
     classdocs
@@ -27,20 +28,33 @@ class GlyphElement:
         self.Low=0
         self.BaseLine=0
         self.SpecialChar=1
+        
+        
+        #This is an undo history ....
+        #It is a list of lists....
+        #The first element is the original binarized image
+        self.History=[]
+        
+        
+        
         self.DetectLines()
         
-        
+  
      
         
         
     def DetectLines(self):
         #get top low and baseline
         #get lowest black topmost black pixel
-        tmp=cv2.imread(self.GraphemeImg,cv2.CV_LOAD_IMAGE_GRAYSCALE)
-        ret2,self.Vorher = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        self.Vorher=cv2.imread(self.GraphemeImg,cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        ret2,self.Vorher = cv2.threshold(self.Vorher,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         self.Width,self.Height=self.Vorher.shape
         
+        self.History.append(self.Vorher)
         
+        self.Naher=self.Vorher
+        
+        #check for special char
         
         self.Top=self.Height
        

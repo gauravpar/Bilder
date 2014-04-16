@@ -43,6 +43,7 @@ class Ui_MainWindow(object):
     vasi = QSqlDatabase.addDatabase("QMYSQL");
     
     MainEngine=BildMaschine('','')
+
         
     SelectedChar=''
   
@@ -90,7 +91,9 @@ class Ui_MainWindow(object):
         print 'Order of normalization'
         for c in self.ComboList:
             print c.currentText()
-            
+        self.MainEngine.Query=self.textQuery.toPlainText()
+        self.MainEngine.BilderBuch=self.GlyphBook
+        self.MainEngine.Anfangen()
         
         
         
@@ -706,7 +709,7 @@ class Ui_MainWindow(object):
         
     #GUI SUTFF DO NOT CHANGE
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindung", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.labFinal.setText(_translate("MainWindow", "TextLabel", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabResults), _translate("MainWindow", "Results", None))
