@@ -328,18 +328,23 @@ class Ui_MainWindow(object):
         self.tabWidget_3.setObjectName(_fromUtf8("tabWidget_3"))
         self.tab_6 = QtGui.QWidget()
         self.tab_6.setObjectName(_fromUtf8("tab_6"))
-        self.label_2 = QtGui.QLabel(self.tab_6)
-        self.label_2.setGeometry(QtCore.QRect(10, 105, 91, 31))
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.comboOperation = QtGui.QComboBox(self.tab_6)
-        self.comboOperation.setGeometry(QtCore.QRect(120, 110, 101, 23))
-        self.comboOperation.setObjectName(_fromUtf8("comboOperation"))
         self.label_5 = QtGui.QLabel(self.tab_6)
-        self.label_5.setGeometry(QtCore.QRect(10, 60, 91, 41))
+        self.label_5.setGeometry(QtCore.QRect(10, 10, 91, 41))
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.lineKernel = QtGui.QLineEdit(self.tab_6)
-        self.lineKernel.setGeometry(QtCore.QRect(120, 70, 61, 22))
+        self.lineKernel.setGeometry(QtCore.QRect(120, 20, 61, 22))
         self.lineKernel.setObjectName(_fromUtf8("lineKernel"))
+        self.pushErode = QtGui.QPushButton(self.tab_6)
+        self.pushErode.setGeometry(QtCore.QRect(10, 220, 99, 31))
+        self.pushErode.setObjectName(_fromUtf8("pushErode"))
+        self.pushDilate = QtGui.QPushButton(self.tab_6)
+        self.pushDilate.setGeometry(QtCore.QRect(220, 220, 99, 31))
+        self.pushDilate.setObjectName(_fromUtf8("pushDilate"))
+        self.tableKernel = QtGui.QTableWidget(self.tab_6)
+        self.tableKernel.setGeometry(QtCore.QRect(90, 60, 151, 141))
+        self.tableKernel.setObjectName(_fromUtf8("tableKernel"))
+        self.tableKernel.setColumnCount(0)
+        self.tableKernel.setRowCount(0)
         self.tabWidget_3.addTab(self.tab_6, _fromUtf8(""))
         self.tab_7 = QtGui.QWidget()
         self.tab_7.setObjectName(_fromUtf8("tab_7"))
@@ -357,7 +362,7 @@ class Ui_MainWindow(object):
         self.listUndo.setGeometry(QtCore.QRect(400, 210, 111, 261))
         self.listUndo.setObjectName(_fromUtf8("listUndo"))
         self.label_6 = QtGui.QLabel(self.tab_5)
-        self.label_6.setGeometry(QtCore.QRect(400, 170, 91, 31))
+        self.label_6.setGeometry(QtCore.QRect(410, 170, 101, 31))
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.labHistory = QtGui.QLabel(self.tab_5)
         self.labHistory.setGeometry(QtCore.QRect(320, 30, 91, 101))
@@ -419,9 +424,7 @@ class Ui_MainWindow(object):
         
         
         # My methods-----------------------------------------
-        
-        self.comboOperation.addItem("Erode")
-        self.comboOperation.addItem("Dilate")
+      
         
         
         self.lineTemp.setText('/home/phoenix/Desktop/buchbilder/')
@@ -453,9 +456,10 @@ class Ui_MainWindow(object):
         self.glyphWidget.itemClicked.connect(self.ShowDiskGlyph)
         self.charWidget.itemDoubleClicked.connect(self.AppendChar)
         self.comboSprache.currentIndexChanged.connect(self.LangChoice)
-        self.comboOperation.currentIndexChanged.connect(self.ErodeDilate)
+        self.pushDilate.clicked.connect(self.Dilate)
+        self.pushErode.clicked.connect(self.Erode)
         self.horizontalSlider.valueChanged.connect(self.SliderMoved)
-        
+        self.lineKernel.editingFinished.connect(self.CustomKernel)
     
     def SliderMoved(self,value):
         #find the char whose glyph is to be rotated
@@ -474,13 +478,38 @@ class Ui_MainWindow(object):
 
         self.ShowNaherGlyphs()     
 
+
+
+    def CustomKernel(self):
+        size=int(self.lineKernel.text())
+        print 'Creating a new array',size,'by',size
+
+        model=
+        
+        .QAbstractTableModel(size,size)
+        
+        for row in range(0,size):
+            for col in range(0,size):
+                item=QtGui.QStandardItem(QtCore.QString(""))
+                model.setItem(row,col, item)
+                
+        self.tableKernel.set
+        
+        
+    def Erode(self):
+        self.ErodeDilate('Erode')
+        
+    def Dilate(self):
+        self.ErodeDilate('Dilate')
+        
+        
         
     def ErodeDilate(self,index):
         #maybe add an undo action???
         oper=''
         kern_size=int(self.lineKernel.text())
 
-        if 'Erode' in self.comboOperation.currentText():
+        if 'Erode' in index:
             oper='Erod'
         else:
             oper='Dil'
@@ -709,7 +738,7 @@ class Ui_MainWindow(object):
         
     #GUI SUTFF DO NOT CHANGE
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindung", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.labFinal.setText(_translate("MainWindow", "TextLabel", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabResults), _translate("MainWindow", "Results", None))
@@ -724,8 +753,9 @@ class Ui_MainWindow(object):
         self.pushUseDBGlyph.setText(_translate("MainWindow", "Use from db", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Chars DB", None))
         self.labVorher.setText(_translate("MainWindow", "TextLabel", None))
-        self.label_2.setText(_translate("MainWindow", "Operation", None))
         self.label_5.setText(_translate("MainWindow", "Kernel Size", None))
+        self.pushErode.setText(_translate("MainWindow", "Erode", None))
+        self.pushDilate.setText(_translate("MainWindow", "Dilate", None))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_6), _translate("MainWindow", "Erode/Dilate", None))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_7), _translate("MainWindow", "Rotate", None))
         self.labNaher.setText(_translate("MainWindow", "TextLabel", None))
@@ -739,7 +769,6 @@ class Ui_MainWindow(object):
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "All Glyphs", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_8), _translate("MainWindow", "Final Glyphs", None))
         self.pushLoad.setText(_translate("MainWindow", "Load Document", None))
-
 
 
 
