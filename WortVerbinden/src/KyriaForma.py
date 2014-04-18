@@ -101,7 +101,7 @@ class Ui_MainWindow(object):
     #GUI SUTFF DO NOT CHANGE
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(796, 619)
+        MainWindow.resize(823, 657)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(22, 127, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -215,10 +215,26 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.groupBox = QtGui.QGroupBox(self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(10, 10, 781, 601))
+        self.groupBox.setGeometry(QtCore.QRect(10, 10, 801, 611))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
-        self.tabWidget_2 = QtGui.QTabWidget(self.groupBox)
-        self.tabWidget_2.setGeometry(QtCore.QRect(0, 90, 241, 511))
+        self.textQuery = QtGui.QTextEdit(self.groupBox)
+        self.textQuery.setGeometry(QtCore.QRect(10, 30, 761, 31))
+        self.textQuery.setObjectName(_fromUtf8("textQuery"))
+        self.pushGo = QtGui.QPushButton(self.centralwidget)
+        self.pushGo.setGeometry(QtCore.QRect(670, 80, 111, 31))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Times New Roman"))
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setItalic(True)
+        font.setWeight(75)
+        self.pushGo.setFont(font)
+        self.pushGo.setObjectName(_fromUtf8("pushGo"))
+        self.pushLoad = QtGui.QPushButton(self.centralwidget)
+        self.pushLoad.setGeometry(QtCore.QRect(518, 80, 141, 31))
+        self.pushLoad.setObjectName(_fromUtf8("pushLoad"))
+        self.tabWidget_2 = QtGui.QTabWidget(self.centralwidget)
+        self.tabWidget_2.setGeometry(QtCore.QRect(20, 130, 241, 511))
         self.tabWidget_2.setObjectName(_fromUtf8("tabWidget_2"))
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
@@ -250,11 +266,8 @@ class Ui_MainWindow(object):
         self.NaherLayout.setMargin(0)
         self.NaherLayout.setObjectName(_fromUtf8("NaherLayout"))
         self.tabWidget_2.addTab(self.tab_8, _fromUtf8(""))
-        self.textQuery = QtGui.QTextEdit(self.groupBox)
-        self.textQuery.setGeometry(QtCore.QRect(20, 30, 751, 31))
-        self.textQuery.setObjectName(_fromUtf8("textQuery"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(250, 100, 541, 511))
+        self.tabWidget.setGeometry(QtCore.QRect(280, 130, 521, 511))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(58, 23, 174))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -373,9 +386,11 @@ class Ui_MainWindow(object):
         self.pushDilate = QtGui.QPushButton(self.tab_6)
         self.pushDilate.setGeometry(QtCore.QRect(220, 220, 99, 31))
         self.pushDilate.setObjectName(_fromUtf8("pushDilate"))
-        self.tableKernel = QtGui.QTableView(self.tab_6)
-        self.tableKernel.setGeometry(QtCore.QRect(60, 50, 201, 151))
+        self.tableKernel = QtGui.QTableWidget(self.tab_6)
+        self.tableKernel.setGeometry(QtCore.QRect(70, 50, 181, 141))
         self.tableKernel.setObjectName(_fromUtf8("tableKernel"))
+        self.tableKernel.setColumnCount(0)
+        self.tableKernel.setRowCount(0)
         self.tabWidget_3.addTab(self.tab_6, _fromUtf8(""))
         self.tab_7 = QtGui.QWidget()
         self.tab_7.setObjectName(_fromUtf8("tab_7"))
@@ -399,20 +414,17 @@ class Ui_MainWindow(object):
         self.labHistory.setGeometry(QtCore.QRect(320, 30, 91, 101))
         self.labHistory.setObjectName(_fromUtf8("labHistory"))
         self.tabWidget.addTab(self.tab_5, _fromUtf8(""))
-        self.pushGo = QtGui.QPushButton(self.centralwidget)
-        self.pushGo.setGeometry(QtCore.QRect(670, 80, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("Times New Roman"))
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setItalic(True)
-        font.setWeight(75)
-        self.pushGo.setFont(font)
-        self.pushGo.setObjectName(_fromUtf8("pushGo"))
-        self.pushLoad = QtGui.QPushButton(self.centralwidget)
-        self.pushLoad.setGeometry(QtCore.QRect(518, 80, 141, 31))
-        self.pushLoad.setObjectName(_fromUtf8("pushLoad"))
         MainWindow.setCentralWidget(self.centralwidget)
+
+
+        
+        #BE CAREFUL NOT THE DELETE THESE LINES
+        self.retranslateUi(MainWindow)
+        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget_3.setCurrentIndex(0)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
         # My methods-----------------------------------------
       
         
@@ -442,6 +454,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.pushReplace,QtCore.SIGNAL('clicked()'),self.ReplaceGlyph)
         QtCore.QObject.connect(self.pushGo,QtCore.SIGNAL('clicked()'),self.Go)
         QtCore.QObject.connect(self.pushLoad,QtCore.SIGNAL('clicked()'),self.LoadDoc)
+        
         QtCore.QObject.connect(self.textQuery,QtCore.SIGNAL('textChanged()'),self.UpdateTable)
         self.charWidget.itemClicked.connect(self.ShowDBGlyph)
         self.glyphWidget.itemClicked.connect(self.ShowDiskGlyph)
@@ -451,6 +464,14 @@ class Ui_MainWindow(object):
         self.pushErode.clicked.connect(self.Erode)
         self.horizontalSlider.valueChanged.connect(self.SliderMoved)
         self.lineKernel.editingFinished.connect(self.CustomKernel)
+        self.pushSaveSession.clicked.connect(self.SaveSession)
+        
+        
+        
+    def SaveSession(self):
+        print('save glyph char s and path to images')
+        
+        
     
     def SliderMoved(self,value):
         #find the char whose glyph is to be rotated
@@ -475,9 +496,13 @@ class Ui_MainWindow(object):
         size=int(self.lineKernel.text())
         print 'Creating a new array',size,'by',size
 
+      
+        #tableKernel is a QTableWidget
         
         self.tableKernel.setRowCount(size)
         self.tableKernel.setColumnCount(size)
+        
+        
         for i in range(0,size):
             self.tableKernel.setColumnWidth(i,28)
             for j in range(0,size):
@@ -507,7 +532,7 @@ class Ui_MainWindow(object):
           
         for i in range(0,size):
             for j in range(0,size):
-                kernel[i][j]=int(self.tableKernel.currentItem().text())
+                kernel[i][j]=int(self.tableKernel.currentItem().
                 
         return kernel
     
@@ -528,14 +553,18 @@ class Ui_MainWindow(object):
             if self.SelectedChar in gl.Char:
                 
                 print 'Erosion/Dilation for char',self.SelectedChar
-                #update the glyphbook!
+                #update the glyphbook!!!!
                 gl.Naher=self.SystolDiastol(oper,  gl.Naher,gl.Char)
+                #REDECT LINES
+                gl.DetectLines()
                 #Update History
                 gl.History.append(gl.Naher)
                 
                 self.FillUndoListWidget(gl.Char)
            
-        self.ShowNaherGlyphs()     
+        self.ShowNaherGlyphs()  
+       
+           
         
         
         
@@ -748,6 +777,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
+        self.pushGo.setText(_translate("MainWindow", "GO", None))
+        self.pushLoad.setText(_translate("MainWindow", "Load Document", None))
         self.labGlyhPreview.setText(_translate("MainWindow", "TextLabel", None))
         self.pushReplace.setText(_translate("MainWindow", "Use from disk", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "Chars", None))
@@ -776,10 +807,6 @@ class Ui_MainWindow(object):
         self.label_6.setText(_translate("MainWindow", "Undo History", None))
         self.labHistory.setText(_translate("MainWindow", "TextLabel", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Glyph", None))
-        self.pushGo.setText(_translate("MainWindow", "GO", None))
-        self.pushLoad.setText(_translate("MainWindow", "Load Document", None))
-
-
 
 def main():
     app = QtGui.QApplication(sys.argv)
