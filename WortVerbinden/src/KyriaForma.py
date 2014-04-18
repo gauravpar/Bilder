@@ -6,11 +6,11 @@ from loaddoc import LoadDocWin
 from PyQt4 import QtCore, QtGui
 from Glyph import GlyphElement
 from PyQt4.QtSql import *
-from PyQt4.Qt import QListWidgetItem
+from PyQt4.Qt import QListWidgetItem, QTableWidgetItem
 from PyQt4.QtGui import QPixmap
 from Bildmaschine import BildMaschine
 import numpy as np
-import cv2
+import cv2,time,os
 
 
 #SELECT *  FROM `Chars` WHERE BINARY `Text` = 'ὠ'
@@ -50,7 +50,6 @@ class Ui_MainWindow(object):
     SelectedChar=''
   
   
-    SessionsFile=BackFolder+"sess"
   
   
     def UpdateTable(self):
@@ -469,9 +468,29 @@ class Ui_MainWindow(object):
         
         
     def SaveSession(self):
-        print('save glyph char s and path to images')
+        print('save glyph char s and path to processed images')
+        #Create a new folder date time
         
+        newFold=self.BackFolder+"_" + time.strftime("%Y_%m_%d_%H_%M_%S")
         
+      
+        if not os.path.isdir(newFold):
+            os.makedirs(newFold)
+            print 'Creating folder',newFold
+            SessionFile=newFold+  "/backup.ses"
+            
+            SesFile=open(SessionFile,"w")
+            
+            for gl in self.GlyphBook:
+                #write char
+                SesFile.write(str(gl.Char).encode('utf-8') +' ')
+                #save Naher image
+                cv2.imwrite(newFold+"/" +str(gl.Char).encode('utf-8') + ".png",gl.Naher)
+                SesFile.write(newFold+'/' +str(gl.Char).encode('utf-8')+'.png' + '\n')
+                
+                #
+            SesFile.close()
+            
     
     def SliderMoved(self,value):
         #find the char whose glyph is to be rotated
@@ -532,8 +551,9 @@ class Ui_MainWindow(object):
           
         for i in range(0,size):
             for j in range(0,size):
-                kernel[i][j]=int(self.tableKernel.currentItem().
-                
+                kernel[i][j]=1
+                #user must edit the cells first
+                kernel[i][j]=int(self.tableKernel.currentItem().text())
         return kernel
     
     
