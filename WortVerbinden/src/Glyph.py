@@ -17,6 +17,8 @@ class GlyphElement:
         '''
         Constructor
         '''
+        
+        print 'Creating glyph for ',str(char).encode('utf-8'),'from',img_path
         self.Char=char;
         self.GraphemeImg=img_path
         self.Vorher=[]#This is an array that will store the original image
@@ -30,13 +32,20 @@ class GlyphElement:
         self.SpecialChar=1
         
         
+        
+        
+  
+
+
+        
         #This is an undo history ....
         #It is a list of lists....
         #The first element is the original binarized image
         self.History=[]
         
-        
+     
         self.Vorher=cv2.imread(self.GraphemeImg,cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        
         ret2,self.Vorher = cv2.threshold(self.Vorher,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         
         self.Naher=self.Vorher
@@ -50,10 +59,11 @@ class GlyphElement:
      
         
     def DetectLines(self):
+        print 'Detecting lines'
         #get top low and baseline
         #get lowest black topmost black pixel
 
-        self.Width,self.Height=self.Naher.shape
+        self.Width,self.Height=self.Vorher.shape
         
         self.History.append(self.Naher)
         

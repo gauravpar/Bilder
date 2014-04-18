@@ -48,7 +48,8 @@ class BildMaschine():
         print 'Image Query Width',QueryY
         
         for c in self.Query:
-            print 'Next char to be app'
+            print 'Next char to be app',c
+            
  
 
     def Erode(self,img,kernel):

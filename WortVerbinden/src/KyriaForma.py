@@ -464,9 +464,30 @@ class Ui_MainWindow(object):
         self.horizontalSlider.valueChanged.connect(self.SliderMoved)
         self.lineKernel.editingFinished.connect(self.CustomKernel)
         self.pushSaveSession.clicked.connect(self.SaveSession)
+        self.pushLoadSession.clicked.connect(self.LoadSession)
         
         
-        
+    def LoadSession(self):
+        #clear everything
+        self.GlyphBook=[]
+        SessFile=unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open SessionFile', '', "*.*")) 
+        #load gl.Char and Naher
+        i=0
+        with open(SessFile) as f:
+            for line in f:
+                #first line in the query
+                if i==0:
+                    self.textQuery.setText(str(line).decode('utf-8'))
+                    i+=1
+                else:
+                    #read the glyphs
+                    tmp=line.split(" ")
+                    gl=GlyphElement(tmp[0],tmp[1])
+                    self.GlyphBook.append(gl)
+                
+                
+                
+            
     def SaveSession(self):
         print('save glyph char s and path to processed images')
         #Create a new folder date time
@@ -480,6 +501,9 @@ class Ui_MainWindow(object):
             SessionFile=newFold+  "/backup.ses"
             
             SesFile=open(SessionFile,"w")
+            
+            SesFile.write((str(self.textQuery.toPlainText()).encode('utf-8') + '\n'))
+            
             
             for gl in self.GlyphBook:
                 #write char
