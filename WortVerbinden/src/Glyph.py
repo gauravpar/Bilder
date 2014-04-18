@@ -36,23 +36,27 @@ class GlyphElement:
         self.History=[]
         
         
+        self.Vorher=cv2.imread(self.GraphemeImg,cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        ret2,self.Vorher = cv2.threshold(self.Vorher,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        
+        self.Naher=self.Vorher
+        
+        
+        
         
         self.DetectLines()
         
   
      
         
-        
     def DetectLines(self):
         #get top low and baseline
         #get lowest black topmost black pixel
-        self.Vorher=cv2.imread(self.GraphemeImg,cv2.CV_LOAD_IMAGE_GRAYSCALE)
-        ret2,self.Vorher = cv2.threshold(self.Vorher,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-        self.Width,self.Height=self.Vorher.shape
+
+        self.Width,self.Height=self.Naher.shape
         
-        self.History.append(self.Vorher)
+        self.History.append(self.Naher)
         
-        self.Naher=self.Vorher
         
         #check for special char
         
@@ -62,9 +66,9 @@ class GlyphElement:
         #------------------------Low and Top Line------------------------
         for y in range(0,self.Height):
             for x in range(0,self.Width):
-                if self.Vorher[x][y]==0 and y>self.Low:
+                if self.Naher[x][y]==0 and y>self.Low:
                     self.Low=y
-                if self.Vorher[x][y]==0 and y<self.Top:
+                if self.Naher[x][y]==0 and y<self.Top:
                     self.Top=y
                     
                     

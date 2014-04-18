@@ -16,20 +16,46 @@ class BildMaschine():
 
         
     def Anfangen(self):
+        
+        
         print 'Synthesizing begins...'
         print 'String is',self.Query
         print 'Breaking query into chars:'
+        print ('Lines are')
+        #Image Query Dimensions
+        QueryX=0
+        QueryY=0
+        #find the maximum X
+        print 'Image Query Height',QueryX
         for c in self.Query:
-            print c
- 
+          
          
-    def Erode(self,img,kernelSize):
-        kernel = np.ones((kernelSize,kernelSize),np.uint8)
+            for gl in self.BilderBuch:
+                if c is gl.Char:
+                    print gl.Char
+                    print gl.Top
+                    print gl.Low
+                    print gl.BaseLine
+                    QueryY+=gl.width
+                    if gl.Height>QueryX:
+                        QueryX=gl.Height
+                        
+        
+        QueryX*=2
+                
+        print 'Let \'s go'
+        print 'Image Query Height',QueryX
+        print 'Image Query Width',QueryY
+        
+        for c in self.Query:
+            print 'Next char to be app'
+ 
+
+    def Erode(self,img,kernel):
         return cv2.erode(img,kernel,iterations=1)
     
     
-    def Dilate(self,img,kernelSize):
-        kernel = np.ones((kernelSize,kernelSize),np.uint8)
+    def Dilate(self,img,kernel):
         return cv2.dilate(img,kernel,iterations=1)
     
     def Otsu(self,img):
