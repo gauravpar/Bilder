@@ -24,25 +24,37 @@ class BildMaschine():
         #Image Query Dimensions
         QueryW=0
         QueryH=0
+        
+        Shift=21
+          
+          
         #find the maximum X
         print 'Image Query Height',QueryH
         print 'Printing Glyphbook'
-        for gl in self.BilderBuch:
-            print '----------------------------'
-            print gl.Char
-            print 'Width',gl.Width
-            print 'Height',gl.Height
-            print 'Left Line',gl.Left
-            print 'Right Line',gl.Right
-            print 'Top Line',gl.Top
-            print 'Low Line',gl.Low
-            print 'Base line',gl.BaseLine
-            QueryW+=gl.Width+self.LetterSpace #!!!!!
-            if gl.Height>QueryH:
-                QueryH=gl.Height
-                
+        #BE CAREFUL
+        #THE IMAGE SIZE IN NOT THE CHARS IN THE GLYPH BOOK
+        #It is the sum of all the chars of the query
+        for c in self.Query:
+
+          for gl in self.BilderBuch:
+            if str(c) in gl.Char: #find the char in the glyphbook
+       
+                print '----------------------------'
+                print gl.Char
+                print 'Width',gl.Width
+                print 'Height',gl.Height
+                print 'Left Line',gl.Left
+                print 'Right Line',gl.Right
+                print 'Top Line',gl.Top
+                print 'Low Line',gl.Low
+                print 'Base line',gl.BaseLine
+                QueryW+=gl.Width+self.LetterSpace #!!!!!
+                if gl.Height>QueryH:
+                    QueryH=gl.Height
+            
     
         QueryH*=2
+        QueryH+=Shift
                 
         print 'Let \'s go'
         print 'Image Query Height',QueryH
@@ -54,7 +66,7 @@ class BildMaschine():
      
 
 
-        Shift=2
+      
         
         s_row=0+Shift
         s_col=0
