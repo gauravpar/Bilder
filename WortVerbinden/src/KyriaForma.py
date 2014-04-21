@@ -83,7 +83,8 @@ class Ui_MainWindow(object):
             else:
                 charListItem.setTextColor(QtCore.Qt.blue)
                 
-          
+     
+             
     
         
        
@@ -435,7 +436,7 @@ class Ui_MainWindow(object):
        
         
         #slots
-        QtCore.QObject.connect(self.pushReplace,QtCore.SIGNAL('clicked()'),self.ReplaceGlyph)
+        QtCore.QObject.connect(self.pushReplace,QtCore.SIGNAL('clicked()'),self.LoadGlyphFromDisk)
         QtCore.QObject.connect(self.pushGo,QtCore.SIGNAL('clicked()'),self.Go)
         QtCore.QObject.connect(self.pushLoad,QtCore.SIGNAL('clicked()'),self.LoadDoc)
         
@@ -466,9 +467,10 @@ class Ui_MainWindow(object):
                 else:
                     #read the glyphs
                     tmp=line.split(" ")
-                    gl=GlyphElement(tmp[0],tmp[1].replace('\n','')) #STRIPPIND END OF LINE
+                    gl=GlyphElement(tmp[0],tmp[1].replace('\n','')) #STRIPPING END OF LINE Glyph shape bug
                     self.GlyphBook.append(gl)
-                
+            
+            self.ResetGlyphLayout()
                 
                 
             
@@ -667,6 +669,7 @@ class Ui_MainWindow(object):
                     self.listUndo.addItem(it)
                     
     
+    
     def ShowNaherGlyphs(self):
         print 'Showing Naher glyphs'
         
@@ -699,7 +702,7 @@ class Ui_MainWindow(object):
         print('#This is called when the comboGlyph current index is changed')
         
         
-    def ReplaceGlyph(self):
+    def LoadGlyphFromDisk(self):
         item=self.glyphWidget.selectedItems()
         filename = unicode(QtGui.QFileDialog.getOpenFileName(None, 'Select Glyph for '+item[0].text(), '', "*.*"))  
        
@@ -715,15 +718,23 @@ class Ui_MainWindow(object):
         
         
         self.GlyphBook.append(gl)
+        #update glyphlayout
+        self.ResetGlyphLayout()
         
-        #update glyphwidget
+        
+    #does not work for load session
+    def ResetGlyphLayout(self):
+        print 'Updating glyphLayout'
         for i in reversed(range(self.glyphLayout.count())): 
-            self.glyphLayout.itemAt(i).widget().setParent(None)   
+            self.glyphLayout.itemAt(i).widget().setParent(None)  
+        print 'Glyphbook len',len(self.GlyphBook) 
         for gl in self.GlyphBook:
             lab=QtGui.QLabel()
+            print 'Showing',gl.GraphemeImg
             pix=QPixmap(gl.GraphemeImg)
             lab.setPixmap(pix)
-            self.glyphLayout.addWidget(lab)   
+            self.glyphLayout.addWidget(lab)  
+            self.glyphLayout.update() 
              
             
             
@@ -761,7 +772,7 @@ class Ui_MainWindow(object):
             
             
             while query.next():
-                print query.value(0).toString()
+                #print query.value(0).toString()
                 charListItem=QtGui.QListWidgetItem()
                 charListItem.setText(query.value(0).toString())
                 charListItem.setTextColor(QtCore.Qt.blue)
