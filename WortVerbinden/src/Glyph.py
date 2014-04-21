@@ -63,23 +63,24 @@ class GlyphElement:
         #get top low and baseline
         #get lowest black topmost black pixel
 
-        self.Width,self.Height=self.Vorher.shape
+        self.Height,self.Width=self.Vorher.shape
         
         self.History.append(self.Naher)
         
         
         #check for special char
         
+        print 'Width',self.Width,'Height',self.Height
         self.Top=self.Height
        
 
         #------------------------Low and Top Line------------------------
-        for y in range(0,self.Height):
-            for x in range(0,self.Width):
-                if self.Naher[x][y]==0 and y>self.Low:
-                    self.Low=y
-                if self.Naher[x][y]==0 and y<self.Top:
-                    self.Top=y
+        for x in range(0,self.Height):
+            for y in range(0,self.Width):
+                if self.Naher[x][y]==0 and x>self.Low:
+                    self.Low=x
+                if self.Naher[x][y]==0 and x<self.Top:
+                    self.Top=x
                     
                     
         print ('Low Line for ',self.Char ,'is',self.Low)
