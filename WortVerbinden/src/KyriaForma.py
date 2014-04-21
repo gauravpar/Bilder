@@ -466,7 +466,7 @@ class Ui_MainWindow(object):
                 else:
                     #read the glyphs
                     tmp=line.split(" ")
-                    gl=GlyphElement(tmp[0],tmp[1])
+                    gl=GlyphElement(tmp[0],tmp[1].replace('\n','')) #STRIPPIND END OF LINE
                     self.GlyphBook.append(gl)
                 
                 
@@ -476,7 +476,7 @@ class Ui_MainWindow(object):
         print('save glyph char s and path to processed images')
         #Create a new folder date time
         
-        newFold=self.BackFolder+"_" + time.strftime("%Y_%m_%d_%H_%M_%S")
+        newFold=self.BackFolder+ time.strftime("%Y_%m_%d_%H_%M_%S")
         
       
         if not os.path.isdir(newFold):
