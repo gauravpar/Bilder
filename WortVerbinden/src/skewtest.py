@@ -7,7 +7,8 @@ import cv2,math
 import numpy as np
 from numpy import array # we ll use to calc linear regression equation
 vorher=cv2.imread('/home/phoenix/Verbinden/testskew1.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
-color=cv2.imread('/home/phoenix/Verbinden/testskew1.png',cv2.CV_LOAD_IMAGE_COLOR)
+xroma=cv2.imread('/home/phoenix/Verbinden/testskew1.png',cv2.CV_LOAD_IMAGE_COLOR)
+
 
 
 #Elina 's way
@@ -20,6 +21,8 @@ ret2,otzu = cv2.threshold(vorher,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 Height, Width=vorher.shape
 
 
+
+
 #get the lowest black Elements
 #Black pixel coordinates
 x=[]
@@ -27,22 +30,24 @@ y=[]
 
 
 for i in reversed(range(0,Height)):
-    for j in range(0,Width):
+    
+    for j in reversed(range(0,Width)):
         #get black pixels
         if otzu[i][j]==0:
             y.append(i)
             x.append(j)
-            #color these pixels BLUE
-            color[x][y][0]=255
-            color[x][y][1]=0
-            color[x][y][2]=0
+            #color these pixels red
+            xroma[i][j][0]=0
+            xroma[i][j][1]=0
+            xroma[i][j][2]=255
+            
             
             break
     else:
         continue
 
 
-cv2.imshow('Colored dots',color)
+cv2.imshow('Colored dots',xroma)
 print ('Black pixels are:')
 for i in range(0,len(x)):
     print x[i],y[i]
