@@ -42,7 +42,7 @@ class Ui_MainWindow(object):
     
     Glyph_Chars=[] #Distinct query chars
     Sprache=''
-    vasi = QSqlDatabase.addDatabase("QMYSQL");
+    vasi = QSqlDatabase.addDatabase("QSQLITE");
     
     MainEngine=BildMaschine('','')
 
@@ -747,19 +747,17 @@ class Ui_MainWindow(object):
         
         
     def GetGlyphsFromDB(self):
-        #fetch greek chars from mysql
+        #fetch greek chars from sqlite
         try:
             self.charWidget.clear()
-            print 'Reading chars from DB'
-            self.vasi.setHostName("localhost")
-            self.vasi.setDatabaseName("Kathareyousan")
-            self.vasi.setUserName("reichstag")
-            self.vasi.setPassword("reichstag")
+            print 'Reading chars from SQLITE DB'
+            self.vasi.setDatabaseName("/home/phoenix/Verbinden/CharBook.sqlite")
+            
             self.vasi.open()
             query=QSqlQuery(self.vasi)
             #query.prepare("Select Text From Chars  Where LangID IN (SELECT LangID From Language Where Name=:spr)")
             #query.bindValue(":spr",self.Sprache)
-            query.exec_("Select Text From Chars  Where LangID IN (SELECT LangID From Language Where Name='"+self.Sprache+"')")
+            query.exec_("Select Text From Chars  Where LangID =1")
             
             
             while query.next():
