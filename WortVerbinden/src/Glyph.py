@@ -5,7 +5,6 @@ Created on Mar 26, 2014
 @author: phoenix
 '''
 import cv2
-import numpy as np
 class GlyphElement:
     '''
     classdocs
@@ -21,9 +20,12 @@ class GlyphElement:
         print 'Creating glyph for ',str(char).encode('utf-8'),'from',img_path
         self.Char=char;
         self.GraphemeImg=img_path
+         
         self.Vorher=[]#This is an array that will store the original image
         self.Naher=[]#This is an array Man wollte dieses Bild verarbeiten
-        #Das Bild will hier sein
+        
+        
+        #Das Bild wird hier sein
         self.Width=0
         self.Height=0
         self.Top=0
@@ -46,11 +48,12 @@ class GlyphElement:
      
         self.Vorher=cv2.imread(self.GraphemeImg,cv2.CV_LOAD_IMAGE_GRAYSCALE)
         
-        ret2,self.Vorher = cv2.threshold(self.Vorher,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        
+        ret2,self.Vorher = cv2.threshold(self.Vorher,0,255,cv2.THRESH_OTSU)
         
         self.Naher=self.Vorher
         
-        
+
         
         
         self.DetectLines()
@@ -66,7 +69,7 @@ class GlyphElement:
         
         #SIGOYROTATA ETSI EINAI TO SWSTO
 
-        self.Height,self.Width=self.Vorher.shape
+        self.Height,self.Width=self.Naher.shape
         
         self.History.append(self.Naher)
         
@@ -88,8 +91,8 @@ class GlyphElement:
                     self.Low=i
 
            
-        print ('Low Line for ',self.Char ,'is',self.Low)
-        print ('TopLine for ',self.Char ,'is',self.Top)
+        print ('Low Line for ',str(self.Char).encode('utf-8') ,'is',self.Low)
+        print ('TopLine for ',str(self.Char).encode('utf-8') ,'is',self.Top)
         
         self.BaseLine=self.Low
         
