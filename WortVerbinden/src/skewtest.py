@@ -76,6 +76,8 @@ rot=cv2.warpAffine(otzu,M,(Width,Height))
 
 
 cv2.imshow("Rotated",rot)
+cv2.imwrite("/tmp/dots.png",xroma)
+
 cv2.imwrite("/tmp/rotated.png",rot)
 
 cv2.waitKey()

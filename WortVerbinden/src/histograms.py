@@ -62,6 +62,7 @@ for col in range(0,Width):
 
 
 
+
 #plot them
 plt.plot(HorX,HorY)
 plt.title("Horizontal Histogram")

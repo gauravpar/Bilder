@@ -440,7 +440,6 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.pushLoad,QtCore.SIGNAL('clicked()'),self.LoadDoc)
         
         QtCore.QObject.connect(self.textQuery,QtCore.SIGNAL('textChanged()'),self.UpdateTable)
-        self.charWidget.itemClicked.connect(self.ShowDBGlyph)
         self.glyphWidget.itemClicked.connect(self.ShowDiskGlyph)
         self.charWidget.itemDoubleClicked.connect(self.AppendChar)
         self.comboSprache.currentIndexChanged.connect(self.LangChoice)
@@ -743,29 +742,7 @@ class Ui_MainWindow(object):
                
                
                
-    def ShowDBGlyph(self,item):
-        #load the DB glyphs of item
-        #English char have many glyphs
-        print 'Fetching glyphs for ' + item.text()
-        self.comboGlyphs.clear()
-        pixie=QtGui.QPixmap()
-        self.vasi.open()
-        query=QSqlQuery()
-        query.prepare("Select Count(Pic) From Glyphs Where CharID IN (SELECT CharID FROM  `Chars` WHERE BINARY `Text` LIKE :char)")
-        query.bindValue(":char", item.text())
-        query.exec_()
-        while (query.next()):
-            print 'Glyph count',query.value(0).toString()
-
-            for k in range(1,int(query.value(0).toString())):
-                self.comboGlyphs.addItem("Glyph " +str(k))
-            
-        query.prepare("Select Pic From Glyphs Where CharID IN (SELECT CharID FROM  `Chars` WHERE BINARY `Text` LIKE :char)")
-        query.bindValue(":char", item.text())
-        query.exec_()
-        while (query.next()):
-            pixie.loadFromData(query.value(0).toByteArray(),"PNG")
-        self.laDBGlyph.setPixmap(pixie)
+   
         
         
         

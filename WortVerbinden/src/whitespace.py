@@ -34,7 +34,7 @@ for p in range(1,7):
             #print 'All white in col',col
             
             
-            #draw a red line
+            #draw a blue line
             for i in range(0,Width):
                 copy[i][col][0]=255
                 copy[i][col][1]=0
@@ -43,7 +43,8 @@ for p in range(1,7):
     #count the thickness of the red lines
     
     
-    cv2.imshow('white space',copy)            
+    cv2.imshow('white space',copy)   
+    cv2.imwrite('/tmp/white' + str(p) + '.png',copy)         
     cv2.waitKey()
     cv2.destroyAllWindows()        
     
