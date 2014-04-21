@@ -90,11 +90,17 @@ class GlyphElement:
                 if self.Naher[i][j]==0 and i>self.Low:
                     self.Low=i
 
+        self.BaseLine=self.Low 
+        if 'ρ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=0.83*abs(self.Top-self.Low)
+         
            
         print ('Low Line for ',str(self.Char).encode('utf-8') ,'is',self.Low)
+        print ('BaseLine for ',str(self.Char).encode('utf-8') ,'is',self.BaseLine)
         print ('TopLine for ',str(self.Char).encode('utf-8') ,'is',self.Top)
         
-        self.BaseLine=self.Low
+        
         
         
              
