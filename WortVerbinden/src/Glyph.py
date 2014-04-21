@@ -33,7 +33,8 @@ class GlyphElement:
         self.BaseLine=0
         self.SpecialChar=1
         
-        
+        self.Left=0 #Poy xenika kai poy teleinwnei o char 
+        self.Right=0
         
         
   
@@ -91,11 +92,55 @@ class GlyphElement:
                     self.Low=i
 
         self.BaseLine=self.Low 
+        
         if 'ρ' in self.Char:
             print 'Special Char'  
-            self.BaseLine=0.83*abs(self.Top-self.Low)
+            self.BaseLine=self.Low-9
          
-           
+          
+        #Detect Vertical Lines
+        
+
+        HorX=[] #for each column
+        HorY=[] # count the  black pixels
+        
+        
+        for col in range(0,self.Width):
+            sum=0
+        
+            for row in range(0,self.Height):
+                
+                if self.Naher[row][col]==0: #count the BLACK
+                    sum+=1
+         
+            HorX.append(col)
+            HorY.append(sum)
+
+        
+        #now the left is the first non zero sum from top
+        #and right the first non zero from bottom
+        q=0
+        while (q<len(HorY)):
+            if HorY[q]>0:
+                self.Left=q
+                break
+            q+=1
+            
+            
+            
+        q=len(HorY)
+        while (q>0):
+            q-=1
+            if HorY[q]>0:
+                self.Right=q
+                break
+            q-=1
+            
+            
+        
+        print ('Left Line for ',str(self.Char).encode('utf-8') ,'is',self.Left)
+        print ('Right Line for ',str(self.Char).encode('utf-8') ,'is',self.Right)
+         
         print ('Low Line for ',str(self.Char).encode('utf-8') ,'is',self.Low)
         print ('BaseLine for ',str(self.Char).encode('utf-8') ,'is',self.BaseLine)
         print ('TopLine for ',str(self.Char).encode('utf-8') ,'is',self.Top)
