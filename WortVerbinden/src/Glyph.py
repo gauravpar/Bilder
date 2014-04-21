@@ -62,6 +62,9 @@ class GlyphElement:
         print 'Detecting lines'
         #get top low and baseline
         #get lowest black topmost black pixel
+        
+        
+        #SIGOYROTATA ETSI EINAI TO SWSTO
 
         self.Height,self.Width=self.Vorher.shape
         
@@ -69,20 +72,22 @@ class GlyphElement:
         
         
         #check for special char
-        
         print 'Width',self.Width,'Height',self.Height
         self.Top=self.Height
        
 
         #------------------------Low and Top Line------------------------
-        for x in range(0,self.Height):
-            for y in range(0,self.Width):
-                if self.Naher[x][y]==0 and x>self.Low:
-                    self.Low=x
-                if self.Naher[x][y]==0 and x<self.Top:
-                    self.Top=x
-                    
-                    
+        #Low Line lowest black pixel
+        for i in range(0,self.Height):
+        
+            for j in range(0,self.Width):
+                
+                if self.Naher[i][j]==0 and i<self.Top:
+                    self.Top=i
+                if self.Naher[i][j]==0 and i>self.Low:
+                    self.Low=i
+
+           
         print ('Low Line for ',self.Char ,'is',self.Low)
         print ('TopLine for ',self.Char ,'is',self.Top)
         
