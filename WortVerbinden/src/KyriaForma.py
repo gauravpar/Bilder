@@ -95,7 +95,9 @@ class Ui_MainWindow(object):
         self.MainEngine.Query=self.textQuery.toPlainText()
         self.MainEngine.BilderBuch=self.GlyphBook
         self.MainEngine.Anfangen()
-        
+        #show image
+        pixie=QtGui.QPixmap('/tmp/query.png')
+        self.labFinal.setPixmap(pixie)
         
         
     #GUI SUTFF DO NOT CHANGE
