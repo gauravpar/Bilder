@@ -1,7 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*- 
 import sys
-
-
 from loaddoc import LoadDocWin
 from PyQt4 import QtCore, QtGui
 from Glyph import GlyphElement
@@ -94,6 +93,7 @@ class Ui_MainWindow(object):
             print c.currentText()
         self.MainEngine.Query=self.textQuery.toPlainText()
         self.MainEngine.BilderBuch=self.GlyphBook
+        self.MainEngine.WorkFolder=self.BackFolder
         self.MainEngine.Anfangen()
         #show image
         pixie=QtGui.QPixmap('/tmp/query.png')
@@ -822,6 +822,9 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Glyph", None))
 
 def main():
+    reload(sys)
+    #Now it runs from Linux console
+    sys.setdefaultencoding('UTF8')
     app = QtGui.QApplication(sys.argv)
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
