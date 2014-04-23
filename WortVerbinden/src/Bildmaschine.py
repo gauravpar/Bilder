@@ -16,7 +16,7 @@ class BildMaschine():
         
 
         
-    def Anfangen(self):
+    def AnfangenWash(self):
         
         self.EstimateLetterSpace()
         print 'Synthesizing begins...'
@@ -132,7 +132,7 @@ class BildMaschine():
                 clean_char_arr[i][j]=char_arr[i+top][j+left]
         
         
-        cv2.imwrite("/tmp/pic" + str(e)+".png",clean_char_arr)
+        #cv2.imwrite("/tmp/pic" + str(e)+".png",clean_char_arr)
         
         
         
@@ -142,7 +142,7 @@ class BildMaschine():
                 qpic_arr[i+StartRow][j+StartCol]=clean_char_arr[i][j]
  
   
-        cv2.imwrite("/tmp/q" + str(e)+".png",qpic_arr)
+        #cv2.imwrite("/tmp/q" + str(e)+".png",qpic_arr)
   
     
   
@@ -267,7 +267,7 @@ class BildMaschine():
         QueryW=0
         QueryH=0
         
-        Shift=2
+        Shift=22
           
           
         #find the maximum X
@@ -329,8 +329,7 @@ class BildMaschine():
                     #all in one line...
                     
                     
-                    s_row=abs(gl.BaseLine-BaseLine)+Shift #SAMOS BASELINE
-                    
+                    s_row=BaseLine- abs(gl.BaseLine-gl.Top)                    
                     
                     
                     CharCount+=1
@@ -338,14 +337,14 @@ class BildMaschine():
                     
                     #The baseline of the first char is the baseline of the word
                     if CharCount==1:
-                        BaseLine=gl.BaseLine
-                        s_row=Shift 
+                        BaseLine=Shift+ (gl.BaseLine-gl.Top) #IT WORKS!!
+                        s_row=Shift
                         print 'Baseline is',BaseLine
                     
                     
                     
-                    #self.ConcatSamos(s_col, s_row, ImgQuery, gl.Naher,gl.Left,gl.Right,gl.Height)
-                    self.ConcatWash(s_col, s_row, ImgQuery, gl.Naher,gl.Top,gl.Low,gl.Left,gl.Right,e)
+                    
+                    self.ConcatSamos(s_col, s_row, ImgQuery, gl.Naher,gl.Left,gl.Right,gl.Height)
                     e=e+1
                     
                     

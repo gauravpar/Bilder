@@ -94,7 +94,7 @@ class Ui_MainWindow(object):
         self.MainEngine.Query=self.textQuery.toPlainText()
         self.MainEngine.BilderBuch=self.GlyphBook
         self.MainEngine.WorkFolder=self.BackFolder
-        self.MainEngine.Anfangen()
+        self.MainEngine.AnfangenWash()
         #show image
         pixie=QtGui.QPixmap('/tmp/query.png')
         self.labFinal.setPixmap(pixie)

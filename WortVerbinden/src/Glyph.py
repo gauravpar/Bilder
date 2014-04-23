@@ -93,6 +93,13 @@ class GlyphElement:
 
         self.BaseLine=self.Low 
         
+        if 'ζ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-10
+        if 'ς' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-4
+        
         if 'ρ' in self.Char:
             print 'Special Char'  
             self.BaseLine=self.Low-9
