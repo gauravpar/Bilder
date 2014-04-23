@@ -105,7 +105,7 @@ class GlyphElement:
             self.BaseLine=self.Low-38
         if 'G' in self.Char:
             print 'Special Char'  
-            self.BaseLine=self.Low-43
+            self.BaseLine=self.Low-40
             
           
         #Detect Vertical Lines

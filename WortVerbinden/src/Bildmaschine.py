@@ -12,6 +12,7 @@ class BildMaschine():
     def __init__(self, q,bildbook):
         self.Query=q
         self.BilderBuch=bildbook
+        self.WorkFolder=''
         
 
         
@@ -25,7 +26,7 @@ class BildMaschine():
         QueryW=0
         QueryH=0
         
-        Shift=21
+        Shift=2
           
           
         #find the maximum X
@@ -53,8 +54,7 @@ class BildMaschine():
                         QueryH=gl.Height
             
     
-        QueryH*=2
-        QueryH+=Shift
+        QueryH=2*QueryH + Shift
                 
         print 'Let \'s go'
         print 'Image Query Height',QueryH
@@ -74,25 +74,38 @@ class BildMaschine():
         BaseLine=0 #the baseline is the line of the first char
         CharCount=0
         
+        e=0
+         
         for c in self.Query:
             print '------------------------------'
             print 'Next char to be app',c
             #find it in the glyphbook
+            
+           
             for gl in self.BilderBuch:
                 if str(c) in gl.Char: #find the char in the glyphbook
                     print 'It will be loaded from',gl.GraphemeImg
                     #all in one line...
-                    s_row=abs(gl.BaseLine-BaseLine)+Shift
-                   
+                    
+                    
+                    s_row=abs(gl.BaseLine-BaseLine)+Shift #SAMOS BASELINE
+                    
+                    
                     
                     CharCount+=1
+                    
                     
                     #The baseline of the first char is the baseline of the word
                     if CharCount==1:
                         BaseLine=gl.BaseLine
-                        s_row=Shift
+                        s_row=Shift 
+                        print 'Baseline is',BaseLine
                     
-                    self.Concat(s_col, s_row, ImgQuery, gl.Naher,gl.Left,gl.Right,gl.Height)
+                    
+                    
+                    self.ConcatSamos(s_col, s_row, ImgQuery, gl.Naher,gl.Left,gl.Right,gl.Height)
+                    #self.ConcatWash(s_col, s_row, ImgQuery, gl.Naher,gl.Top,gl.Low,gl.Left,gl.Right,e)
+                    e=e+1
                     
                     
                     s_col+=+self.LetterSpace+gl.Right-gl.Left 
@@ -102,7 +115,38 @@ class BildMaschine():
         cv2.imwrite('/tmp/query.png',ImgQuery)
     
     
-    def Concat(self,StartCol,StartRow,qpic_arr,char_arr,left,right,ypsos):
+    
+    def ConcatWash(self,StartCol,StartRow,qpic_arr,char_arr,top,low,left,right,e):
+        #concatenate chars
+        print 'Copying from col',left,'to',right
+        print 'Copying from row',top,'to',low
+        
+
+        print 'Appending a glyph w to r',StartRow,'c',StartCol
+        
+        clean_char_arr=np.ones((low-top,right-left,1),np.uint8) #contains only the black pixels
+        
+        
+        #snipets copies only black pixes
+        for i in range(0,low-top):
+            for  j in range(0,right-left):
+                clean_char_arr[i][j]=char_arr[i+top][j+left]
+        
+        
+        cv2.imwrite("/tmp/pic" + str(e)+".png",clean_char_arr)
+        
+        
+        
+        #and pastes them to final image query
+        for i in range(0, low-top):
+            for j in range(0, right-left):
+                qpic_arr[i+StartRow][j+StartCol]=clean_char_arr[i][j]
+ 
+  
+        cv2.imwrite("/tmp/q" + str(e)+".png",qpic_arr)
+  
+    
+    def ConcatSamos(self,StartCol,StartRow,qpic_arr,char_arr,left,right,ypsos):
         #concatenate chars
         print 'Copying from col',left,'to',right
 
@@ -153,9 +197,8 @@ class BildMaschine():
         for p in range(0,10):
             Spaces=[]
             print p
-            test=cv2.imread("/home/phoenix/Verbinden/whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_GRAYSCALE)
+            test=cv2.imread("/home/phoenix/Desktop/buchbilder/whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_GRAYSCALE)
             ret2,test = cv2.threshold(test,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-            copy=cv2.imread("/home/phoenix/Verbinden/whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_COLOR)
             
             
             
@@ -182,11 +225,7 @@ class BildMaschine():
                     #print 'All white in col',col
                     
                     Spaces.append(1)
-                    #draw a blue line
-                    for i in range(0,Width):
-                        copy[i][col][0]=0
-                        copy[i][col][1]=0
-                        copy[i][col][2]=255
+                    
                 else:
                     Spaces.append(0)
             
