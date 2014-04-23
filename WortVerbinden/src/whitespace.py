@@ -6,11 +6,14 @@ Test module to estimate white space
 '''
 #staring from left to right you found a column with no black elements
 
+
 import cv2
-for p in range(1,7):
-    test=cv2.imread("/home/phoenix/Verbinden/Weißraum/testwhite"+str(p)+".png",cv2.CV_LOAD_IMAGE_GRAYSCALE)
+for p in range(0,7):
+    Spaces=[]
+    print p
+    test=cv2.imread("/home/phoenix/Verbinden/whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_GRAYSCALE)
     ret2,test = cv2.threshold(test,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    copy=cv2.imread("/home/phoenix/Verbinden/Weißraum/testwhite"+str(p)+".png",cv2.CV_LOAD_IMAGE_COLOR)
+    copy=cv2.imread("/home/phoenix/Verbinden/whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_COLOR)
     
     
     
@@ -19,37 +22,59 @@ for p in range(1,7):
     #diavase olo to column 
     #an einai ola aspra simeiosate x
     
-    Spaces=[]
-    
+   
     for col in range(0,Height):
         Scwarz=0
         
+             
         for row in range(0,Width):
             
             if test[row][col]==0:
                 Scwarz=1
                 # print 'A black pixel was found at',i,j
+                
+                
+          
                
         if Scwarz==0:
             #print 'All white in col',col
             
-            
+            Spaces.append(1)
             #draw a blue line
             for i in range(0,Width):
-                copy[i][col][0]=255
+                copy[i][col][0]=0
                 copy[i][col][1]=0
-                copy[i][col][2]=0
+                copy[i][col][2]=255
+        else:
+            Spaces.append(0)
     
     #count the thickness of the red lines
+    Mikos=[]
+    m=0
+    print '-------------------------'
+    for s in Spaces:
+        #print "s=",s
+        if s==1:
+            m+=1
+        else:
+            if m>0:
+                Mikos.append(m)
+            m=0
+            
+    for m in Mikos:
+        print m
+    #so find the length  sequence of ones in Spaces
+    
+    
     
     
     cv2.imshow('white space',copy)   
-    cv2.imwrite('/tmp/white' + str(p) + '.png',copy)         
+    #cv2.imwrite('/tmp/white' + str(p) + '.png',copy)         
     cv2.waitKey()
     cv2.destroyAllWindows()        
     
         
-        
+    
             
 
 
