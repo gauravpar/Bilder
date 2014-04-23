@@ -12,12 +12,12 @@ class BildMaschine():
     def __init__(self, q,bildbook):
         self.Query=q
         self.BilderBuch=bildbook
-        self.LetterSpace=21
+        
 
         
     def Anfangen(self):
         
-        
+        self.EstimateLetterSpace()
         print 'Synthesizing begins...'
         print 'String Query is',self.Query.replace('\n','')
         print 'Breaking query into chars:'
@@ -36,21 +36,21 @@ class BildMaschine():
         #It is the sum of all the chars of the query
         for c in self.Query:
 
-          for gl in self.BilderBuch:
-            if str(c) in gl.Char: #find the char in the glyphbook
+            for gl in self.BilderBuch:
+                if str(c) in gl.Char: #find the char in the glyphbook
        
-                print '----------------------------'
-                print gl.Char
-                print 'Width',gl.Width
-                print 'Height',gl.Height
-                print 'Left Line',gl.Left
-                print 'Right Line',gl.Right
-                print 'Top Line',gl.Top
-                print 'Low Line',gl.Low
-                print 'Base line',gl.BaseLine
-                QueryW+=gl.Width+self.LetterSpace #!!!!!
-                if gl.Height>QueryH:
-                    QueryH=gl.Height
+                    print '----------------------------'
+                    print gl.Char
+                    print 'Width',gl.Width
+                    print 'Height',gl.Height
+                    print 'Left Line',gl.Left
+                    print 'Right Line',gl.Right
+                    print 'Top Line',gl.Top
+                    print 'Low Line',gl.Low
+                    print 'Base line',gl.BaseLine
+                    QueryW+=gl.Width+self.LetterSpace #!!!!!
+                    if gl.Height>QueryH:
+                        QueryH=gl.Height
             
     
         QueryH*=2
@@ -87,25 +87,38 @@ class BildMaschine():
                     
                     CharCount+=1
                     
+                    #The baseline of the first char is the baseline of the word
                     if CharCount==1:
                         BaseLine=gl.BaseLine
                         s_row=Shift
                     
                     self.Concat(s_col, s_row, ImgQuery, gl.Naher,gl.Left,gl.Right,gl.Height)
                     
-                    s_col+=+self.LetterSpace+gl.Right
+                    
+                    s_col+=+self.LetterSpace+gl.Right-gl.Left 
                     
             
         print 'Finished'
         cv2.imwrite('/tmp/query.png',ImgQuery)
     
     
-    def Concat(self,StartCol,StartRow,qpic_arr,char_arr,links,rechts,ypsos):
+    def Concat(self,StartCol,StartRow,qpic_arr,char_arr,left,right,ypsos):
         #concatenate chars
+        print 'Copying from col',left,'to',right
+
         print 'Appending a glyph w to r',StartRow,'c',StartCol
+        
+        clean_char_arr=np.ones((ypsos,right-left,1),np.uint8) #contains only the black pixels
+        
+        #and not the white space left and right
+        for i in range(0,ypsos):
+            for  j in range(0,right-left):
+                clean_char_arr[i][j]=char_arr[i][j+left]
+        
+        
         for i in range(0, ypsos):
-            for j in range(links, rechts):
-                qpic_arr[i+StartRow][j+StartCol]=char_arr[i][j]
+            for j in range(0, right-left):
+                qpic_arr[i+StartRow][j+StartCol]=clean_char_arr[i][j]
  
             
    
@@ -130,8 +143,81 @@ class BildMaschine():
         
     
   
-    #def EstimateLetterSpace(self):
-    #    #Estimates in a very naïve way the space between chars
+    def EstimateLetterSpace(self):
+        #Estimates in a very naïve way the space between chars
+        #counts the white columns
+        #for simplicity images are stored in /home/phoenix/Verbinden/whitespace
+
+        self.LetterSpace=0
+        amount=0
+        for p in range(0,10):
+            Spaces=[]
+            print p
+            test=cv2.imread("/home/phoenix/Verbinden/whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_GRAYSCALE)
+            ret2,test = cv2.threshold(test,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+            copy=cv2.imread("/home/phoenix/Verbinden/whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_COLOR)
+            
+            
+            
+            Width,Height=test.shape
+            #xekina apo aristera 
+            #diavase olo to column 
+            #an einai ola aspra simeiosate x
+            
+           
+            for col in range(0,Height):
+                Scwarz=0
+                
+                     
+                for row in range(0,Width):
+                    
+                    if test[row][col]==0:
+                        Scwarz=1
+                        # print 'A black pixel was found at',i,j
+                        
+                        
+                  
+                       
+                if Scwarz==0:
+                    #print 'All white in col',col
+                    
+                    Spaces.append(1)
+                    #draw a blue line
+                    for i in range(0,Width):
+                        copy[i][col][0]=0
+                        copy[i][col][1]=0
+                        copy[i][col][2]=255
+                else:
+                    Spaces.append(0)
+            
+            #count the thickness of the red lines that is count the length of ones
+            Mikos=[]
+            m=0
+            print '-------------------------'
+            for s in Spaces:
+                #print "s=",s
+                if s==1:
+                    m+=1
+                else:
+                    if m>0:
+                        Mikos.append(m)
+                    m=0
+                    
+            amount+=len(Mikos)
+            for m in Mikos:
+                print m
+                self.LetterSpace+=m
+            #find m average
+            
+        print 'Letter space is ',self.LetterSpace    
+        self.LetterSpace=int(self.LetterSpace/amount)
+       
+        print 'amount is ',amount
+        print 'Letter space is ',self.LetterSpace
+            
+
+
+
+
         
-    #def EstimateWordSpace(self):
-    #    #Estimates in a very naïve way the space between words
+        
