@@ -96,7 +96,17 @@ class GlyphElement:
         if 'ρ' in self.Char:
             print 'Special Char'  
             self.BaseLine=self.Low-9
-         
+        if 'μ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-11
+        #Washington lines
+        if 'g' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-38
+        if 'G' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-43
+            
           
         #Detect Vertical Lines
         

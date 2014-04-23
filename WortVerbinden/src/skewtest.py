@@ -6,8 +6,8 @@ Created on Apr 15, 2014
 import cv2,math
 import numpy as np
 from numpy import array # we ll use to calc linear regression equation
-vorher=cv2.imread('/home/phoenix/Verbinden/testskew1.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
-xroma=cv2.imread('/home/phoenix/Verbinden/testskew1.png',cv2.CV_LOAD_IMAGE_COLOR)
+vorher=cv2.imread('/home/phoenix/Verbinden/testhist2.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
+xroma=cv2.imread('/home/phoenix/Verbinden/testhist2.png',cv2.CV_LOAD_IMAGE_COLOR)
 
 
 

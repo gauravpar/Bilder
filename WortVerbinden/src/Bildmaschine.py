@@ -69,7 +69,7 @@ class BildMaschine():
       
         
         s_row=0+Shift
-        s_col=0
+        s_col=self.LetterSpace
         
         BaseLine=0 #the baseline is the line of the first char
         CharCount=0

@@ -14,7 +14,9 @@ VertY=[] #for each row
 VertX=[] # count the  black pixels
 
 
-test=cv2.imread('/home/phoenix/Verbinden/testhist.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
+gray=cv2.imread('/tmp/O.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
+ret2,test = cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
 Height,Width=test.shape #prota diavazei to ypsos kai meta to platos
 
 print "Width",Width,"Heigth",Height
