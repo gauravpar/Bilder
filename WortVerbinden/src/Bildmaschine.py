@@ -111,7 +111,7 @@ class BildMaschine():
                     
             
         print 'Finished'
-        cv2.imwrite('/tmp/query.png',ImgQuery)
+        cv2.imwrite(self.WorkFolder + 'query.png',ImgQuery)
     
     
     
@@ -177,7 +177,7 @@ class BildMaschine():
         for p in range(0,10):
             Spaces=[]
             print p
-            test=cv2.imread("/home/phoenix/Desktop/buchbilder/whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_GRAYSCALE)
+            test=cv2.imread(self.WorkFolder + "whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_GRAYSCALE)
             ret2,test = cv2.threshold(test,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
             
             

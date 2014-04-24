@@ -93,9 +93,9 @@ class GlyphElement:
 
         self.BaseLine=self.Low 
         
-        η ξ γ φ χ ψ
+#        η ξ γ φ χ ψ
         
-         y j p q s 
+#         y j p q s 
         if 'ζ' in self.Char:
             print 'Special Char'  
             self.BaseLine=self.Low-10

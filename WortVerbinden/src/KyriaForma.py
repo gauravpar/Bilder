@@ -32,6 +32,8 @@ class Ui_MainWindow(object):
     GlyphBook=[] # Hier  stehen die Buchstaben und ihre Bilder It is a list of Glyph  instances
     
     
+    #and for sqlite/text path
+    
     BackFolder='/home/phoenix/Desktop/buchbilder/' #The backup folder
     #We ll use this instead of xml
     
@@ -91,12 +93,14 @@ class Ui_MainWindow(object):
         print 'Order of normalization'
         for c in self.ComboList:
             print c.currentText()
+        
+        self.MainEngine.WorkFolder=self.BackFolder
         self.MainEngine.Query=self.textQuery.toPlainText()
         self.MainEngine.BilderBuch=self.GlyphBook
         self.MainEngine.WorkFolder=self.BackFolder
         self.MainEngine.AnfangenWash()
         #show image
-        pixie=QtGui.QPixmap('/tmp/query.png')
+        pixie=QtGui.QPixmap(self.BackFolder +'query.png')
         self.labFinal.setPixmap(pixie)
         
         
@@ -347,9 +351,6 @@ class Ui_MainWindow(object):
         self.label_3 = QtGui.QLabel(self.tab)
         self.label_3.setGeometry(QtCore.QRect(190, 40, 111, 41))
         self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.comboSprache = QtGui.QComboBox(self.tab)
-        self.comboSprache.setGeometry(QtCore.QRect(310, 50, 161, 23))
-        self.comboSprache.setObjectName(_fromUtf8("comboSprache"))
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName(_fromUtf8("tab_5"))
@@ -418,9 +419,7 @@ class Ui_MainWindow(object):
         
         self.lineTemp.setText('/home/phoenix/Desktop/buchbilder/')
         
-        self.comboSprache.addItem("EN")
-        self.comboSprache.addItem("GR")
-        
+
         self.lineKernel.setText("3")
         
         self.lineTemp.setText(self.BackFolder)
@@ -433,9 +432,12 @@ class Ui_MainWindow(object):
                 combo.setCurrentIndex(i)
             self.ComboList.append(combo)
             self.normLayout.addWidget(combo)
+        
+        
         self.GetGlyphsFromDB()
         
        
+        
         
         #slots
         QtCore.QObject.connect(self.pushReplace,QtCore.SIGNAL('clicked()'),self.LoadGlyphFromDisk)
@@ -445,16 +447,23 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.textQuery,QtCore.SIGNAL('textChanged()'),self.UpdateTable)
         self.glyphWidget.itemClicked.connect(self.ShowDiskGlyph)
         self.charWidget.itemDoubleClicked.connect(self.AppendChar)
-        self.comboSprache.currentIndexChanged.connect(self.LangChoice)
         self.pushDilate.clicked.connect(self.Dilate)
         self.pushErode.clicked.connect(self.Erode)
         self.horizontalSlider.valueChanged.connect(self.SliderMoved)
         self.lineKernel.editingFinished.connect(self.CustomKernel)
         self.pushSaveSession.clicked.connect(self.SaveSession)
         self.pushLoadSession.clicked.connect(self.LoadSession)
+        self.lineTemp.editingFinished.connect(self.NewTempFolder)
+        
+    
+    def NewTempFolder(self):
+        self.BackFolder=self.lineTemp.text()
+        print 'Working folder is set to',self.BackFolder
+        self.MainEngine.WorkFolder=self.BackFolder
         
         
     def LoadSession(self):
+        self.pushGo.setVisible(False)
         #clear everything
         self.GlyphBook=[]
         SessFile=unicode(QtGui.QFileDialog.getOpenFileName(None, 'Open SessionFile', '', "*.*")) 
@@ -473,7 +482,7 @@ class Ui_MainWindow(object):
                     self.GlyphBook.append(gl)
             
             self.ResetGlyphLayout()
-                
+        self.pushGo.setVisible(True)        
                 
             
     def SaveSession(self):
@@ -747,13 +756,6 @@ class Ui_MainWindow(object):
         #very useful for polytonic greek characters
         self.textQuery.insertPlainText(polychar.text())
         
-    def LangChoice(self,index):
-        self.Sprache=self.comboSprache.currentText()
-        print 'Language set to ' + self.Sprache
-        #update listwidget
-        self.GetGlyphsFromDB()
-               
-               
                
    
         
@@ -761,10 +763,11 @@ class Ui_MainWindow(object):
         
     def GetGlyphsFromDB(self):
         #fetch greek chars from sqlite
+        DbExists=0
         try:
             self.charWidget.clear()
             print 'Reading chars from SQLITE DB'
-            self.vasi.setDatabaseName("/home/phoenix/Verbinden/CharBook.sqlite")
+            self.vasi.setDatabaseName(self.BackFolder + 'CharBook.sqlite')
             
             self.vasi.open()
             query=QSqlQuery(self.vasi)
@@ -774,10 +777,11 @@ class Ui_MainWindow(object):
             
             
             while query.next():
+                DbExists=1
                 #print query.value(0).toString()
                 charListItem=QtGui.QListWidgetItem()
                 charListItem.setText(query.value(0).toString())
-                charListItem.setTextColor(QtCore.Qt.blue)
+                charListItem.setTextColor(QtCore.Qt.red)
                 self.charWidget.addItem(charListItem)
             
         except:
@@ -787,8 +791,15 @@ class Ui_MainWindow(object):
             
         finally:
             self.vasi.close()
-            
-        
+            if DbExists==0:
+                print 'Loading glyphs from file',self.BackFolder+"chars.txt"
+                with open (self.BackFolder+'chars.txt') as charfile:
+                    for line in charfile:                                
+                        charListItem=QtGui.QListWidgetItem()
+                        charListItem.setText(line.encode('utf-8').strip('\n'))
+                        charListItem.setTextColor(QtCore.Qt.red)
+                        self.charWidget.addItem(charListItem)
+                   
         
     #GUI SUTFF DO NOT CHANGE
     def retranslateUi(self, MainWindow):
