@@ -768,42 +768,41 @@ class Ui_MainWindow(object):
         
     def GetGlyphsFromDB(self):
         #fetch greek chars from sqlite
-        DbExists=0
         try:
             self.charWidget.clear()
-            print 'Reading chars from SQLITE DB'
-            self.vasi.setDatabaseName(self.BackFolder + 'CharBook.sqlite')
+            print 'Reading chars from SQLITE DB',self.BackFolder,'CharBook.db'
+            self.vasi.setDatabaseName(self.BackFolder + 'CharBook.db')
             
             self.vasi.open()
-            query=QSqlQuery(self.vasi)
-            #query.prepare("Select Text From Chars  Where LangID IN (SELECT LangID From Language Where Name=:spr)")
-            #query.bindValue(":spr",self.Sprache)
+            query=QSqlQuery()
             query.exec_("Select Text From Chars  Where LangID =1")
             
             
             while query.next():
-                DbExists=1
-                #print query.value(0).toString()
+                
+                print query.value(0).toString()
                 charListItem=QtGui.QListWidgetItem()
                 charListItem.setText(query.value(0).toString())
                 charListItem.setTextColor(QtCore.Qt.red)
                 self.charWidget.addItem(charListItem)
             
         except:
+            self.charWidget.clear()
             msg=QtGui.QMessageBox()
             msg.setText("Sfalma")
             msg.show()
+            print 'Loading glyphs from file',self.BackFolder+"chars.txt"
+            with open (self.BackFolder+'chars.txt') as charfile:
+                for line in charfile:                                
+                    charListItem=QtGui.QListWidgetItem()
+                    charListItem.setText(line.decode('utf-8').strip('\n'))
+                    charListItem.setTextColor(QtCore.Qt.red)
+                    self.charWidget.addItem(charListItem)
             
         finally:
             self.vasi.close()
-            if DbExists==0:
-                print 'Loading glyphs from file',self.BackFolder+"chars.txt"
-                with open (self.BackFolder+'chars.txt') as charfile:
-                    for line in charfile:                                
-                        charListItem=QtGui.QListWidgetItem()
-                        charListItem.setText(line.encode('utf-8').strip('\n'))
-                        charListItem.setTextColor(QtCore.Qt.red)
-                        self.charWidget.addItem(charListItem)
+
+             
                    
         
     #GUI SUTFF DO NOT CHANGE
