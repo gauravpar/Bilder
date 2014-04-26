@@ -34,7 +34,7 @@ class Ui_MainWindow(object):
     
     #and for sqlite/text path
     
-    BackFolder='/home/phoenix/Desktop/buchbilder/' #The backup folder
+    BackFolder='/home/phoenix/Desktop/test/' #The backup folder
     #We ll use this instead of xml
     
     
@@ -486,31 +486,35 @@ class Ui_MainWindow(object):
                 
             
     def SaveSession(self):
-        print('save glyph char s and path to processed images')
+      
         #Create a new folder date time
         
         newFold=self.BackFolder+ time.strftime("%Y_%m_%d_%H_%M_%S")
+        print('save glyph char s and path to processed images to',newFold)
+          
         
       
-        if not os.path.isdir(newFold):
-            os.makedirs(newFold)
-            print 'Creating folder',newFold
-            SessionFile=newFold+  "/backup.ses"
+        os.makedirs(newFold)
+        print 'Creating folder',newFold
+        SessionFile=newFold+  "/backup.ses"
+        
+        SesFile=open(SessionFile,"w")
+        
+        SesFile.write((str(self.textQuery.toPlainText()).encode('utf-8') + '\n'))
+        
+        
+        for gl in self.GlyphBook:
+            #write char
+            SesFile.write(str(gl.Char).encode('utf-8') +' ')
+            #save Naher image
             
-            SesFile=open(SessionFile,"w")
-            
-            SesFile.write((str(self.textQuery.toPlainText()).encode('utf-8') + '\n'))
+            cv2.imwrite(newFold+"/" +str(gl.Char).encode('utf-8') + ".png",gl.Naher)
             
             
-            for gl in self.GlyphBook:
-                #write char
-                SesFile.write(str(gl.Char).encode('utf-8') +' ')
-                #save Naher image
-                cv2.imwrite(newFold+"/" +str(gl.Char).encode('utf-8') + ".png",gl.Naher)
-                SesFile.write(newFold+'/' +str(gl.Char).encode('utf-8')+'.png' + '\n')
-                
-                #
-            SesFile.close()
+            SesFile.write(newFold+'/' +str(gl.Char).encode('utf-8')+'.png' + '\n')
+            
+            #
+        SesFile.close()
             
     
     def SliderMoved(self,value):
@@ -644,6 +648,7 @@ class Ui_MainWindow(object):
                 self.labVorher.setPixmap(pixie)
                 
                 cv2.imwrite(self.BackFolder + str(gl.Char).encode('utf-8') +".png", gl.Naher)
+                
                 pixie=QPixmap(self.BackFolder + str(gl.Char).decode('utf-8') +".png")
 
                 self.labNaher.setPixmap(pixie)

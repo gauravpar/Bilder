@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*- 
 
 
-import cv2
+import cv2,math
 import numpy as np
 
 class BildMaschine():
@@ -101,6 +101,8 @@ class BildMaschine():
                         s_row=Shift
                         print 'Baseline is',BaseLine
                     
+                   
+                    
                     
                     
                     self.ConcatWash(s_col, s_row, ImgQuery, gl.Naher,gl.Top,gl.Low,gl.Left,gl.Right,e)
@@ -111,7 +113,7 @@ class BildMaschine():
                     
             
         print 'Finished'
-        cv2.imwrite(self.WorkFolder + 'query.png',ImgQuery)
+        cv2.imwrite(self.WorkFolder + str(self.Query).encode('utf-8')+'.png',ImgQuery)
     
     
     
@@ -126,7 +128,7 @@ class BildMaschine():
         clean_char_arr=np.ones((low-top,right-left,1),np.uint8) #contains only the black pixels
         
         
-        #snipets copies only black pixes
+        #snipets copies only black pixels
         for i in range(0,low-top):
             for  j in range(0,right-left):
                 clean_char_arr[i][j]=char_arr[i+top][j+left]
@@ -297,7 +299,7 @@ class BildMaschine():
     
         QueryH=2*QueryH + Shift
                 
-        print 'Let \'s go'
+        print 'Let s go'
         print 'Image Query Height',QueryH
         print 'Image Query Width',QueryW
         
@@ -352,8 +354,50 @@ class BildMaschine():
                     
             
         print 'Finished'
-        cv2.imwrite('/tmp/query.png',ImgQuery)
+        cv2.imwrite(self.WorkFolder + 'query.png',ImgQuery)
           
    
         
+    def CorrectSkew(self,stravo):
+        #Elina 's way
+        #the skew seems correct but the line detection does not
+   
+        Height, Width=stravo.shape
         
+        
+        
+        
+        #get the lowest black Elements
+        #Black pixel coordinates
+        x=[]
+        y=[]
+        
+        
+        for i in reversed(range(0,Height)):
+            
+            for j in reversed(range(0,Width)):
+                #get black pixels
+                if stravo[i][j]==0:
+                    y.append(i)
+                    x.append(j)
+                      
+                    
+                    break
+            else:
+                continue
+        
+        
+        a,b=np.polyfit(x, y, 1)
+        
+        print 'a',a,'b',int(b) #b seems to be the upper main body line
+        
+        rads=math.atan(a)
+        degs=(rads*180)/math.pi #it seems to WORK
+        print "angle in degrees",degs
+        center=(Width/2,Height/2)
+        M=cv2.getRotationMatrix2D(center,degs,1.0) #the 1.0 has smth to do with scale
+        
+        isio=cv2.warpAffine(stravo,M,(Width,Height))
+        return isio
+
+    

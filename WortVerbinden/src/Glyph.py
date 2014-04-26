@@ -58,6 +58,7 @@ class GlyphElement:
         
         
         self.DetectLines()
+
         
   
      
@@ -93,31 +94,7 @@ class GlyphElement:
 
         self.BaseLine=self.Low 
         
-#        η ξ γ φ χ ψ
-        
-#         y j p q s 
-        if 'ζ' in self.Char:
-            print 'Special Char'  
-            self.BaseLine=self.Low-10
-        if 'ς' in self.Char:
-            print 'Special Char'  
-            self.BaseLine=self.Low-4
-        
-        if 'ρ' in self.Char:
-            print 'Special Char'  
-            self.BaseLine=self.Low-9
-        if 'μ' in self.Char:
-            print 'Special Char'  
-            self.BaseLine=self.Low-11
-        #Washington lines
-        if 'g' in self.Char:
-            print 'Special Char'  
-            self.BaseLine=self.Low-38
-        if 'G' in self.Char:
-            print 'Special Char'  
-            self.BaseLine=self.Low-40
-            
-          
+#         
         #Detect Vertical Lines
         
 
@@ -156,7 +133,38 @@ class GlyphElement:
                 break
             q-=1
             
+        
+        
+        
+        #  η ξ γ φ χ ψ
+        
+#         y j p q s 
+        if 'ζ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-10
+        if 'ς' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-4
+        
+        if 'ρ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-9
+        if 'μ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-11
+        #Washington lines
+        if 'g' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-38
+          
             
+        if 'G' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-40            
+    
+    
+    
+        
         
         print ('Left Line for ',str(self.Char).encode('utf-8') ,'is',self.Left)
         print ('Right Line for ',str(self.Char).encode('utf-8') ,'is',self.Right)
