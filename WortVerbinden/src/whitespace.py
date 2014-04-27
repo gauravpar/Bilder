@@ -17,17 +17,17 @@ for p in range(0,7):
     
     
     
-    Width,Height=test.shape
+    Height,Width=test.shape
     #xekina apo aristera 
     #diavase olo to column 
     #an einai ola aspra simeiosate x
     
    
-    for col in range(0,Height):
+    for col in range(0,Width):
         Scwarz=0
         
              
-        for row in range(0,Width):
+        for row in range(0,Height):
             
             if test[row][col]==0:
                 Scwarz=1
@@ -41,7 +41,7 @@ for p in range(0,7):
             
             Spaces.append(1)
             #draw a blue line
-            for i in range(0,Width):
+            for i in range(0,Height):
                 copy[i][col][0]=0
                 copy[i][col][1]=0
                 copy[i][col][2]=255

@@ -5,9 +5,8 @@ Created on Apr 15, 2014
 '''
 import cv2,math
 import numpy as np
-from numpy import array # we ll use to calc linear regression equation
 
-imagepath="/tmp/query.png"
+imagepath=raw_input("give image path")
 vorher=cv2.imread(imagepath,cv2.CV_LOAD_IMAGE_GRAYSCALE)
 xroma=cv2.imread(imagepath,cv2.CV_LOAD_IMAGE_COLOR)
 
@@ -20,20 +19,20 @@ xroma=cv2.imread(imagepath,cv2.CV_LOAD_IMAGE_COLOR)
 
 ret2,otzu = cv2.threshold(vorher,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
-Height, Width=vorher.shape
+Height,Width =vorher.shape
+print 'Width',Width,'Heigth',Height
 
 
 
-
-#get the lowest black Elements
+#get the lowest black Elements for each col
 #Black pixel coordinates
 x=[]
 y=[]
 
 
-for i in reversed(range(0,Height)):
+for i in reversed(range(0,Width)):
     
-    for j in reversed(range(0,Width)):
+    for j in reversed(range(0,Height)):
         #get black pixels
         if otzu[i][j]==0:
             y.append(i)
@@ -42,17 +41,13 @@ for i in reversed(range(0,Height)):
             xroma[i][j][0]=0
             xroma[i][j][1]=0
             xroma[i][j][2]=255
-            
-            
             break
-    else:
-        continue
 
 
 cv2.imshow('Colored dots',xroma)
 print ('Black pixels are:')
 for i in range(0,len(x)):
-    print x[i],y[i]
+    print 'row',x[i],'col',y[i]
     
      
 a,b=np.polyfit(x, y, 1)
