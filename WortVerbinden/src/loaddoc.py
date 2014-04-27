@@ -34,9 +34,8 @@ class LoadDocWin(QtGui.QMainWindow):
     DocImagePath=""
     BackFolder=''
     def setupUi(self, MainWindow):
-        
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1179, 664)
+        MainWindow.resize(1179, 672)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -65,6 +64,9 @@ class LoadDocWin(QtGui.QMainWindow):
         self.graphDocView.setMouseTracking(True)
         self.graphDocView.setFrameShape(QtGui.QFrame.NoFrame)
         self.graphDocView.setObjectName(_fromUtf8("graphDocView"))
+        self.comboMode = QtGui.QComboBox(self.centralwidget)
+        self.comboMode.setGeometry(QtCore.QRect(997, 620, 121, 23))
+        self.comboMode.setObjectName(_fromUtf8("comboMode"))
         MainWindow.setCentralWidget(self.centralwidget)
 
         print 'Dok path',self.DocImagePath
