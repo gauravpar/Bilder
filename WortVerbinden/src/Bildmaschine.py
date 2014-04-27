@@ -361,43 +361,49 @@ class BildMaschine():
     def CorrectSkew(self,stravo):
         #Elina 's way
         #the skew seems correct but the line detection does not
-   
-        Height, Width=stravo.shape
+        #stravo should be binarized
+        Height,Width =stravo.shape
+        print 'Width',Width,'Heigth',Height
         
         
         
-        
-        #get the lowest black Elements
+        #get the lowest black Elements for each col
         #Black pixel coordinates
         x=[]
         y=[]
         
         
-        for i in reversed(range(0,Height)):
+        for col in range(0,Width):
             
-            for j in reversed(range(0,Width)):
+            for row in reversed(range(0,Height)):
                 #get black pixels
-                if stravo[i][j]==0:
-                    y.append(i)
-                    x.append(j)
-                      
-                    
+                if stravo[row][col]==0:
+                    y.append(row)
+                    x.append(col)
                     break
-            else:
-                continue
-        
+
         
         a,b=np.polyfit(x, y, 1)
         
         print 'a',a,'b',int(b) #b seems to be the upper main body line
         
         rads=math.atan(a)
-        degs=(rads*180)/math.pi #it seems to WORK
+        degs=rads*180/math.pi
+        
         print "angle in degrees",degs
-        center=(Width/2,Height/2)
+        
+        
+        
+        #rotated Image
+        
+        
+        
+        center=(Height/2,Width/2)
+        
+        
+        
         M=cv2.getRotationMatrix2D(center,degs,1.0) #the 1.0 has smth to do with scale
         
         isio=cv2.warpAffine(stravo,M,(Width,Height))
         return isio
-
     
