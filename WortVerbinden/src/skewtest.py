@@ -30,17 +30,17 @@ x=[]
 y=[]
 
 
-for i in reversed(range(0,Width)):
+for col in range(0,Width):
     
-    for j in reversed(range(0,Height)):
+    for row in reversed(range(0,Height)):
         #get black pixels
-        if otzu[i][j]==0:
-            y.append(i)
-            x.append(j)
+        if otzu[row][col]==0:
+            y.append(row)
+            x.append(col)
             #color these pixels red
-            xroma[i][j][0]=0
-            xroma[i][j][1]=0
-            xroma[i][j][2]=255
+            xroma[row][col][0]=0
+            xroma[row][col][1]=0
+            xroma[row][col][2]=255
             break
 
 
@@ -49,21 +49,23 @@ print ('Black pixels are:')
 for i in range(0,len(x)):
     print 'row',x[i],'col',y[i]
     
-     
+
 a,b=np.polyfit(x, y, 1)
 
 print 'a',a,'b',int(b) #b seems to be the upper main body line
 
 rads=math.atan(a)
-degs=(rads*180)/math.pi #it seems to WORK
+degs=rads*180/math.pi
+
 print "angle in degrees",degs
 
-cv2.imshow("Original",otzu)
+
+
 #rotated Image
 
 
 
-center=(Width/2,Height/2)
+center=(Height/2,Width/2)
 
 
 
