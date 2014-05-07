@@ -33,6 +33,9 @@ except AttributeError:
 class LoadDocWin(QtGui.QMainWindow):
     DocImagePath=""
     BackFolder=''
+    sc=''
+    
+    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1179, 672)
@@ -68,16 +71,23 @@ class LoadDocWin(QtGui.QMainWindow):
         self.comboMode.setGeometry(QtCore.QRect(997, 620, 121, 23))
         self.comboMode.setObjectName(_fromUtf8("comboMode"))
         MainWindow.setCentralWidget(self.centralwidget)
+        
+        self.comboMode.addItem("Glyph Cutter") # Mode 0
+        self.comboMode.addItem("Area Cutter") # Mode 1
+        
+        
+        #Slots
+        self.comboMode.currentIndexChanged.connect(self.ChangeMode)
 
         print 'Dok path',self.DocImagePath
-        sc=Schkini()
-        sc.TmpFolder=self.BackFolder
+        self.sc=Schkini()
+        self.sc.TmpFolder=self.BackFolder
         img=QImage(self.DocImagePath)
-        sc.DocImagePath=self.DocImagePath
+        self.sc.DocImagePath=self.DocImagePath
        
         pix=QGraphicsPixmapItem(QtGui.QPixmap.fromImage(img))
-        sc.addItem(pix)
-        self.graphDocView.setScene(sc)
+        self.sc.addItem(pix)
+        self.graphDocView.setScene(self.sc)
         
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -85,3 +95,7 @@ class LoadDocWin(QtGui.QMainWindow):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Select your glyphs", None))
 
+    def ChangeMode(self):
+        print 'mode'
+        self.sc.Mode=self.comboMode.currentIndex
+        

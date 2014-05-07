@@ -34,7 +34,7 @@ class Ui_MainWindow(object):
     
     #and for sqlite/text path
     
-    BackFolder='/home/phoenix/Desktop/test/' #The backup folder
+    BackFolder='/home/phoenix/Desktop/buchbilder/' #The backup folder
     #We ll use this instead of xml
     
     
@@ -98,7 +98,7 @@ class Ui_MainWindow(object):
         self.MainEngine.Query=self.textQuery.toPlainText()
         self.MainEngine.BilderBuch=self.GlyphBook
         self.MainEngine.WorkFolder=self.BackFolder
-        self.MainEngine.AnfangenWash()
+        self.MainEngine.RevAnfangenWash()
         #show image
         pixie=QtGui.QPixmap(self.BackFolder +'query.png')
         self.labFinal.setPixmap(pixie)
@@ -807,7 +807,7 @@ class Ui_MainWindow(object):
         
     #GUI SUTFF DO NOT CHANGE
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabenbilderverarbeitungzusammenverbindungsystem", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.pushGo.setText(_translate("MainWindow", "GO", None))
         self.pushLoad.setText(_translate("MainWindow", "Load Document", None))

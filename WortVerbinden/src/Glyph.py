@@ -32,10 +32,12 @@ class GlyphElement:
         self.Low=0
         self.BaseLine=0
         self.SpecialChar=1
-        
+        self.TopBaseLine=0 # some chars may not have the same scale
         self.Left=0 #Poy xenika kai poy teleinwnei o char 
         self.Right=0
         
+        self.StartLeft=0  #apo pou prepei na xekinisei na grafetai o epomenos char
+        self.StartRight=0
         
   
 
@@ -136,9 +138,30 @@ class GlyphElement:
         
         
         
-        #  η ξ γ φ χ ψ
         
 #         y j p q s 
+
+
+
+
+        if 'ξ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-12
+        
+        if 'φ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-10
+        if 'χ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-12
+        if 'ψ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-10
+        if 'γ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-12
+
+  
         if 'ζ' in self.Char:
             print 'Special Char'  
             self.BaseLine=self.Low-10
@@ -152,11 +175,14 @@ class GlyphElement:
         if 'μ' in self.Char:
             print 'Special Char'  
             self.BaseLine=self.Low-11
+            
+            
+            
         #Washington lines
         if 'g' in self.Char:
             print 'Special Char'  
             self.BaseLine=self.Low-38
-          
+            self.StartLeft=self.Left+30
             
         if 'G' in self.Char:
             print 'Special Char'  
