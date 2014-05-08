@@ -11,65 +11,26 @@ import numpy as np
 #if whitespace more than a threshold 
 #shift
 qr=cv2.imread('/home/phoenix/Desktop/faq.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
-qrcolor=cv2.imread('/home/phoenix/Desktop/faq.png',cv2.CV_LOAD_IMAGE_COLOR)
 
 h,w=qr.shape
-bline=69
+bline=68
 
 
  
 #calc white space above the red line
 
+#many stop cols #last element of stopfiles is the width
+stopstiles=[139,260,w] 
+noblank=[24,24,0]
+charwidth=[48,48,0]
 
 
-Spaces=[]
-for col in range(0,w):
-      Scwarz=0
-      
-           
-      for row in range(0,bline):
-          
-          if qr[row][col]==0:
-              Scwarz=1
-              # print 'A black pixel was found at',i,j
-              
-              
-        
-             
-      if Scwarz==0:
-          #print 'All white in col',col
-          
-          Spaces.append(1)
-          #draw a blue line
-          for i in range(0,bline):
-              qrcolor[i][col][0]=0
-              qrcolor[i][col][1]=0
-              qrcolor[i][col][2]=255
-      else:
-          Spaces.append(0)
-
-
-
-Mikos=[]
-stopcol=0
-start=0 # start col
-m=0
-print '-------------------------'
-for s in Spaces:
-    #print "s=",s
-    start+=1
-    if s==1:
-        m+=1
-    else:
-        if m>12 and m<40:
-            Mikos.append(start)
-        
-        m=0
-        
-for m in Mikos:
-    print m
-    stopcol=m
-    
+#stopcol=1
+#while stopcol>0:
+#    stopcol=int(raw_input("enter stop col"))
+#    nowhite=int(raw_input("no white space"))
+#    stopstiles.append(stopcol)
+#    noblank.append(nowhite)
 
 
 #shift all pixes from col 0 to m  and row o to bline
@@ -79,23 +40,45 @@ nospace.fill(255)
 
 r=0
 c=0
-for row in range(0,bline):
-    for col in range(0,stopcol):
-        nospace[row][col+29]=qr[row][col] #widith of white space
 
 
+picid=0
+
+#copy all the pixels up to the first stop col
 for row in range(0,bline):
-    for col in range(stopcol,w):
+    for col in range(0,stopstiles[0]):
         nospace[row][col]=qr[row][col]
 
-#descender
-for row in reversed(range(bline,h)):
-    for col in range(0,w):
-        nospace[row][col]=qr[row][col]
+cv2.imshow('shift '+ str(picid),nospace)
 
- 
-cv2.imshow('red',qrcolor)
-cv2.imshow('shift',nospace)
+picid+=1
+
+for q in range(0,1):
+    print 'q is ',q
+    #progressive shifting
+    #shift all pixel right from  stopcol+noblack  to stopcol[1] to the left by no blank
+    
+    #copy main body!!!
+    for row in range(0,bline):
+        for col in range(stopstiles[q],stopstiles[q+1]):
+            nospace[row][col]=qr[row][col+noblank[q]]
+    
+    cv2.imshow('shift ' + str(picid),nospace)
+    
+    #copy descender!!!
+    for row in reversed(range(bline,h)):
+        for col in range(stopstiles[q],stopstiles[q]+charwidth[q]):
+            nospace[row][col-noblank[q]]=qr[row][col]
+    
+    
+    
+    cv2.imshow('shift ' + str(picid),nospace)
+
+    picid+=1
+    
+    
+cv2.imshow('original',qr)
+cv2.imshow('final',nospace)
 
 
 cv2.waitKey()
