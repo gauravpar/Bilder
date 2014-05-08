@@ -24,9 +24,9 @@ def main():
     #calc white space above the red line
     
     #many stop cols #last element of stopfiles is the end of the char
-    stopstiles=[139,260,410] 
-    noblank=[24,24,0]
-    charwidth=[48,48,0]
+    stopstiles=[139,256,374,495,410] 
+    noblank=[24,24,24,24,0]
+    charwidth=[48,48,48,48,0]
     
     
     #stopcol=1
@@ -37,7 +37,7 @@ def main():
     #    noblank.append(nowhite)
     
     
-
+    #user help
    
 
     
@@ -46,8 +46,13 @@ def main():
     cv2.imshow('original',qr)
     
     nospace=Shifter(qr, h, w, bline, stopstiles[0], stopstiles[1], noblank[0], charwidth[0],winid)
-    winid+=1
+    winid+=4
     nospace=Shifter(nospace, h, w, bline, stopstiles[1]-noblank[0], stopstiles[2], noblank[1], charwidth[1],winid)
+    
+    winid+=4
+    nospace=Shifter(nospace, h, w, bline, stopstiles[2]-noblank[0], stopstiles[3], noblank[1], charwidth[1],winid)
+    
+  
     
     cv2.imshow('final',nospace)
 
@@ -61,10 +66,11 @@ def main():
 
     
 def Shifter(arr_pic,ypsos,platos,bline,stopq,stopqnext,noblankq,charwidthq,picid):    
+    print 'new loop'
     neo= np.ones((ypsos,platos,1), np.uint8)
     neo.fill(255)
     
-    picid+=1
+  
     print 'Copying from zero to',stopq
     #copy all the pixels up to the first stop col before the limit of the descender
     for row in range(0,ypsos):
@@ -83,7 +89,7 @@ def Shifter(arr_pic,ypsos,platos,bline,stopq,stopqnext,noblankq,charwidthq,picid
 
     #copy main body!!!
     for row in range(0,bline):
-        for col in range(stopq,stopqnext):
+        for col in range(stopq,stopqnext-noblankq):
            
             neo[row][col]=arr_pic[row][col+noblankq]
     
