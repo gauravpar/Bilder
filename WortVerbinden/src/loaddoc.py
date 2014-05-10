@@ -96,6 +96,9 @@ class LoadDocWin(QtGui.QMainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Select your glyphs", None))
 
     def ChangeMode(self):
-        print 'mode'
-        self.sc.Mode=self.comboMode.currentIndex
-        
+        if "Area" in self.comboMode.currentText():
+            self.sc.Mode=1
+        else:
+            self.sc.Mode=0
+                
+        print 'mode',self.sc.Mode

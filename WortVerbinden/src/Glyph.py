@@ -36,9 +36,6 @@ class GlyphElement:
         self.Left=0 #Poy xenika kai poy teleinwnei o char 
         self.Right=0
         
-        self.StartLeft=0  #apo pou prepei na xekinisei na grafetai o epomenos char
-        self.StartRight=0
-        
   
 
 

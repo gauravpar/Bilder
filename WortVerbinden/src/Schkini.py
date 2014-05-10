@@ -42,6 +42,7 @@ class Schkini(QGraphicsScene):
             Kuli.setWidth(2)
             if self.Mode==0:
                 Kuli.setColor(QtCore.Qt.magenta)
+                Kuli.setStyle(QtCore.Qt.DashDotLine)
             if self.Mode==1:
                 Kuli.setColor(QtCore.Qt.blue)
 
@@ -63,17 +64,22 @@ class Schkini(QGraphicsScene):
             
             copy=BigPix.copy(self.LowX,self.LowY,abs(self.LowX-self.TopX),abs(self.LowY-self.TopY))
             fname=self.DocImagePath[self.DocImagePath.rindex("/")+1:]
-            fname.replace(".", "_")
-            fname+="_"+str(self.LowX) + "_"+str(self.LowY)
-            fname+="_"+str(self.TopX) + "_"+str(self.TopY)
+          
+            fname+="_lowx"+str(self.LowX) + "_lowy"+str(self.LowY)
+            fname+="_topx"+str(self.TopX) + "_topy"+str(self.TopY)
+            fname=fname.replace(".", "_")
+              
             print 'Saved to',self.TmpFolder+fname
             if self.Mode==0:
+               
                 copy.save(self.TmpFolder + fname +".jpg");
+                print 'Saving glyphs'
             if self.Mode==1:
-                copy.save(self.TmpFolder + fname +".jpg");
-                stravo=cv2.imread(self.TmpFolder + fname +".jpg",cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                print 'Saving area'
+                copy.save(self.TmpFolder + fname +"stravo.jpg");
+                stravo=cv2.imread(self.TmpFolder + fname +"stravo.jpg",cv2.CV_LOAD_IMAGE_GRAYSCALE)
                 stravo=self.CorrectSkew(stravo)
-                cv2.imwrite(self.TmpFolder + fname +"rot.jpg",stravo)
+                cv2.imwrite(self.TmpFolder + fname +"isio.jpg",stravo)
 
                         
     def CorrectSkew(self,stravo):
