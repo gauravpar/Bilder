@@ -113,7 +113,7 @@ class BildMaschine():
                     
             
         print 'Finished'
-        cv2.imwrite(self.WorkFolder + str(self.Query).encode('utf-8')+'.png',ImgQuery)
+        cv2.imwrite(self.WorkFolder + str(self.Query).encode('utf-8')+'.jpg',ImgQuery,[cv2.IMWRITE_JPEG_QUALITY,95])
     
     
     
