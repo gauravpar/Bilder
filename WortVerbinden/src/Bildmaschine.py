@@ -13,7 +13,8 @@ class BildMaschine():
         self.Query=q
         self.BilderBuch=bildbook
         self.WorkFolder=''
-        
+        self.ShiftLeft=0
+        self.ShiftDown=0
 
         
     def AnfangenWash(self):
@@ -26,7 +27,7 @@ class BildMaschine():
         QueryW=0
         QueryH=0
         
-        Shift=60
+      
           
           
         #find the maximum X
@@ -54,8 +55,8 @@ class BildMaschine():
                         QueryH=gl.Height
             
     
-        QueryH=2*QueryH + Shift
-                
+        QueryH=2*QueryH + self.ShiftDown
+                        
         print 'Let \'s go'
         print 'Image Query Height',QueryH
         print 'Image Query Width',QueryW
@@ -68,7 +69,7 @@ class BildMaschine():
 
       
         
-        s_row=0+Shift
+        s_row=0+self.ShiftDown
         s_col=self.LetterSpace
         
         BaseLine=0 #the baseline is the line of the first char
@@ -97,8 +98,8 @@ class BildMaschine():
                     
                     #The baseline of the first char is the baseline of the word
                     if CharCount==1:
-                        BaseLine=Shift+ (gl.BaseLine-gl.Top) #IT WORKS!!
-                        s_row=Shift
+                        BaseLine=self.ShiftDown+ (gl.BaseLine-gl.Top) #IT WORKS!!
+                        s_row=self.ShiftDown
                         print 'Baseline is',BaseLine
                     
                    
@@ -114,7 +115,9 @@ class BildMaschine():
             
         print 'Finished'
         cv2.imwrite(self.WorkFolder + str(self.Query).encode('utf-8')+'.jpg',ImgQuery,[cv2.IMWRITE_JPEG_QUALITY,95])
-    
+        cv2.imshow('Query',ImgQuery)
+        cv2.waitKey()
+        cv2.destroyAllWindows()
     
     
     def ConcatWash(self,StartCol,StartRow,qpic_arr,char_arr,top,low,left,right,e):
@@ -269,7 +272,6 @@ class BildMaschine():
         QueryW=0
         QueryH=0
         
-        Shift=22
           
           
         #find the maximum X
@@ -297,7 +299,7 @@ class BildMaschine():
                         QueryH=gl.Height
             
     
-        QueryH=2*QueryH + Shift
+        QueryH=2*QueryH + self.ShiftDown
                 
         print 'Let s go'
         print 'Image Query Height',QueryH
@@ -311,7 +313,7 @@ class BildMaschine():
 
       
         
-        s_row=0+Shift
+        s_row=0+self.ShiftDown
         s_col=self.LetterSpace
         
         BaseLine=0 #the baseline is the line of the first char
@@ -339,8 +341,8 @@ class BildMaschine():
                     
                     #The baseline of the first char is the baseline of the word
                     if CharCount==1:
-                        BaseLine=Shift+ (gl.BaseLine-gl.Top) #IT WORKS!!
-                        s_row=Shift
+                        BaseLine=self.ShiftLeft+ (gl.BaseLine-gl.Top) #IT WORKS!!
+                        s_row=self.ShiftDown
                         print 'Baseline is',BaseLine
                     
                     
@@ -355,6 +357,10 @@ class BildMaschine():
             
         print 'Finished'
         cv2.imwrite(self.WorkFolder + 'query.png',ImgQuery)
+        cv2.imshow('Query',ImgQuery)
+        cv2.waitKey()
+        cv2.destroyAllWindows()
+    
           
    
         

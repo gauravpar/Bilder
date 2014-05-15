@@ -98,6 +98,8 @@ class Ui_MainWindow(object):
         self.MainEngine.Query=self.textQuery.toPlainText()
         self.MainEngine.BilderBuch=self.GlyphBook
         self.MainEngine.WorkFolder=self.BackFolder
+        self.MainEngine.ShiftDown=int(self.lineDown.text())
+        self.MainEngine.ShiftLeft=int(self.lineLeft.text())
         self.MainEngine.AnfangenWash()
         #show image
         pixie=QtGui.QPixmap(self.BackFolder +'query.png')
@@ -316,7 +318,7 @@ class Ui_MainWindow(object):
         self.tabResults = QtGui.QWidget()
         self.tabResults.setObjectName(_fromUtf8("tabResults"))
         self.labFinal = QtGui.QLabel(self.tabResults)
-        self.labFinal.setGeometry(QtCore.QRect(10, 10, 501, 161))
+        self.labFinal.setGeometry(QtCore.QRect(70, 60, 411, 391))
         self.labFinal.setObjectName(_fromUtf8("labFinal"))
         self.tabWidget.addTab(self.tabResults, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
@@ -327,30 +329,36 @@ class Ui_MainWindow(object):
         self.lineTemp = QtGui.QLineEdit(self.tab_2)
         self.lineTemp.setGeometry(QtCore.QRect(140, 20, 321, 22))
         self.lineTemp.setObjectName(_fromUtf8("lineTemp"))
-        self.groupBox_3 = QtGui.QGroupBox(self.tab_2)
-        self.groupBox_3.setGeometry(QtCore.QRect(10, 60, 191, 391))
-        self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
-        self.verticalLayoutWidget = QtGui.QWidget(self.groupBox_3)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(9, 40, 171, 351))
-        self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
-        self.normLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
-        self.normLayout.setMargin(0)
-        self.normLayout.setObjectName(_fromUtf8("normLayout"))
         self.pushLoadSession = QtGui.QPushButton(self.tab_2)
         self.pushLoadSession.setGeometry(QtCore.QRect(300, 82, 131, 31))
         self.pushLoadSession.setObjectName(_fromUtf8("pushLoadSession"))
         self.pushSaveSession = QtGui.QPushButton(self.tab_2)
         self.pushSaveSession.setGeometry(QtCore.QRect(300, 130, 131, 31))
         self.pushSaveSession.setObjectName(_fromUtf8("pushSaveSession"))
+        self.label_2 = QtGui.QLabel(self.tab_2)
+        self.label_2.setGeometry(QtCore.QRect(300, 190, 131, 31))
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.comboSynthMethod = QtGui.QComboBox(self.tab_2)
+        self.comboSynthMethod.setGeometry(QtCore.QRect(290, 240, 171, 23))
+        self.comboSynthMethod.setObjectName(_fromUtf8("comboSynthMethod"))
+        self.label_3 = QtGui.QLabel(self.tab_2)
+        self.label_3.setGeometry(QtCore.QRect(240, 300, 91, 41))
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.label_4 = QtGui.QLabel(self.tab_2)
+        self.label_4.setGeometry(QtCore.QRect(240, 350, 91, 31))
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.lineDown = QtGui.QLineEdit(self.tab_2)
+        self.lineDown.setGeometry(QtCore.QRect(340, 310, 113, 22))
+        self.lineDown.setObjectName(_fromUtf8("lineDown"))
+        self.lineLeft = QtGui.QLineEdit(self.tab_2)
+        self.lineLeft.setGeometry(QtCore.QRect(340, 350, 113, 22))
+        self.lineLeft.setObjectName(_fromUtf8("lineLeft"))
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
         self.charWidget = QtGui.QListWidget(self.tab)
         self.charWidget.setGeometry(QtCore.QRect(20, 20, 131, 431))
         self.charWidget.setObjectName(_fromUtf8("charWidget"))
-        self.label_3 = QtGui.QLabel(self.tab)
-        self.label_3.setGeometry(QtCore.QRect(190, 40, 111, 41))
-        self.label_3.setObjectName(_fromUtf8("label_3"))
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName(_fromUtf8("tab_5"))
@@ -404,7 +412,6 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_5, _fromUtf8(""))
         MainWindow.setCentralWidget(self.centralwidget)
 
-
         
         #BE CAREFUL NOT THE DELETE THESE LINES
         self.retranslateUi(MainWindow)
@@ -423,15 +430,10 @@ class Ui_MainWindow(object):
         self.lineKernel.setText("3")
         
         self.lineTemp.setText(self.BackFolder)
-        #combo box with all possible normalization methods
+        #combo box with synthesis
+        self.comboSynthMethod.addItem("Washington")
+        self.comboSynthMethod.addItem("Samos")
         
-        for i in range(0,self.Norm_Methods.__len__()):
-            combo=QtGui.QComboBox()
-            for n in self.Norm_Methods:
-                combo.addItem(n)
-                combo.setCurrentIndex(i)
-            self.ComboList.append(combo)
-            self.normLayout.addWidget(combo)
         
         
         self.GetGlyphsFromDB()
@@ -807,7 +809,7 @@ class Ui_MainWindow(object):
         
     #GUI SUTFF DO NOT CHANGE
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabenbilderverarbeitungzusammenverbindungsystem", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabebilderverarbeitungzusammenverbindungsystem", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.pushGo.setText(_translate("MainWindow", "GO", None))
         self.pushLoad.setText(_translate("MainWindow", "Load Document", None))
@@ -819,11 +821,12 @@ class Ui_MainWindow(object):
         self.labFinal.setText(_translate("MainWindow", "TextLabel", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabResults), _translate("MainWindow", "Results", None))
         self.label.setText(_translate("MainWindow", "Temp Folder", None))
-        self.groupBox_3.setTitle(_translate("MainWindow", "Order of Normalization", None))
         self.pushLoadSession.setText(_translate("MainWindow", "Load session", None))
         self.pushSaveSession.setText(_translate("MainWindow", "Save session", None))
+        self.label_2.setText(_translate("MainWindow", "Synthesis Method", None))
+        self.label_3.setText(_translate("MainWindow", "Shift Down", None))
+        self.label_4.setText(_translate("MainWindow", "Shift Left", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Settings", None))
-        self.label_3.setText(_translate("MainWindow", "Select Language", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Chars DB", None))
         self.labVorher.setText(_translate("MainWindow", "TextLabel", None))
         self.label_5.setText(_translate("MainWindow", "Kernel Size", None))
@@ -835,6 +838,7 @@ class Ui_MainWindow(object):
         self.label_6.setText(_translate("MainWindow", "Undo History", None))
         self.labHistory.setText(_translate("MainWindow", "TextLabel", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Glyph", None))
+
 
 def main():
     reload(sys)
