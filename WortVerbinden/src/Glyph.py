@@ -136,7 +136,7 @@ class GlyphElement:
         
         
         
-#         y j p q s 
+#         y j p q s special baseline chars with ascenders,descenders...
 
 
 

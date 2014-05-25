@@ -35,6 +35,10 @@ class BildMaschine():
         print 'Printing Glyphbook'
         #BE CAREFUL
         #THE IMAGE SIZE IN NOT THE CHARS IN THE GLYPH BOOK
+        # e.x lets say we want to synthesize the word katanias
+        #the glyph book will contain k,a,t,n,i,s
+        #the query image cannot have the size of k+a+t+n+i+s
+        #instead the correct size is k+a+t+a+n+i+a+s
         #It is the sum of all the chars of the query
         for c in self.Query:
 
@@ -422,3 +426,4 @@ class BildMaschine():
   
     def PostProcess(self):
         pass
+        #can it be automated??

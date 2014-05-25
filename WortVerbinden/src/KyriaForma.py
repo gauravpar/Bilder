@@ -435,7 +435,8 @@ class Ui_MainWindow(object):
         self.comboSynthMethod.addItem("Samos")
         
         
-        
+        self.lineDown.setText('2')
+        self.lineLeft.setText('3')
         self.GetGlyphsFromDB()
         
        

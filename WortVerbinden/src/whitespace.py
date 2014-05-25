@@ -4,7 +4,7 @@ Created on Apr 4, 2014
 Test module to estimate white space
 @author: phoenix
 '''
-#staring from left to right you found a column with no black elements
+#starting from left to right you found a column with no black elements
 
 
 import cv2
@@ -24,19 +24,19 @@ for p in range(0,7):
     
    
     for col in range(0,Width):
-        Scwarz=0
+        Schwartz=0
         
              
         for row in range(0,Height):
             
             if test[row][col]==0:
-                Scwarz=1
+                Schwartz=1
                 # print 'A black pixel was found at',i,j
                 
                 
           
                
-        if Scwarz==0:
+        if Schwartz==0:
             #print 'All white in col',col
             
             Spaces.append(1)
@@ -48,7 +48,7 @@ for p in range(0,7):
         else:
             Spaces.append(0)
     
-    #count the thickness of the red lines
+    #count the thickness of the red lines/spaces
     Mikos=[]
     m=0
     print '-------------------------'

@@ -14,7 +14,7 @@ class Schkini(QGraphicsScene):
     LowY=0
     TopX=0
     TopY=0
-    Mode=-1 #Mode 0 cuts glyphs Mode 1 area 's binarize sand corrects skew
+    Mode=-1 #Mode 0 cuts glyphs Mode 1 area 's binarize and corrects skew
 
 
     def __init__(self):

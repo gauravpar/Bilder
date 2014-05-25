@@ -5,7 +5,7 @@ Created on Apr 21, 2014
 
 @author: phoenix
 '''
-#vertical and horizontal istograms
+#vertical and horizontal histograms
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
