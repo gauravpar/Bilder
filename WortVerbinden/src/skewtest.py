@@ -6,6 +6,7 @@ Created on Apr 15, 2014
 import cv2,math
 import numpy as np
 
+
 imagepath=raw_input("give image path")
 vorher=cv2.imread(imagepath,cv2.CV_LOAD_IMAGE_GRAYSCALE)
 xroma=cv2.imread(imagepath,cv2.CV_LOAD_IMAGE_COLOR)
@@ -49,8 +50,15 @@ print ('Black pixels are:')
 for i in range(0,len(x)):
     print 'row',x[i],'col',y[i]
     
-
+#least squares is the same as poly fit 1 
 a,b=np.polyfit(x, y, 1)
+
+xn=np.array(x)
+yn=np.array(y)
+A = np.vstack([x, np.ones(len(x))]).T
+m, c = np.linalg.lstsq(A, y)[0]
+print m, c
+
 
 print 'a',a,'b',int(b) #b seems to be the upper main body line
 
@@ -72,12 +80,17 @@ center=(Height/2,Width/2)
 M=cv2.getRotationMatrix2D(center,degs,1.0) #the 1.0 has smth to do with scale
 
 rot=cv2.warpAffine(otzu,M,(Width,Height))
+sq=cv2.warpAffine(otzu,M,(Width,Height))
 
 
 cv2.imshow("Rotated",rot)
+cv2.imshow("SQ Rotated",sq)
+
 cv2.imwrite("/tmp/dots.png",xroma)
 
 cv2.imwrite("/tmp/rotated.png",rot)
+cv2.imwrite("/tmp/lsqrotated.png",sq)
+
 
 cv2.waitKey()
 cv2.destroyAllWindows()
