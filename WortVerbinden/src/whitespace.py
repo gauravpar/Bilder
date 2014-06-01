@@ -43,8 +43,8 @@ for p in range(0,7):
             #draw a blue line
             for i in range(0,Height):
                 copy[i][col][0]=0
-                copy[i][col][1]=0
-                copy[i][col][2]=255
+                copy[i][col][1]=255
+                copy[i][col][2]=0
         else:
             Spaces.append(0)
     
@@ -69,7 +69,7 @@ for p in range(0,7):
     
     
     cv2.imshow('white space',copy)   
-    #cv2.imwrite('/tmp/white' + str(p) + '.png',copy)         
+    cv2.imwrite('/tmp/white' + str(p) + '.png',copy)         
     cv2.waitKey()
     cv2.destroyAllWindows()        
     

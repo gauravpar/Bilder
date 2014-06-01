@@ -196,7 +196,8 @@ class GlyphElement:
         print ('BaseLine for ',str(self.Char).encode('utf-8') ,'is',self.BaseLine)
         print ('TopLine for ',str(self.Char).encode('utf-8') ,'is',self.Top)
         
-        
+        self.Left-=1
+        self.Right+=1
         
         
              
