@@ -7,38 +7,35 @@ Created on May 7, 2014
 import cv2
 import numpy as np
 
+#ante pali apo tin arxi
+
+
 
 def main():
     #no grid just horizontal lines
     #if whitespace more than a threshold 
     #shift
-    qr=cv2.imread('/home/phoenix/Desktop/faq.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
+    qr=cv2.imread('/home/phoenix/Desktop/buchbilder/tog.jpg',cv2.CV_LOAD_IMAGE_GRAYSCALE)
     
     h,w=qr.shape
-    bline=68
+    bline=80
     
     print 'height is',h
     print 'width is',w
     
      
-    #calc white space above the red line
     
-    #many stop cols #last element of stopfiles is the end of the char
-    stopstiles=[139,256,374,495,410] 
-    noblank=[24,24,24,24,0]
-    charwidth=[48,48,48,48,0]
-    
-    
-    #stopcol=1
-    #while stopcol>0:
-    #    stopcol=int(raw_input("enter stop col"))
-    #    nowhite=int(raw_input("no white space"))
-    #    stopstiles.append(stopcol)
-    #    noblank.append(nowhite)
+    #oi stopstiles periexoun ton aritho stilis opoy yparxei to provlima
+    #px stin lexi thought  yparxei provlima metaxy tou u kai g 
+        
+    stopstiles=[150,326]  # to 150 einai ekei pou teleiwnei to u 
+    #to teleytaio noumero einai i teleytaia stili tis eikonas
+    noblank=[24,0] # ayto prepei na einai to paxos tis ouritsas toy descender
     
     
-    #user help
-   
+    charwidth=[48,0]
+    
+    
 
     
     
@@ -46,11 +43,7 @@ def main():
     cv2.imshow('original',qr)
     
     nospace=Shifter(qr, h, w, bline, stopstiles[0], stopstiles[1], noblank[0], charwidth[0],winid)
-    winid+=4
-    nospace=Shifter(nospace, h, w, bline, stopstiles[1]-noblank[0], stopstiles[2], noblank[1], charwidth[1],winid)
-    
-    winid+=4
-    nospace=Shifter(nospace, h, w, bline, stopstiles[2]-noblank[0], stopstiles[3], noblank[1], charwidth[1],winid)
+  
     
   
     
@@ -79,6 +72,7 @@ def Shifter(arr_pic,ypsos,platos,bline,stopq,stopqnext,noblankq,charwidthq,picid
     
     cv2.imshow('copy pixels'+ str(picid),neo)
     
+    cv2.imwrite('/tmp/desc' + str(picid)+".jpg" ,neo)
     
     picid+=1
     
@@ -95,6 +89,8 @@ def Shifter(arr_pic,ypsos,platos,bline,stopq,stopqnext,noblankq,charwidthq,picid
     
     
     cv2.imshow('shift main body left' + str(picid),neo)
+    cv2.imwrite('/tmp/desc' + str(picid)+".jpg" ,neo)
+
     picid+=1
     
     
@@ -106,20 +102,12 @@ def Shifter(arr_pic,ypsos,platos,bline,stopq,stopqnext,noblankq,charwidthq,picid
     
     
     cv2.imshow('shift ascender' + str(picid),neo)
+    cv2.imwrite('/tmp/desc' + str(picid)+".jpg" ,neo)
+
     
     picid+=1
     
 
-    
-    shiftrem=noblankq
-    #copy the remainder of the unshifted image
-    for row in range(0,ypsos):
-        for col in range(stopqnext,platos):
-            neo[row][col-shiftrem]=arr_pic[row][col]   #SHIFT what will be shifted in the next loop by shiftrem
-            
-            
-            
-    cv2.imshow('shift remaining unshifted' + str(picid),neo)
     
     picid+=1
     return neo

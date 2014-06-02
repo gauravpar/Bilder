@@ -196,8 +196,13 @@ class GlyphElement:
         print ('BaseLine for ',str(self.Char).encode('utf-8') ,'is',self.BaseLine)
         print ('TopLine for ',str(self.Char).encode('utf-8') ,'is',self.Top)
         
+        #erros amy occur
         self.Left-=1
         self.Right+=1
+        self.Top-=1
+        self.Low+=1
+        self.BaseLine+=1
+        
         
         
              
