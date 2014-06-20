@@ -76,69 +76,68 @@ for q in query:
     YDims.append(y)
 
     if 'ρ'.decode('utf-8') not in q:
-       print 'character is not an ρ' 
-       #read it from bottom to top
-       #problem with glyph s bad print
-       for i in reversed(range(0,x)):
-           for j in range(0,y):
-               if tmp[i][j][0]<BlackThreshold and tmp[i][j][1]<BlackThreshold and  tmp[i][j][2]<BlackThreshold:
-                   print  i,j
-                   #append the base line of each glyph
-                   XLines.append(i)
-                   
-                   print 'Baseline for char ',q, 'is', i
-                   break
-           else:
-                continue
-           break
-    else:
-       
-       print 'ρ is in query--------------------------------------------------'
-       top=0
-       low=0
-       #get  the low line
-       for i in reversed(range(0,x)):
-           for j in range(0,y):
-               if tmp[i][j][0]<BlackThreshold and tmp[i][j][1]<BlackThreshold and  tmp[i][j][2]<BlackThreshold:
-                   print  i,j
-                   
-                   low=i
-                   
-                   break
-           else:
-                continue
-           break
-       #and the top line
-       for i in range(0,x):
+        print 'character is not an ρ' 
+        #read it from bottom to top
+        #problem with glyph s bad print
+        for i in reversed(range(0,x)):
             for j in range(0,y):
                 if tmp[i][j][0]<BlackThreshold and tmp[i][j][1]<BlackThreshold and  tmp[i][j][2]<BlackThreshold:
                     print  i,j
-                    top=i
+                    #append the base line of each glyph
+                    XLines.append(i)
+                   
+                    print 'Baseline for char ',q, 'is', i
                     break
             else:
                 continue
             break
-       line=int(0.83*abs((top-low))) # the lower the value the higher the position of char  
-       XLines.append(line)
-       print 'Fixed Baseline for char ',q, 'is', line
+    else:
+        print 'ρ is in query--------------------------------------------------'
+        top=0
+        low=0
+        #get  the low line
+        for i in reversed(range(0,x)):
+            for j in range(0,y):
+                if tmp[i][j][0]<BlackThreshold and tmp[i][j][1]<BlackThreshold and  tmp[i][j][2]<BlackThreshold:
+                    print  i,j
+                   
+                    low=i
+                   
+                    break
+            else:
+                continue
+            break
+        #and the top line
+        for i in range(0,x):
+             for j in range(0,y):
+                 if tmp[i][j][0]<BlackThreshold and tmp[i][j][1]<BlackThreshold and  tmp[i][j][2]<BlackThreshold:
+                     print  i,j
+                     top=i
+                     break
+             else:
+                continue
+             break
+        line=int(0.83*abs((top-low))) # the lower the value the higher the position of char  
+        XLines.append(line)
+        print 'Fixed Baseline for char ',q, 'is', line
        
-       #output the naive baseline for r
-       rbild= np.ones((x,y,3), np.uint8)
-       rbild=tmp
-       for i in range(0, y):
-           rbild[line][i][0]=255
-           rbild[line][i][1]=0
-           rbild[line][i][2]=0
+        #output the naive baseline for r
+        rbild= np.ones((x,y,3), np.uint8)
+        rbild=tmp
+        for i in range(0, y):
+            rbild[line][i][0]=255
+            rbild[line][i][1]=0
+            rbild[line][i][2]=0
            
-           rbild[top][i][2]=255
-           rbild[top][i][0]=0
-           rbild[top][i][1]=0
+            rbild[top][i][2]=255
+            rbild[top][i][0]=0
+            rbild[top][i][1]=0
            
-           rbild[low][i][0]=0
-           rbild[low][i][1]=0
-           rbild[low][i][2]=255
-        #detected baseline for strange characters
-       cv2.imwrite("/tmp/"+q.encode('utf-8')+".png", rbild)
+            rbild[low][i][0]=0
+            rbild[low][i][1]=0
+            rbild[low][i][2]=255
+            #detected baseline for strange characters
+        cv2.imwrite("/tmp/"+q.encode('utf-8')+".png", rbild)
 
             
        
