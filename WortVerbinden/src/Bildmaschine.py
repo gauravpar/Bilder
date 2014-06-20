@@ -299,13 +299,3 @@ class BildMaschine():
         isio=cv2.warpAffine(stravo,M,(Width,Height))
         return isio
     
-    
-         
-    
-    
-    
-  
-  
-    def PostProcess(self):
-        pass
-        #can it be automated??
