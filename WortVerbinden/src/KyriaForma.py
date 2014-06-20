@@ -810,7 +810,7 @@ class Ui_MainWindow(object):
         
     #GUI SUTFF DO NOT CHANGE
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabenbilderverarbeitungzusammenverbindungsystem", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Buchstabenbilderverarbeitungzusammenverbindung", None))
         self.groupBox.setTitle(_translate("MainWindow", "String Query", None))
         self.pushGo.setText(_translate("MainWindow", "GO", None))
         self.pushLoad.setText(_translate("MainWindow", "Load Document", None))

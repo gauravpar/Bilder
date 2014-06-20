@@ -14,12 +14,12 @@ VertY=[] #for each row
 VertX=[] # count the  black pixels
 
 
-gray=cv2.imread('/tmp/Colonel.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
+gray=cv2.imread('/tmp/bank.jpg',cv2.CV_LOAD_IMAGE_GRAYSCALE)
 ret2,test = cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
 Height,Width=test.shape #prota diavazei to ypsos kai meta to platos
 
-print "Width",Width,"Heigth",Height
+print "Width",Width,"Height",Height
 
 max=0 #for matplob figure
 for row in range(0,Height):
