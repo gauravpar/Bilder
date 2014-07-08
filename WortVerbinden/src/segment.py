@@ -13,7 +13,7 @@ VertY=[] #for each row
 VertX=[] # count the  black pixels
 
 
-gray=cv2.imread('/home/phoenix/Desktop/buchbilder/segment/s0.jpeg',cv2.CV_LOAD_IMAGE_GRAYSCALE)
+gray=cv2.imread('/home/phoenix/Desktop/buchbilder/segment/s1.jpeg',cv2.CV_LOAD_IMAGE_GRAYSCALE)
 ret2,test = cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
 
