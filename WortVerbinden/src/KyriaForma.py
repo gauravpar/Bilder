@@ -843,7 +843,6 @@ class Ui_MainWindow(object):
 
 def main():
     reload(sys)
-    #Now it runs from Linux console
     sys.setdefaultencoding('UTF8')
     app = QtGui.QApplication(sys.argv)
     MainWindow = QtGui.QMainWindow()
