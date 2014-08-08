@@ -1,6 +1,4 @@
 # -*- coding: UTF-8 -*- 
-
-
 import cv2,math
 import numpy as np
 
@@ -17,7 +15,7 @@ class BildMaschine():
         self.ShiftDown=0
 
         
-    def AnfangenWash(self):
+    def Anfangen(self):
         
         self.EstimateLetterSpace()
         print 'Synthesizing begins...'
@@ -34,10 +32,10 @@ class BildMaschine():
         print 'Image Query Height',QueryH
         print 'Printing Glyphbook'
         #BE CAREFUL
-        #THE IMAGE SIZE IN NOT THE CHARS IN THE GLYPH BOOK
+        #THE IMAGE SIZE CANNOT BE DETERMINED BY THE CHARS IN THE GLYPH BOOK
         # e.x lets say we want to synthesize the word katanias
         #the glyph book will contain k,a,t,n,i,s
-        #the query image cannot have the size of k+a+t+n+i+s
+        #the query image does have the size of k+a+t+n+i+s
         #instead the correct size is k+a+t+a+n+i+a+s
         #It is the sum of all the chars of the query
         for c in self.Query:
@@ -110,7 +108,7 @@ class BildMaschine():
                     
                     
                     
-                    self.ConcatWash(s_col, s_row, ImgQuery, gl.Naher,gl.Top,gl.Low,gl.Left,gl.Right,e)
+                    self.Juxtapose(s_col, s_row, ImgQuery, gl.Naher,gl.Top,gl.Low,gl.Left,gl.Right,e)
                     e=e+1
                     
                     
@@ -124,7 +122,7 @@ class BildMaschine():
         cv2.destroyAllWindows()
     
     
-    def ConcatWash(self,StartCol,StartRow,qpic_arr,char_arr,top,low,left,right,e):
+    def Juxtapose(self,StartCol,StartRow,qpic_arr,char_arr,top,low,left,right,e):
         #concatenate chars
         print 'Copying from col',left,'to',right
         print 'Copying from row',top,'to',low
@@ -274,7 +272,7 @@ class BildMaschine():
                     x.append(col)
                     break
 
-        
+        #first degree polynomial fit
         a,b=np.polyfit(x, y, 1)
         
         print 'a',a,'b',int(b) #b seems to be the upper main body line

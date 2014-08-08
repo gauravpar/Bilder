@@ -1,21 +1,12 @@
 # -*- coding: UTF-8 -*- 
-'''
-Created on Mar 26, 2014
 
-@author: phoenix
-'''
 import cv2
 class GlyphElement:
-    '''
-    classdocs
-    '''
-    
+
 
 
     def __init__(self, char,img_path):
-        '''
-        Constructor
-        '''
+
         
         print 'Creating glyph for ',str(char).encode('utf-8'),'from',img_path
         self.Char=char;
@@ -136,10 +127,8 @@ class GlyphElement:
         
         
         
-#         y j p q s special baseline chars with ascenders,descenders...
 
-
-
+        #Manual baseline fix for special characters
 
         if 'ξ' in self.Char:
             print 'Special Char'  
@@ -158,6 +147,22 @@ class GlyphElement:
             print 'Special Char'  
             self.BaseLine=self.Low-12
 
+        if 'η' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-9
+            
+        if 'ή' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-9
+          
+          
+        if 'ἡ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-10
+                
+        if 'ῆ' in self.Char:
+            print 'Special Char'  
+            self.BaseLine=self.Low-11
   
         if 'ζ' in self.Char:
             print 'Special Char'  
@@ -173,17 +178,7 @@ class GlyphElement:
             print 'Special Char'  
             self.BaseLine=self.Low-11
             
-            
-            
-        #Washington lines
-        if 'g' in self.Char:
-            print 'Special Char'  
-            self.BaseLine=self.Low-38
-            self.StartLeft=self.Left+30
-            
-        if 'G' in self.Char:
-            print 'Special Char'  
-            self.BaseLine=self.Low-40            
+          
     
     
     

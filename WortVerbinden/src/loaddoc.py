@@ -1,17 +1,5 @@
-'''
-Created on Apr 4, 2014
-
-@author: phoenix
-'''
 # -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'loaddoc.ui'
-#
-# Created: Fri Apr  4 13:28:51 2014
-#      by: PyQt4 UI code generator 4.10.3
-#
-# WARNING! All changes made in this file will be lost!
-#This is MyPaint
+#Glyph/character cutter
 from PyQt4 import QtCore, QtGui
 from PyQt4.Qt import QGraphicsScene, QImage, QGraphicsPixmapItem
 from Schkini import Schkini

@@ -5,7 +5,6 @@ import numpy as np
 
 
 #If the user is to click and select glyphs then an extended qgraphics scene class is needed
-#if you can't do it it is already coded in C++
 
 class Schkini(QGraphicsScene):
     Times=0;

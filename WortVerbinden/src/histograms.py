@@ -1,11 +1,6 @@
 # -*- coding: UTF-8 -*- 
-
-'''
-Created on Apr 21, 2014
-
-@author: phoenix
-'''
 #vertical and horizontal histograms
+#THIS IS A TEST
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
