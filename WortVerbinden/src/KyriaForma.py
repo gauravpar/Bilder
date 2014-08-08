@@ -431,12 +431,12 @@ class Ui_MainWindow(object):
         
         self.lineTemp.setText(self.BackFolder)
         #combo box with synthesis
-        self.comboSynthMethod.addItem("Washington")
-        self.comboSynthMethod.addItem("Samos")
+        #self.comboSynthMethod.addItem("Washington")
+        #self.comboSynthMethod.addItem("Samos")
         
         
-        self.lineDown.setText('2')
-        self.lineLeft.setText('3')
+        self.lineDown.setText('20')
+        self.lineLeft.setText('30')
         self.GetGlyphsFromDB()
         
        
