@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*- 
 import cv2,math
 import numpy as np
+import os,glob
 
 class BildMaschine():
     #This is the main buchstabebilder engine
@@ -116,8 +117,9 @@ class BildMaschine():
                     
             
         print 'Finished'
-        cv2.imwrite(self.WorkFolder + str(self.Query).encode('utf-8')+'.jpg',ImgQuery,[cv2.IMWRITE_JPEG_QUALITY,95])
-        cv2.imshow('Query',ImgQuery)
+        cropped=self.Crop(ImgQuery)
+        cv2.imwrite(self.WorkFolder + str(self.Query).encode('utf-8')+'.jpg',cropped,[cv2.IMWRITE_JPEG_QUALITY,95])
+        cv2.imshow('Query',cropped)
         cv2.waitKey()
         cv2.destroyAllWindows()
     
@@ -181,11 +183,13 @@ class BildMaschine():
 
         self.LetterSpace=0
         amount=0
-        for p in range(0,10):
+        
+        pics=glob.glob(self.WorkFolder+'whitespace' + os.path.sep + '*.png')
+        for p in pics:
             Spaces=[]
             print p
-            test=cv2.imread(self.WorkFolder + "whitespace/space"+str(p)+".png",cv2.CV_LOAD_IMAGE_GRAYSCALE)
-
+            test=cv2.imread(p,cv2.CV_LOAD_IMAGE_GRAYSCALE)
+            
             test=self.CorrectSkew(test)
             
             
@@ -252,6 +256,7 @@ class BildMaschine():
         #Elina 's way
         #the skew seems correct but the line detection does not
         #stravo should be binarized
+        
         Height,Width =stravo.shape
         print 'Width',Width,'Heigth',Height
         
@@ -297,3 +302,100 @@ class BildMaschine():
         isio=cv2.warpAffine(stravo,M,(Width,Height))
         return isio
     
+    
+    
+    
+    def Crop(self,Uncropped):
+
+
+
+        #all white rows and cols 
+    
+        
+        H,W,Z=Uncropped.shape
+        
+        #print 'Ypsos',H,'platos',W
+        TopRow=H
+        BottomRow=0
+        LeftCol=0
+        RightCol=W
+        
+        
+        #ahh these histograms again
+        #compute vertical and horizontal histograms  almost
+        
+        
+        
+        
+        #keep reading columns until you find one that has a black pixel
+        found=0
+        
+        while LeftCol<W and found==0:
+            
+            r=0
+            while r<H and found==0:
+                
+                #print r,LeftCol
+                if Uncropped[r][LeftCol]==0:
+                    found=1
+                r+=1
+            LeftCol+=1
+               
+        LeftCol-=1
+        
+        
+        
+        found=0
+        
+        while RightCol>0 and found==0:
+            RightCol-=1
+            r=0
+            while r<H and found==0:
+                
+                #print r,RightCol
+                if Uncropped[r][RightCol]==0:
+                    found=1
+                r+=1
+            
+               
+        RightCol+=1
+        
+        
+        
+        found=0
+        #you need to find the lowest black pixel
+        
+        for r in range(0,H):
+            for c in range(0,W):
+                if Uncropped[r][c]==0 and r<TopRow:
+                    TopRow=r
+        
+        TopRow-=1
+        
+        found=0
+        #you need to find the  black pixel with the highest row
+        
+        for r in range(0,H):
+            for c in range(0,W):
+                if Uncropped[r][c]==0 and r>BottomRow:
+                    BottomRow=r
+        
+        BottomRow+=1
+        #print 'Bounding box is : LeftCol',LeftCol,'RightCol',RightCol,'TopRow',TopRow,'BottomRow',BottomRow
+        
+        
+        #save the image to a new location
+        Cropped=np.ones((BottomRow-TopRow,RightCol-LeftCol,1), np.uint8)
+        Cropped.fill(255)
+        
+        i=-1
+        for r in range(TopRow,BottomRow):
+            i+=1
+            j=-1
+            for c in range(LeftCol,RightCol):
+                j+=1
+                Cropped[i][j]=Uncropped[r][c]
+                
+                
+        return Cropped  
+        

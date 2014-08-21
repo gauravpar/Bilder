@@ -496,7 +496,7 @@ class Ui_MainWindow(object):
       
         os.makedirs(newFold)
         print 'Creating folder',newFold
-        SessionFile=newFold+  "/backup.ses"
+        SessionFile=newFold+ os.path.sep + "backup.ses"
         
         SesFile=open(SessionFile,"w")
         
@@ -508,14 +508,14 @@ class Ui_MainWindow(object):
             SesFile.write(str(gl.Char).encode('utf-8') +' ')
             #save Naher image
             
-            cv2.imwrite(newFold+"/" +str(gl.Char).encode('utf-8') + ".png",gl.Naher)
+            cv2.imwrite(newFold+ os.path.sep  +str(gl.Char).encode('utf-8') + ".png",gl.Naher)
             
-            
-            SesFile.write(newFold+'/' +str(gl.Char).encode('utf-8')+'.png' + '\n')
+            print 'saved',newFold+ os.path.sep  +str(gl.Char).encode('utf-8') + ".png"
+            SesFile.write(newFold+ os.path.sep +str(gl.Char).encode('utf-8')+'.png' + '\n')
             
             #
         SesFile.close()
-            
+        print 'session saved'    
     
     def SliderMoved(self,value):
         #find the char whose glyph is to be rotated
