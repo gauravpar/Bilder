@@ -63,6 +63,7 @@ class LoadDocWin(QtGui.QMainWindow):
         self.comboMode.addItem("Glyph Cutter") # Mode 0
         self.comboMode.addItem("Area Cutter") # Mode 1
         
+        self.sc.Mode=0
         
         #Slots
         self.comboMode.currentIndexChanged.connect(self.ChangeMode)

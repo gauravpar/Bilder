@@ -34,11 +34,11 @@ class BildMaschine():
         print 'Printing Glyphbook'
         #BE CAREFUL
         #THE IMAGE SIZE CANNOT BE DETERMINED BY THE CHARS IN THE GLYPH BOOK
-        # e.x lets say we want to synthesize the word katanias
-        #the glyph book will contain k,a,t,n,i,s
-        #the query image does have the size of k+a+t+n+i+s
-        #instead the correct size is k+a+t+a+n+i+a+s
-        #It is the sum of all the chars of the query
+        # e.x lets say we want to synthesize the word vaggelis
+        #the glyph book will contain v,a,g,e,l,i,s
+        #the query image does have the size of v+a+g+e+l+i+s
+        #instead the correct size is v+a+g+g+e+l+i+s
+        #It is the sum of all the glyph chars of the query
         for c in self.Query:
 
             for gl in self.BilderBuch:
@@ -65,6 +65,7 @@ class BildMaschine():
         print 'Image Query Width',QueryW
         
       
+        #create a new image of height QueryH and width QueryW
         ImgQuery=np.ones((QueryH,QueryW,1), np.uint8)
         ImgQuery.fill(255)   #A white image
      
@@ -99,7 +100,7 @@ class BildMaschine():
                     CharCount+=1
                     
                     
-                    #The baseline of the first char is the baseline of the word
+                    #The baseline of the first char is the baseline of the entire word image
                     if CharCount==1:
                         BaseLine=self.ShiftDown+ (gl.BaseLine-gl.Top) #IT WORKS!!
                         s_row=self.ShiftDown
@@ -135,7 +136,7 @@ class BildMaschine():
         clean_char_arr=np.ones((low-top,right-left,1),np.uint8) #contains only the black pixels
         
         
-        #snipets copies only black pixels
+        #snippets copies only black pixels
         for i in range(0,low-top):
             for  j in range(0,right-left):
                 clean_char_arr[i][j]=char_arr[i+top][j+left]

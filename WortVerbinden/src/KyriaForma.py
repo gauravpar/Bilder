@@ -38,7 +38,6 @@ class Ui_MainWindow(object):
     #We ll use this instead of xml
     
     
-    Norm_Methods=['Slant','Skew','Whitespace','Baseline','Word Height']
     ComboList=[]
     
     Glyph_Chars=[] #Distinct query chars
@@ -90,9 +89,6 @@ class Ui_MainWindow(object):
         
        
     def Go(self):
-        print 'Order of normalization'
-        for c in self.ComboList:
-            print c.currentText()
         
         self.MainEngine.WorkFolder=self.BackFolder
         self.MainEngine.Query=self.textQuery.toPlainText()

@@ -9,14 +9,13 @@ class GlyphElement:
 
         
         print 'Creating glyph for ',str(char).encode('utf-8'),'from',img_path
-        self.Char=char;
+        self.Char=char
         self.GraphemeImg=img_path
          
-        self.Vorher=[]#This is an array that will store the original image
-        self.Naher=[]#This is an array Man wollte dieses Bild verarbeiten
+        self.Vorher=[] #This is an array that will store the original image
+        self.Naher=[]  #This is an array Man moechte dieses Bild verarbeiten
         
-        
-        #Das Bild wird hier sein
+        #Glyph properties
         self.Width=0
         self.Height=0
         self.Top=0
