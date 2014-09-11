@@ -77,7 +77,7 @@ center=(Height/2,Width/2)
 
 
 
-M=cv2.getRotationMatrix2D(center,degs,1.0) #the 1.0 has smth to do with scale
+M=cv2.getRotationMatrix2D(center,degs,1.0,bo) #the 1.0 has smth to do with scale
 
 rot=cv2.warpAffine(otzu,M,(Width,Height))
 sq=cv2.warpAffine(otzu,M,(Width,Height))

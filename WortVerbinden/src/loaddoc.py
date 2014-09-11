@@ -63,7 +63,6 @@ class LoadDocWin(QtGui.QMainWindow):
         self.comboMode.addItem("Glyph Cutter") # Mode 0
         self.comboMode.addItem("Area Cutter") # Mode 1
         
-        self.sc.Mode=0
         
         #Slots
         self.comboMode.currentIndexChanged.connect(self.ChangeMode)
@@ -73,6 +72,8 @@ class LoadDocWin(QtGui.QMainWindow):
         self.sc.TmpFolder=self.BackFolder
         img=QImage(self.DocImagePath)
         self.sc.DocImagePath=self.DocImagePath
+        self.sc.Mode=0
+
        
         pix=QGraphicsPixmapItem(QtGui.QPixmap.fromImage(img))
         self.sc.addItem(pix)
