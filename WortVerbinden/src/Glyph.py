@@ -72,9 +72,9 @@ class GlyphElement:
 
         #------------------------Low and Top Line------------------------
         #Low Line lowest black pixel
-        for i in range(0,self.Height):
+        for i in xrange(0,self.Height):
         
-            for j in range(0,self.Width):
+            for j in xrange(0,self.Width):
                 
                 if self.Naher[i][j]==0 and i<self.Top:
                     self.Top=i
@@ -91,10 +91,10 @@ class GlyphElement:
         HorY=[] # count the  black pixels
         
         
-        for col in range(0,self.Width):
+        for col in xrange(0,self.Width):
             sum=0
         
-            for row in range(0,self.Height):
+            for row in xrange(0,self.Height):
                 
                 if self.Naher[row][col]==0: #count the BLACK
                     sum+=1

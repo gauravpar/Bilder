@@ -137,8 +137,8 @@ class BildMaschine():
         
         
         #snippets copies only black pixels
-        for i in range(0,low-top):
-            for  j in range(0,right-left):
+        for i in xrange(0,low-top):
+            for  j in xrange(0,right-left):
                 clean_char_arr[i][j]=char_arr[i+top][j+left]
         
         
@@ -147,8 +147,8 @@ class BildMaschine():
         
         
         #and pastes them to final image query
-        for i in range(0, low-top):
-            for j in range(0, right-left):
+        for i in xrange(0, low-top):
+            for j in xrange(0, right-left):
                 qpic_arr[i+StartRow][j+StartCol]=clean_char_arr[i][j]
  
   
@@ -200,11 +200,11 @@ class BildMaschine():
             #an einai ola aspra simeiosate x
             
            
-            for col in range(0,Width):
+            for col in xrange(0,Width):
                 Scwarz=0
                 
                      
-                for row in range(0,Height):
+                for row in xrange(0,Height):
                     
                     if test[row][col]==0:
                         Scwarz=1
@@ -269,9 +269,9 @@ class BildMaschine():
         y=[]
         
         
-        for col in range(0,Width):
+        for col in xrange(0,Width):
             
-            for row in reversed(range(0,Height)):
+            for row in reversed(xrange(0,Height)):
                 #get black pixels
                 if stravo[row][col]==0:
                     y.append(row)
@@ -366,8 +366,8 @@ class BildMaschine():
         found=0
         #you need to find the lowest black pixel
         
-        for r in range(0,H):
-            for c in range(0,W):
+        for r in xrange(0,H):
+            for c in xrange(0,W):
                 if Uncropped[r][c]==0 and r<TopRow:
                     TopRow=r
         
@@ -376,8 +376,8 @@ class BildMaschine():
         found=0
         #you need to find the  black pixel with the highest row
         
-        for r in range(0,H):
-            for c in range(0,W):
+        for r in xrange(0,H):
+            for c in xrange(0,W):
                 if Uncropped[r][c]==0 and r>BottomRow:
                     BottomRow=r
         
@@ -390,10 +390,10 @@ class BildMaschine():
         Cropped.fill(255)
         
         i=-1
-        for r in range(TopRow,BottomRow):
+        for r in xrange(TopRow,BottomRow):
             i+=1
             j=-1
-            for c in range(LeftCol,RightCol):
+            for c in xrange(LeftCol,RightCol):
                 j+=1
                 Cropped[i][j]=Uncropped[r][c]
                 

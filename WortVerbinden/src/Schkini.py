@@ -99,7 +99,7 @@ class Schkini(QGraphicsScene):
         y=[]
         
         
-        for col in range(0,Width):
+        for col in xrange(0,Width):
             
             for row in reversed(range(0,Height)):
                 #get black pixels

@@ -58,7 +58,7 @@ XDims=[]
 for q in query:
     #find q in Glyphs
     print 'searching for char', q
-    for n in range(0, GlyphBook.__len__()):
+    for n in xrange(0, GlyphBook.__len__()):
         if q in GlyphBook[n][0].decode('utf-8'):
             break
     else:
@@ -80,7 +80,7 @@ for q in query:
         #read it from bottom to top
         #problem with glyph s bad print
         for i in reversed(range(0,x)):
-            for j in range(0,y):
+            for j in xrange(0,y):
                 if tmp[i][j][0]<BlackThreshold and tmp[i][j][1]<BlackThreshold and  tmp[i][j][2]<BlackThreshold:
                     print  i,j
                     #append the base line of each glyph
@@ -97,7 +97,7 @@ for q in query:
         low=0
         #get  the low line
         for i in reversed(range(0,x)):
-            for j in range(0,y):
+            for j in xrange(0,y):
                 if tmp[i][j][0]<BlackThreshold and tmp[i][j][1]<BlackThreshold and  tmp[i][j][2]<BlackThreshold:
                     print  i,j
                    
@@ -108,8 +108,8 @@ for q in query:
                 continue
             break
         #and the top line
-        for i in range(0,x):
-             for j in range(0,y):
+        for i in xrange(0,x):
+             for j in xrange(0,y):
                  if tmp[i][j][0]<BlackThreshold and tmp[i][j][1]<BlackThreshold and  tmp[i][j][2]<BlackThreshold:
                      print  i,j
                      top=i
@@ -124,7 +124,7 @@ for q in query:
         #output the naive baseline for r
         rbild= np.ones((x,y,3), np.uint8)
         rbild=tmp
-        for i in range(0, y):
+        for i in xrange(0, y):
             rbild[line][i][0]=255
             rbild[line][i][1]=0
             rbild[line][i][2]=0
@@ -157,7 +157,7 @@ StartColumn=0
 diff=0
 
 print 'Base is ', XLines[0]
-for c in range(0, query.__len__()):
+for c in xrange(0, query.__len__()):
    
    
     tmp=cv2.imread(glyphs[c])
@@ -166,8 +166,8 @@ for c in range(0, query.__len__()):
     diff=abs(XLines[c]-XLines[0]) + Shift
         
     print 'Careful baseline ', glyphs[c], 'at', diff, 'base was', XLines[c]
-    for i in range(0, XDims[c]):
-        for j in range(0, YDims[c]):
+    for i in xrange(0, XDims[c]):
+        for j in xrange(0, YDims[c]):
             ImgQuery[i+diff][j+StartColumn][0]=tmp[i][j][0]
             ImgQuery[i+diff][j+StartColumn][1]=tmp[i][j][1]
             ImgQuery[i+diff][j+StartColumn][2]=tmp[i][j][2]
@@ -177,7 +177,7 @@ for c in range(0, query.__len__()):
  
     
 #draw a red line one baseline
-for j in range(0, QueryY):
+for j in xrange(0, QueryY):
     ImgQuery[XLines[0]][j][0]=0  #green
     ImgQuery[XLines[0]][j][1]=0  # blue
     ImgQuery[XLines[0]][j][2]=255 # red

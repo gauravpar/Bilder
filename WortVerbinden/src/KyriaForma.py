@@ -543,9 +543,9 @@ class Ui_MainWindow(object):
         self.tableKernel.setColumnCount(size)
         
         
-        for i in range(0,size):
+        for i in xrange(0,size):
             self.tableKernel.setColumnWidth(i,28)
-            for j in range(0,size):
+            for j in xrange(0,size):
                 itm=QtGui.QTableWidgetItem()
                 itm.setText("1")
                 self.tableKernel.setItem(i,j,itm)
@@ -570,8 +570,8 @@ class Ui_MainWindow(object):
         kernel = np.ones((size,size),np.uint8)
           
           
-        for i in range(0,size):
-            for j in range(0,size):
+        for i in xrange(0,size):
+            for j in xrange(0,size):
                 kernel[i][j]=1
                 #user must edit the cells first
                 kernel[i][j]=int(self.tableKernel.currentItem().text())
@@ -675,7 +675,7 @@ class Ui_MainWindow(object):
         self.listUndo.clear()
         for gl in self.GlyphBook:
             if char in gl.Char:
-                for i in range(0,len(gl.History)):
+                for i in xrange(0,len(gl.History)):
                     it=QtGui.QListWidgetItem()
                     it.setText("Glyph" + str(i))
                     self.listUndo.addItem(it)

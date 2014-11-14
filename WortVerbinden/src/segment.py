@@ -30,10 +30,10 @@ HorX=[] #for each column
 HorY=[] # count the  black pixels
 
 m=0 #for matplob figure
-for col in range(0,Width):
+for col in xrange(0,Width):
     s=0
 
-    for row in range(0,Height):
+    for row in xrange(0,Height):
         
         if test[row][col]==0: #count the BLACK
             s+=1
@@ -109,8 +109,8 @@ for charBBox in zeroes:
     print 'ypsos',h,'platos',w
 
     print 'char from',charBBox[0],'to',charBBox[1]
-    for row in range(0,Height):
-        for col in range(0,charBBox[1]-charBBox[0]):
+    for row in xrange(0,Height):
+        for col in xrange(0,charBBox[1]-charBBox[0]):
             print 'r',row,'c',col
             ch[row][col]=test[row][col-charBBox[0]]
             

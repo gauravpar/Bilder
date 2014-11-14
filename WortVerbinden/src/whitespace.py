@@ -23,11 +23,11 @@ for p in range(0,7):
     #an einai ola aspra simeiosate x
     
    
-    for col in range(0,Width):
+    for col in xrange(0,Width):
         Schwartz=0
         
              
-        for row in range(0,Height):
+        for row in xrange(0,Height):
             
             if test[row][col]==0:
                 Schwartz=1
@@ -41,7 +41,7 @@ for p in range(0,7):
             
             Spaces.append(1)
             #draw a blue line
-            for i in range(0,Height):
+            for i in xrange(0,Height):
                 copy[i][col][0]=0
                 copy[i][col][1]=255
                 copy[i][col][2]=0

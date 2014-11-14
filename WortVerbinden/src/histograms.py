@@ -17,10 +17,10 @@ Height,Width=test.shape #prota diavazei to ypsos kai meta to platos
 print "Width",Width,"Height",Height
 
 max=0 #for matplob figure
-for row in range(0,Height):
+for row in xrange(0,Height):
     sum=0
 
-    for col in range(0,Width):
+    for col in xrange(0,Width):
         if test[row][col]==0: #count the BLACK
             sum+=1
     if sum>max:
@@ -46,10 +46,10 @@ HorX=[] #for each column
 HorY=[] # count the  black pixels
 
 max=0 #for matplob figure
-for col in range(0,Width):
+for col in xrange(0,Width):
     sum=0
 
-    for row in range(0,Height):
+    for row in xrange(0,Height):
         
         if test[row][col]==0: #count the BLACK
             sum+=1

@@ -37,7 +37,7 @@ var=0
 m=0
 
 #metra ayta poy DEN einai kefalaia
-for i in range(0,len(Caps)):
+for i in xrange(0,len(Caps)):
     if Caps[i]==0:
         avg+=mainbody[i]
         m+=1
@@ -48,7 +48,7 @@ avg=int(avg)
 print 'Average main body',avg
 
 #variance 
-for i in range(0,len(Caps)):
+for i in xrange(0,len(Caps)):
     if Caps[i]==0:
         var+=(mainbody[i]-avg)*(mainbody[i]-avg)
         m+=1
@@ -57,7 +57,7 @@ var=math.sqrt(var)
 print 'variance',var
 
 
-for i in range(0,len(Caps)):
+for i in xrange(0,len(Caps)):
     #find how much we need to scale the main body
     if Caps[i]==1:
         scalefac.append(1)
@@ -68,7 +68,7 @@ for i in range(0,len(Caps)):
 
 print scalefac
 #scale each image ston katakoryfo axona ???
-for p in range(0,len(GlyphPaths)):
+for p in xrange(0,len(GlyphPaths)):
     src=cv2.imread(GlyphPaths[p],cv2.CV_LOAD_IMAGE_GRAYSCALE)
     
     

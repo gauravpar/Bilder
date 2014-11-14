@@ -31,7 +31,7 @@ x=[]
 y=[]
 
 
-for col in range(0,Width):
+for col in xrange(0,Width):
     
     for row in reversed(range(0,Height)):
         #get black pixels
@@ -47,7 +47,7 @@ for col in range(0,Width):
 
 cv2.imshow('Colored dots',xroma)
 print ('Black pixels are:')
-for i in range(0,len(x)):
+for i in xrange(0,len(x)):
     print 'row',x[i],'col',y[i]
     
 #least squares is the same as poly fit 1 
