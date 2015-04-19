@@ -6,10 +6,19 @@ Buchstabebilderverarbeitungzusammenverbindung
 Word Synthesis system in Python2-Qt4-OpenCV-MySql 
 for old Greek machine-printed documents and the historic manuscripts of George Washington
 
+
+
+Semester project for my Msc : The task was to construct a word image query synthesis for a word spotting system. Due to the overwhelming difficulties encountered in developing a so-called "Semi-Continuous Hidden Markov Model" a Dynamic Time Warping based algorithm was used instead using HOG and histogram projection features.
+
+
+
+
+
+
 Paper i had to study :http://www.sciencedirect.com/science/article/pii/S0031320312000775
 An Msc Copmuter Vision Project
 
-Papers i actually studied:
+Papers i also studied:
 
 
 1. Leydier, Yann, et al. "Towards an omnilingual word retrieval system for ancient
