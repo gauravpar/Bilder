@@ -1,7 +1,4 @@
-WortVerbinden
-=============
-
-Buchstabebilderverarbeitungzusammenverbindung
+Project Title in German : Buchstabenbilderverarbeitungszusammenverbindung
 
 Word Synthesis system in Python2-Qt4-OpenCV-MySql 
 for old Greek machine-printed documents and the historic manuscripts of George Washington
