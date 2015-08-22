@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
 import cv2,math
 import numpy as np
 
@@ -24,73 +25,48 @@ Concatenate the normalized vector to the image vector
 
 window_W = window_H = 20
 window_Step = 20
-T_BINS=8
+T_BINS = 8
 # eight bins
-step=2*math.pi/T_BINS
+step = 2*math.pi/T_BINS
 
 print 'step',step
 
 #angle θ ranges from -pi to pi and so should the bins
-ANGLE_BINS=[phi for phi in np.arange(-math.pi,math.pi+step,step)]
+ANGLE_BINS = [phi for phi in np.arange(-math.pi,math.pi+step,step)]
 print 'bins:'
 print ANGLE_BINS
 
 
-def GetAngles(cH,cW,topLeftRow,topLeftCol,L):
-    """
-    paragraph 4.3
-    zero padding on edges
-    get angle distribution for a cell
-    topLeftRow actual x-coordinate of top left pixel of the cell with respect to L
-    topLeftCol actual y-coordinate of top left pixel of the cell with respect to L
-    cH ,cW cellHeight,CellWidth
-    """
+def GetAngles(zell):
 
+    H, W = zell.shape
 
-    #print 'Cell dimensions'
+    Gx = Gy = 0.0
 
-    topLeftX=topLeftRow
-    topLeftY=topLeftCol
+    Cell_Feature = [0.0 for i in xrange(0, T_BINS)]
+    #print len(Cell_Feature)
+    for i in xrange(0, H):
+        for j in xrange(0, W):
 
-    topRightY=topLeftCol+cW
+            # if off limits add the other edge pixels as if the image were continuous
 
-
-    lowLeftX=topLeftRow+cH
-
-
-
-    H,W=L.shape # H ,W height and width of original image
-
-
-    #add as many columns as the number of bins
-    Cell_Feature=[]
-    for b in xrange(0,int(T_BINS)):
-        Cell_Feature.append(0)
-
-    Gx=Gy=0L
-
-    for x in xrange(topLeftX,lowLeftX):
-        for y in xrange(topLeftY,topRightY):
-
-            #check off limits  add zero
-            if x==H-1:
-                Gx=-L[x-1][y]
-            elif x==0:
-                Gx=L[x+1][y]
+            if i == H-1:
+                Gx = -zell[0][j]
+            elif i == 0:
+                Gx = zell[H-1][j]
             else:
-                Gx=L[x+1][y]-L[x-1][y]
+                Gx = zell[i+1][j] - zell[i-1][j]
 
-            #check off limits  add zero
 
-            if y==W-1:
-                Gy=-L[x][y-1]
-            elif y==0:
-                Gy=L[x][y+1]
+            if j == W-1:
+                Gy = -zell[i][j-1]
+            elif j == 0:
+                Gy = zell[i][j+1]
             else:
-                Gy=L[x][y+1]-L[x][y-1]
+                Gy = zell[i][j+1]-zell[i][j-1]
 
-            Mxy=math.sqrt(Gx**2 + Gy**2)
-            Thetaxy=math.atan2(Gy,Gx)
+            Mxy = math.sqrt(Gx**2 + Gy**2)
+            Thetaxy = math.atan2(Gy,Gx)
 
             #print Gx,Gy,Mxy,Thetaxy
             #so we have contribution to
@@ -99,40 +75,29 @@ def GetAngles(cH,cW,topLeftRow,topLeftCol,L):
 
 
             #Figure 3 page 4
-            LeftBin=None #index of closest bin to Thetaxy that is denoted as a in the paper
-            RightBin=None
+            LeftBin = None #index of closest bin to Thetaxy that is denoted as a in the paper
+            RightBin = None
 
-            #Since we have 8 angles LeftBin should be a multiple of PI/4
+            #Since we have 8 angles LeftBin and RightBin should be a multiple of PI/4
 
 
-            for k in xrange(0,len(ANGLE_BINS)):
+            for k in xrange(0, T_BINS):
                 #find the largest k for which...
 
-                if ANGLE_BINS[k]<=Thetaxy and ANGLE_BINS[k+1]>=Thetaxy:
-                    LeftBin=k
-                    RightBin=k+1
+                if ANGLE_BINS[k] <= Thetaxy and ANGLE_BINS[k+1] >= Thetaxy:
+                    LeftBin = k
+                    RightBin = k+1
                     #print k
-
-
-
-
-
 
             #get the contributions
 
             # contribution of Mxy[1-a*T_Bins/(2pi) to bin a
-            alpha=ANGLE_BINS[RightBin]-Thetaxy
+            alpha = ANGLE_BINS[RightBin]-Thetaxy
 
-            Cell_Feature[LeftBin]+=Mxy*(1.0-(T_BINS*alpha)/(2*math.pi))
+            Cell_Feature[LeftBin] += Mxy*(1.0-(T_BINS*alpha)/(2*math.pi))
 
             # contribution of Mxy[T_Bins*a/(2pi) to bin 2*pi/T_Bins-a
-            Cell_Feature[RightBin]+=Mxy*T_BINS*alpha/(2*math.pi)
-
-
-
-
-
-
+            Cell_Feature[RightBin]+= Mxy*T_BINS*alpha/(2*math.pi)
 
 
     return Cell_Feature
@@ -142,32 +107,27 @@ def GetAngles(cH,cW,topLeftRow,topLeftCol,L):
 
 
 
-def DecomposeToCells(Start,End,CH,CW,Conv):
+def DecomposeToCells(winImg):
     """
-    Window image
-    Start : start column of window
-    End : end column of window
-    Cell Height Cell Width
-    Conv Original image convoluted with a smoothing filter
-    Ipsos,Platos Original Image dimensions
+    winImg Window image
+    cellDim cell width,height
+    in this exanmple a window is 20 by 20 so make cellDim = 5
     """
+    cellDim = 5
 
-    Ipsos,Platos=Conv.shape # Original Image dimensions
-
+    winH , winW = winImg.shape
 
     Window_Feats=[]
 
-    #covers all the image  for simplicity
-    #get all cells
-    for sRow in xrange(0,Ipsos,CH):
-        for sCol in xrange(Start,End,CW):
+    for i in xrange(0, winH, cellDim):
+        for j in xrange(0, winW, cellDim):
+                #print 'cell starts at',i,j
+
+                cell = winImg[i:i+cellDim, j:j+cellDim]
+
+                Cell_Features = GetAngles(cell)
 
 
-
-
-                Cell_Features= GetAngles(CH,CW,sRow, sCol,Conv)
-
-                #append Cell_Feature to Window_Feature
 
 
                 for cf in Cell_Features:
@@ -175,16 +135,13 @@ def DecomposeToCells(Start,End,CH,CW,Conv):
 
 
     #normalize according to sum
-    s=0.0
-    for wf in Window_Feats:
-        s+=wf
+    s = sum( Window_Feats)
+
 
     for i in xrange(0,len(Window_Feats)):
-        Window_Feats[i]=Window_Feats[i]/float(s)
+        Window_Feats[i] /= s
 
 
-    #this should have a length of Vec_dimensions
-    #print 'mikos window feats',len(Window_Feats)
     return Window_Feats
 
 
@@ -196,20 +153,26 @@ def main():
     img = cv2.imread('pennywise.png',cv2.CV_LOAD_IMAGE_GRAYSCALE)
     ret,img = cv2.threshold(img,0,255,cv2.THRESH_OTSU)
 
-
+    vektor = [] # output
     H, W = img.shape
 
     print H, W
-    cv2.imshow('It',img)
-    cv2.waitKey()
-    cv2.destroyAllWindows()
 
     # create Windows with step 5 no overlap
     for i in xrange(0,H , window_Step):
         for j in xrange(0,W , window_Step):
-            print 'Window starts at',i,j
-            # numpy slice
-            win = 
+            #print 'Window starts at',i,j
+            # numpy slice start:width
+            win = img[i:i+window_Step, j:j+window_Step]
+            win_vec = DecomposeToCells(win)
+            for v in win_vec:
+                vektor.append(v)
+
+
+    vektor = np.array(vektor)
+    vektor[np.isnan(vektor)] = 0
+    print len(vektor)
+
 if __name__=="__main__":
     main()
 
